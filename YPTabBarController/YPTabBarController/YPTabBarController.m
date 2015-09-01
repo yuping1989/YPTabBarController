@@ -113,9 +113,7 @@
 }
 - (void)yp_tabBar:(YPTabBar *)tabBar didSelectItemAtIndex:(NSInteger)index
 {
-    NSLog(@"index-->%ld selected-->%ld", index, _selectedIndex);
     if (index == _selectedIndex) {
-        NSLog(@"equal");
         return;
     }
     self.selectedIndex = index;
