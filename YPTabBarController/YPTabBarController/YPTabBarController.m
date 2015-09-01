@@ -130,7 +130,6 @@
     if (!_tabBar.itemSelectedBgScrollFollowContent) {
         return;
     }
-    NSLog(@"x--->%f", scrollView.contentOffset.x);
     if (scrollView.contentOffset.x >= 0 && scrollView.contentOffset.x <= scrollView.contentSize.width - scrollView.frame.size.width) {
         CGRect frame = _tabBar.itemSelectedBgImageView.frame;
         YPTabItem *item = _tabBar.items[_tabBar.selectedItemIndex];
