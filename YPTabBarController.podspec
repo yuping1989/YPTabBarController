@@ -5,7 +5,7 @@ s.version      = "1.0.0"
 s.summary      = "a tab bar controller."
 
 s.homepage     = "https://github.com/yuping1989/YPTabBarController"
-s.license      = 'LICENSE'
+s.license      = 'MIT'
 s.author       = { "Ping Yu" => "290180695@qq.com" }
 s.platform     = :ios, "7.0"
 s.ios.deployment_target = "7.0"
