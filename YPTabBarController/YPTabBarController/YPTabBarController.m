@@ -104,7 +104,7 @@
             [oldController.view removeFromSuperview];
         }
         UIViewController *curController = _viewControllers[selectedIndex];
-        [self.view addSubview:curController.view];
+        [self.view insertSubview:curController.view belowSubview:_tabBar];
         if (!CGRectEqualToRect(curController.view.frame, _contentViewFrame)) {
             curController.view.frame = _contentViewFrame;
         }
