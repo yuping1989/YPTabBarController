@@ -23,11 +23,18 @@
 @property (nonatomic, strong) UIFont *titleFont;
 
 @property (nonatomic, assign) NSInteger selectedItemIndex;
+
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, assign) BOOL itemSelectedBgSwitchAnimated;  // tabItem选中切换时，是否显示动画
 @property (nonatomic, assign) BOOL itemSelectedBgScrollFollowContent;  // tabItem的选中背景是否随contentView滑动而移动
 
 @property (nonatomic, assign) id<YPTabBarDelegate> delegate;
+
+/**
+ *  根据titles创建item
+ 
+ */
+- (void)setTitles:(NSArray *)titles;
 
 /**
  *  设置tabItem的选中背景可用

@@ -48,6 +48,16 @@
     _selectedItemIndex = selectedItemIndex;
 }
 
+- (void)setTitles:(NSArray *)titles {
+    NSMutableArray *items = [NSMutableArray array];
+    for (NSString *title in titles) {
+        YPTabItem *item = [YPTabItem instance];
+        [item setTitle:title forState:UIControlStateNormal];
+        [items addObject:item];
+    }
+    self.items = items;
+}
+
 - (void)changeSelectedBgWithIndex:(NSInteger)index {
     CGRect frame = _itemSelectedBgImageView.frame;
     YPTabItem *item = _items[index];
