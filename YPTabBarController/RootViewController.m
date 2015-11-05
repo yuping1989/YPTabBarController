@@ -44,27 +44,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tabBar.backgroundColor = [UIColor lightGrayColor];
-    self.tabBar.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - 50, [UIScreen mainScreen].bounds.size.width, 50);
-    self.tabBar.titleNormalColor = [UIColor whiteColor];
-    self.tabBar.titleSelectedColor = [UIColor blackColor];
-    self.tabBar.titleFont = [UIFont systemFontOfSize:10];
-    self.tabBar.itemSelectedBgImageView.backgroundColor = [UIColor blackColor];
     
-    self.contentViewFrame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 50);
+//    self.tabBar.itemTitleNormalColor = [UIColor whiteColor];
+//    self.tabBar.itemTitleSelectedColor = [UIColor blackColor];
+//    self.tabBar.titleFont = [UIFont systemFontOfSize:10];
+//    self.tabBar.itemSelectedBgImageView.backgroundColor = [UIColor blackColor];
+    
+    
 //    [self.tabBar setItemSelectedBgEnabledWithY:45 height:5 switchAnimated:YES];
 //    self.tabBar.itemSelectedBgScrollFollowContent = YES;
 //    [self setcontentScrollEnabled:YES animated:NO];
 //    [self.tabBar setScrollEnabledWithItemWith:100];
-    [self.tabBar setItemImageAndTitleCenterWithSpacing:5
-                                          marginTop:5
-                                          imageSize:CGSizeMake(25, 25)];
+    [self.tabBar setItemImageAndTitleMarginTop:5 spacing:5 imageSize:CGSizeMake(25, 25)];
     
+//    self.tabBar.badgeTitleFont = [UIFont systemFontOfSize:13];
+//    self.tabBar.badgeTitleColor = [UIColor blackColor];
+    [self.tabBar setBadgeMarginTop:2 marginRight:20 height:16 forStyle:YPTabItemStyleNumber];
+//    [self.tabBar setBadgeMarginTop:5 marginRight:30 height:30 forStyle:YPTabItemStyleDot];
     UIViewController *controller1 = self.viewControllers[0];
     UIViewController *controller2 = self.viewControllers[1];
     UIViewController *controller3 = self.viewControllers[2];
     controller1.yp_tabItem.badge = 8;
-    controller2.yp_tabItem.badge = 11;
-    controller3.yp_tabItem.badge = 0;
+    controller2.yp_tabItem.badge = 88;
+    controller3.yp_tabItem.badge = -8;
+
 }
 
 - (void)didReceiveMemoryWarning {

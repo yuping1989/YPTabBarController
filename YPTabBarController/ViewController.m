@@ -23,6 +23,17 @@
     [self.view addSubview:label];
     
 //    [self.yp_tabItem addDoubleTapTarget:self action:@selector(doubleClicked)];
+    
+//    YPTabBar *tabBar = [[YPTabBar alloc] initWithFrame:CGRectMake(10, 100, 355, 30)];
+////    [tabBar setItemSelectedBgEnabledWithY:25 height:5 switchAnimated:NO];
+//    tabBar.itemSelectedBgImageView.backgroundColor = [UIColor darkGrayColor];
+//    tabBar.backgroundColor = [UIColor lightGrayColor];
+//    [tabBar setTitles:@[@"第一", @"第二", @"第三"]];
+//    tabBar.selectedItemIndex = 0;
+//    
+//    YPTabItem *item1 = tabBar.items[0];
+//    item1.badge = -1;
+//    [self.view addSubview:tabBar];
 }
 
 - (void)didReceiveMemoryWarning {

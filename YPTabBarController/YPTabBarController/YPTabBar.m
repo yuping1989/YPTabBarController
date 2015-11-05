@@ -7,20 +7,72 @@
 //
 
 #import "YPTabBar.h"
-#import "YPTabItem.h"
+
 @interface YPTabBar ()
 {
 }
+
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong, readwrite) UIImageView *itemSelectedBgImageView;
+@property (nonatomic, assign) UIEdgeInsets itemSelectedBgInsets;
 @end
 @implementation YPTabBar
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
-        _selectedItemIndex = -1;
+        [self awakeFromNib];
     }
     return self;
 }
+
+- (void)awakeFromNib {
+    _selectedItemIndex = -1;
+    _itemTitleNormalColor = [UIColor whiteColor];
+    _itemTitleSelectedColor = [UIColor blackColor];
+    _itemTitleFont = [UIFont systemFontOfSize:10];
+    self.itemSelectedBgImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    [self insertSubview:_itemSelectedBgImageView atIndex:0];
+}
+
+- (void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    [self updateItemsFrame];
+}
+
+- (void)setItems:(NSArray *)items {
+    for (YPTabItem *item in _items) {
+        [item removeFromSuperview];
+    }
+    _items = items;
+    for (YPTabItem *item in _items) {
+        [item setTitleColor:_itemTitleNormalColor forState:UIControlStateNormal];
+        [item setTitleColor:_itemTitleSelectedColor forState:UIControlStateSelected];
+        item.titleLabel.font = _itemTitleFont;
+        [self addSubview:item];
+    }
+    [self updateItemsFrame];
+}
+
+- (void)setTitles:(NSArray *)titles {
+    for (YPTabItem *item in _items) {
+        [item removeFromSuperview];
+    }
+    NSMutableArray *items = [NSMutableArray array];
+    for (NSString *title in titles) {
+        YPTabItem *item = [YPTabItem instance];
+        [item setTitle:title forState:UIControlStateNormal];
+        [item setTitleColor:_itemTitleNormalColor forState:UIControlStateNormal];
+        [item setTitleColor:_itemTitleSelectedColor forState:UIControlStateSelected];
+        item.titleLabel.font = _itemTitleFont;
+        [items addObject:item];
+        [self addSubview:item];
+    }
+    self.items = items;
+}
+
+
+
 - (void)setSelectedItemIndex:(NSInteger)selectedItemIndex
 {
     if (_itemSelectedBgImageView) {
@@ -42,28 +94,19 @@
             }
         }
     }
-    if (_delegate && [_delegate respondsToSelector:@selector(yp_tabBar:didSelectItemAtIndex:)]) {
-        [_delegate yp_tabBar:self didSelectItemAtIndex:selectedItemIndex];
+    if (_delegate && [_delegate respondsToSelector:@selector(yp_tabBar:didSelectedItemAtIndex:)]) {
+        [_delegate yp_tabBar:self didSelectedItemAtIndex:selectedItemIndex];
     }
     _selectedItemIndex = selectedItemIndex;
 }
 
-- (void)setTitles:(NSArray *)titles {
-    NSMutableArray *items = [NSMutableArray array];
-    for (NSString *title in titles) {
-        YPTabItem *item = [YPTabItem instance];
-        [item setTitle:title forState:UIControlStateNormal];
-        [items addObject:item];
-    }
-    self.items = items;
-}
 
 - (void)changeSelectedBgWithIndex:(NSInteger)index {
-    CGRect frame = _itemSelectedBgImageView.frame;
     YPTabItem *item = _items[index];
-    frame.origin.x = item.frame.origin.x;
-    frame.size.width = item.frame.size.width;
-    _itemSelectedBgImageView.frame = frame;
+    _itemSelectedBgImageView.frame = CGRectMake(item.frame.origin.x + self.itemSelectedBgInsets.left,
+                                                item.frame.origin.y + self.itemSelectedBgInsets.top,
+                                                item.frame.size.width - self.itemSelectedBgInsets.left - self.itemSelectedBgInsets.right,
+                                                item.frame.size.height - self.itemSelectedBgInsets.top - self.itemSelectedBgInsets.bottom);
 }
 
 - (void)tabItemClicked:(YPTabItem *)item
@@ -80,11 +123,11 @@
     }
 }
 
-- (void)setFrame:(CGRect)frame {
-    [super setFrame:frame];
+- (void)updateItemsFrame {
     if (_items.count == 0) {
         return;
     }
+    NSLog(@"updateItemsFrame");
     float x = 0;
     float width = self.frame.size.width / _items.count;
     for (int i = 0; i < _items.count; i++) {
@@ -92,49 +135,88 @@
         item.frame = CGRectMake(x, 0, width, self.frame.size.height);
         item.index = i;
         [item addTarget:self action:@selector(tabItemClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:item];
         x += width;
     }
 }
 
-- (void)setTitleNormalColor:(UIColor *)titleNormalColor
+- (void)setItemTitleNormalColor:(UIColor *)itemTitleNormalColor
 {
-    _titleNormalColor = titleNormalColor;
+    _itemTitleNormalColor = itemTitleNormalColor;
     for (YPTabItem *item in _items) {
-        [item setTitleColor:_titleNormalColor forState:UIControlStateNormal];
+        [item setTitleColor:_itemTitleNormalColor forState:UIControlStateNormal];
     }
 }
 
-- (void)setTitleSelectedColor:(UIColor *)titleSelectedColor
+- (void)setItemTitleSelectedColor:(UIColor *)itemTitleSelectedColor
 {
-    _titleSelectedColor = titleSelectedColor;
+    _itemTitleSelectedColor = itemTitleSelectedColor;
     for (YPTabItem *item in _items) {
-        [item setTitleColor:_titleSelectedColor forState:UIControlStateSelected];
+        [item setTitleColor:_itemTitleSelectedColor forState:UIControlStateSelected];
     }
 }
 
-- (void)setTitleFont:(UIFont *)titleFont
+- (void)setItemTitleFont:(UIFont *)itemTitleFont
 {
-    _titleFont = titleFont;
+    _itemTitleFont = itemTitleFont;
     for (YPTabItem *item in _items) {
-        item.titleLabel.font = titleFont;
+        item.titleLabel.font = itemTitleFont;
     }
 }
 
-- (void)setItemImageAndTitleCenterWithSpacing:(int)spacing
-                                 marginTop:(float)marginTop
-                                 imageSize:(CGSize)imageSize
-{
+- (void)setBadgeBackgroundColor:(UIColor *)badgeBackgroundColor {
+    _badgeBackgroundColor = badgeBackgroundColor;
     for (YPTabItem *item in _items) {
-        [item setImageAndTitleCenterWithSpacing:spacing marginTop:marginTop imageSize:imageSize];
+        item.badgeBackgroundColor = badgeBackgroundColor;
     }
 }
 
-- (void)setItemSelectedBgEnabledWithY:(float)y height:(float)height switchAnimated:(BOOL)animated{
-    if (_itemSelectedBgImageView == nil) {
-        self.itemSelectedBgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, y, 0, height)];
-        [self insertSubview:_itemSelectedBgImageView atIndex:0];
+- (void)setBadgeBackgroundImage:(UIImage *)badgeBackgroundImage {
+    _badgeBackgroundImage = badgeBackgroundImage;
+    for (YPTabItem *item in _items) {
+        item.badgeBackgroundImage = badgeBackgroundImage;
     }
+}
+
+- (void)setBadgeTitleColor:(UIColor *)badgeTitleColor {
+    _badgeTitleColor = badgeTitleColor;
+    for (YPTabItem *item in _items) {
+        item.badgeTitleColor = badgeTitleColor;
+    }
+}
+
+- (void)setBadgeTitleFont:(UIFont *)badgeTitleFont {
+    _badgeTitleFont = badgeTitleFont;
+    for (YPTabItem *item in _items) {
+        item.badgeTitleFont = badgeTitleFont;
+    }
+}
+
+
+- (void)setBadgeMarginTop:(CGFloat)marginTop
+              marginRight:(CGFloat)marginRight
+                   height:(CGFloat)height
+                 forStyle:(YPTabItemBadgeStyle)badgeStyle {
+    for (YPTabItem *item in _items) {
+        [item setBadgeMarginTop:marginTop
+                    marginRight:marginRight
+                         height:height
+                       forStyle:badgeStyle];
+    }
+}
+- (void)setItemImageAndTitleMarginTop:(float)marginTop
+                          spacing:(float)spacing {
+    [self setItemImageAndTitleMarginTop:marginTop spacing:spacing imageSize:CGSizeZero];
+}
+- (void)setItemImageAndTitleMarginTop:(float)marginTop
+                          spacing:(float)spacing
+                        imageSize:(CGSize)imageSize {
+    for (YPTabItem *item in _items) {
+        [item setImageAndTitleMarginTop:marginTop spacing:spacing imageSize:imageSize];
+    }
+}
+
+- (void)setItemSelectedBgInsets:(UIEdgeInsets)insets switchAnimated:(BOOL)animated{
+    self.itemSelectedBgInsets = insets;
     self.itemSelectedBgSwitchAnimated = animated;
 }
 
@@ -159,4 +241,6 @@
     }
     _scrollView.contentSize = CGSizeMake(_items.count * width, _scrollView.frame.size.height);
 }
+
+
 @end

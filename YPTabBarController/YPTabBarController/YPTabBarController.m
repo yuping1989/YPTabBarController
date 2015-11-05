@@ -33,6 +33,8 @@
     self.tabBar = [[YPTabBar alloc] init];
     _tabBar.delegate = self;
     [self.view addSubview:_tabBar];
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    self.tabBar.frame = CGRectMake(0, screenSize.height - 50, screenSize.width, 50);
     
     NSMutableArray *items = [NSMutableArray array];
     for (UIViewController *controller in _viewControllers) {
@@ -44,6 +46,7 @@
     }
     _tabBar.items = items;
     
+    self.contentViewFrame = CGRectMake(0, 0, screenSize.width, screenSize.height - 50);
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -111,7 +114,7 @@
     }
     _selectedIndex = selectedIndex;
 }
-- (void)yp_tabBar:(YPTabBar *)tabBar didSelectItemAtIndex:(NSInteger)index
+- (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index
 {
     if (index == _selectedIndex) {
         return;
