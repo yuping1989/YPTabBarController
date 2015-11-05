@@ -98,8 +98,8 @@ BadgeFrameMake(CGFloat top, CGFloat right, CGFloat height)
     self.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - self.imageSize.height - self.marginTop), 0, 0, - titleSize.width);
     self.titleEdgeInsets = UIEdgeInsetsMake(self.marginTop, - self.imageSize.width, - (totalHeight - titleSize.height), 0);
     NSLog(@"image size-->%@", NSStringFromCGSize(self.imageView.frame.size));
-    NSLog(@"image-->%@", NSStringFromUIEdgeInsets(self.imageEdgeInsets));
-    NSLog(@"title-->%@", NSStringFromUIEdgeInsets(self.titleEdgeInsets));
+//    NSLog(@"image-->%@", NSStringFromUIEdgeInsets(self.imageEdgeInsets));
+//    NSLog(@"title-->%@", NSStringFromUIEdgeInsets(self.titleEdgeInsets));
 }
 
 - (void)setSelected:(BOOL)selected
