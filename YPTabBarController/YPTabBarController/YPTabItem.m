@@ -83,7 +83,13 @@ BadgeFrameMake(CGFloat top, CGFloat right, CGFloat height)
     self.imageSize = imageSize;
     
     NSLog(@"set");
-//    NSLog(@"layoutSubviews-->%@", NSStringFromCGSize(self.imageView.frame.size));
+
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    //    NSLog(@"layoutSubviews-->%@", NSStringFromCGSize(self.imageView.frame.size));
     if (CGSizeEqualToSize(self.imageSize, CGSizeZero)) {
         self.imageSize = self.imageView.frame.size;
     }
@@ -91,14 +97,9 @@ BadgeFrameMake(CGFloat top, CGFloat right, CGFloat height)
     CGFloat totalHeight = (self.imageSize.height + titleSize.height + self.spacing);
     self.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - self.imageSize.height - self.marginTop), 0, 0, - titleSize.width);
     self.titleEdgeInsets = UIEdgeInsetsMake(self.marginTop, - self.imageSize.width, - (totalHeight - titleSize.height), 0);
-    NSLog(@"image size-->%@", NSStringFromCGSize(self.imageSize));
-    NSLog(@"image view size-->%@", NSStringFromCGSize(self.imageView.frame.size));
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    
-    
+    NSLog(@"image size-->%@", NSStringFromCGSize(self.imageView.frame.size));
+    NSLog(@"image-->%@", NSStringFromUIEdgeInsets(self.imageEdgeInsets));
+    NSLog(@"title-->%@", NSStringFromUIEdgeInsets(self.titleEdgeInsets));
 }
 
 - (void)setSelected:(BOOL)selected

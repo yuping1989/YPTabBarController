@@ -22,7 +22,7 @@
         controller1.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_discover_selected"];
         
         ViewController *controller2 = [[ViewController alloc] init];
-        controller2.yp_tabItemTitle = @"第二";
+        controller2.yp_tabItemTitle = @"第二二";
         controller2.yp_tabItemImage = [UIImage imageNamed:@"tab_message_normal"];
         controller2.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_message_selected"];
         
