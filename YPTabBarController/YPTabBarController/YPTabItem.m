@@ -7,6 +7,7 @@
 //
 
 #import "YPTabItem.h"
+#import "PPDragDropBadgeView.h"
 struct BadgeFrame {
     CGFloat top;
     CGFloat right;
@@ -30,7 +31,6 @@ BadgeFrameMake(CGFloat top, CGFloat right, CGFloat height)
 @property (nonatomic, assign) BadgeFrame dotBadgeFrame;
 @property (nonatomic, assign) CGFloat marginTop;
 @property (nonatomic, assign) CGFloat spacing;
-@property (nonatomic, assign) CGSize imageSize;
 @end
 @implementation YPTabItem
 
@@ -40,7 +40,7 @@ BadgeFrameMake(CGFloat top, CGFloat right, CGFloat height)
         self.adjustsImageWhenHighlighted = NO;
         self.marginTop = 5;
         self.spacing = 5;
-        self.imageSize = CGSizeZero;
+        self.contentHorizontalCenter = YES;
     }
     return self;
 }
@@ -70,36 +70,26 @@ BadgeFrameMake(CGFloat top, CGFloat right, CGFloat height)
     YPTabItem *item = [[YPTabItem alloc] init];
     return item;
 }
-- (void)setImageAndTitleMarginTop:(CGFloat)marginTop
-                          spacing:(CGFloat)spacing {
-    [self setImageAndTitleMarginTop:marginTop spacing:spacing imageSize:CGSizeZero];
-}
-- (void)setImageAndTitleMarginTop:(CGFloat)marginTop
-                          spacing:(CGFloat)spacing
-                        imageSize:(CGSize)imageSize
+- (void)setContentHorizontalCenterWithMarginTop:(CGFloat)marginTop
+                                        spacing:(CGFloat)spacing
 {
+    self.contentHorizontalCenter = YES;
     self.marginTop = marginTop;
     self.spacing = spacing;
-    self.imageSize = imageSize;
-    
-    NSLog(@"set");
-
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    
-    //    NSLog(@"layoutSubviews-->%@", NSStringFromCGSize(self.imageView.frame.size));
-    if (CGSizeEqualToSize(self.imageSize, CGSizeZero)) {
-        self.imageSize = self.imageView.frame.size;
+    NSLog(@"layoutSubviews-->%d", self.contentHorizontalCenter);
+    if ([self imageForState:UIControlStateNormal] && self.contentHorizontalCenter) {
+        NSLog(@"center");
+        CGSize titleSize = self.titleLabel.frame.size;
+        CGSize imageSize = self.imageView.frame.size;
+        titleSize = CGSizeMake(ceilf(titleSize.width), ceilf(titleSize.height));
+        CGFloat totalHeight = (imageSize.height + titleSize.height + self.spacing);
+        self.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height - self.marginTop), 0, 0, - titleSize.width);
+        self.titleEdgeInsets = UIEdgeInsetsMake(self.marginTop, - imageSize.width, - (totalHeight - titleSize.height), 0);
     }
-    CGSize titleSize = self.titleLabel.frame.size;
-    CGFloat totalHeight = (self.imageSize.height + titleSize.height + self.spacing);
-    self.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - self.imageSize.height - self.marginTop), 0, 0, - titleSize.width);
-    self.titleEdgeInsets = UIEdgeInsetsMake(self.marginTop, - self.imageSize.width, - (totalHeight - titleSize.height), 0);
-    NSLog(@"image size-->%@", NSStringFromCGSize(self.imageView.frame.size));
-//    NSLog(@"image-->%@", NSStringFromUIEdgeInsets(self.imageEdgeInsets));
-//    NSLog(@"title-->%@", NSStringFromUIEdgeInsets(self.titleEdgeInsets));
 }
 
 - (void)setSelected:(BOOL)selected

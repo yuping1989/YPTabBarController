@@ -55,12 +55,15 @@
 //    self.tabBar.itemSelectedBgScrollFollowContent = YES;
 //    [self setcontentScrollEnabled:YES animated:NO];
 //    [self.tabBar setScrollEnabledWithItemWith:100];
-    [self.tabBar setItemImageAndTitleMarginTop:5 spacing:5 imageSize:CGSizeMake(25, 25)];
+//    [self.tabBar setItemImageAndTitleMarginTop:5 spacing:5];
     
 //    self.tabBar.badgeTitleFont = [UIFont systemFontOfSize:13];
 //    self.tabBar.badgeTitleColor = [UIColor blackColor];
     [self.tabBar setBadgeMarginTop:2 marginRight:20 height:16 forStyle:YPTabItemStyleNumber];
 //    [self.tabBar setBadgeMarginTop:5 marginRight:30 height:30 forStyle:YPTabItemStyleDot];
+//    [self.tabBar setItemContentHorizontalCenterWithMarginTop:20 spacing:5];
+//    self.tabBar.itemContentHorizontalCenter = NO;
+
     UIViewController *controller1 = self.viewControllers[0];
     UIViewController *controller2 = self.viewControllers[1];
     UIViewController *controller3 = self.viewControllers[2];

@@ -32,6 +32,7 @@
     _itemTitleSelectedColor = [UIColor blackColor];
     _itemTitleFont = [UIFont systemFontOfSize:10];
     self.itemSelectedBgImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    self.itemContentHorizontalCenter = YES;
     [self insertSubview:_itemSelectedBgImageView atIndex:0];
 }
 
@@ -203,15 +204,24 @@
                        forStyle:badgeStyle];
     }
 }
-- (void)setItemImageAndTitleMarginTop:(float)marginTop
-                          spacing:(float)spacing {
-    [self setItemImageAndTitleMarginTop:marginTop spacing:spacing imageSize:CGSizeZero];
-}
-- (void)setItemImageAndTitleMarginTop:(float)marginTop
-                          spacing:(float)spacing
-                        imageSize:(CGSize)imageSize {
+
+- (void)setItemContentHorizontalCenter:(BOOL)itemContentHorizontalCenter {
+    _itemContentHorizontalCenter = itemContentHorizontalCenter;
     for (YPTabItem *item in _items) {
-        [item setImageAndTitleMarginTop:marginTop spacing:spacing imageSize:imageSize];
+        if (itemContentHorizontalCenter) {
+            [item setContentHorizontalCenterWithMarginTop:5 spacing:5];
+        } else {
+            item.contentHorizontalCenter = NO;
+        }
+    }
+}
+
+
+- (void)setItemContentHorizontalCenterWithMarginTop:(float)marginTop
+                                            spacing:(float)spacing {
+    _itemContentHorizontalCenter = YES;
+    for (YPTabItem *item in _items) {
+        [item setContentHorizontalCenterWithMarginTop:marginTop spacing:spacing];
     }
 }
 

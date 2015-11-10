@@ -35,6 +35,7 @@
 @property (nonatomic, strong) NSArray *items;
 @property (nonatomic, assign) BOOL itemSelectedBgSwitchAnimated;  // tabItem选中切换时，是否显示动画
 @property (nonatomic, assign) BOOL itemSelectedBgScrollFollowContent;  // tabItem的选中背景是否随contentView滑动而移动
+@property (nonatomic, assign) BOOL itemContentHorizontalCenter; //
 
 @property (nonatomic, assign) id<YPTabBarDelegate> delegate;
 
@@ -52,18 +53,15 @@
  */
 - (void)setItemSelectedBgInsets:(UIEdgeInsets)insets switchAnimated:(BOOL)animated;
 
+
 /**
  *  将tabItem的image和title设置为居中，并且调整其在竖直方向的位置
  *
- *  @param spacing   image和title的距离
- *  @param marginTop image与顶部的间距
- *  @param imageSize 考虑到有时候切出来的图大小不一，所以统一指定一个image的size
+ *  @param marginTop                         image与顶部的间距
+ *  @param spacing                           image和title的距离
  */
-- (void)setItemImageAndTitleMarginTop:(float)marginTop
-                          spacing:(float)spacing;
-- (void)setItemImageAndTitleMarginTop:(float)marginTop
-                          spacing:(float)spacing
-                        imageSize:(CGSize)imageSize;
+- (void)setItemContentHorizontalCenterWithMarginTop:(float)marginTop
+                                            spacing:(float)spacing;
 /**
  *  设置tabBar可以左右滑动
  *

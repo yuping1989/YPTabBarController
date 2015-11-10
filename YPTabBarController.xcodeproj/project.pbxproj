@@ -13,6 +13,10 @@
 		F03D7C1C1B7B231800EF6642 /* tab_me_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03D7C161B7B231800EF6642 /* tab_me_selected@2x.png */; };
 		F03D7C1D1B7B231800EF6642 /* tab_message_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03D7C171B7B231800EF6642 /* tab_message_normal@2x.png */; };
 		F03D7C1E1B7B231800EF6642 /* tab_message_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03D7C181B7B231800EF6642 /* tab_message_selected@2x.png */; };
+		F0D122A61BF1961B0045B827 /* PPDragDropBadgeView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F0D1229E1BF1961B0045B827 /* PPDragDropBadgeView.bundle */; };
+		F0D122A71BF1961B0045B827 /* PPDragDropBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D122A01BF1961B0045B827 /* PPDragDropBadgeView.m */; };
+		F0D122A81BF1961B0045B827 /* PRTween.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D122A31BF1961B0045B827 /* PRTween.m */; };
+		F0D122A91BF1961B0045B827 /* PRTweenTimingFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D122A51BF1961B0045B827 /* PRTweenTimingFunctions.m */; };
 		F0ECF2411B79D5EE006DF335 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF2401B79D5EE006DF335 /* main.m */; };
 		F0ECF2441B79D5EE006DF335 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF2431B79D5EE006DF335 /* AppDelegate.m */; };
 		F0ECF2471B79D5EE006DF335 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF2461B79D5EE006DF335 /* ViewController.m */; };
@@ -43,6 +47,13 @@
 		F03D7C161B7B231800EF6642 /* tab_me_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_me_selected@2x.png"; sourceTree = "<group>"; };
 		F03D7C171B7B231800EF6642 /* tab_message_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_message_normal@2x.png"; sourceTree = "<group>"; };
 		F03D7C181B7B231800EF6642 /* tab_message_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_message_selected@2x.png"; sourceTree = "<group>"; };
+		F0D1229E1BF1961B0045B827 /* PPDragDropBadgeView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PPDragDropBadgeView.bundle; sourceTree = "<group>"; };
+		F0D1229F1BF1961B0045B827 /* PPDragDropBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPDragDropBadgeView.h; sourceTree = "<group>"; };
+		F0D122A01BF1961B0045B827 /* PPDragDropBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPDragDropBadgeView.m; sourceTree = "<group>"; };
+		F0D122A21BF1961B0045B827 /* PRTween.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRTween.h; sourceTree = "<group>"; };
+		F0D122A31BF1961B0045B827 /* PRTween.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRTween.m; sourceTree = "<group>"; };
+		F0D122A41BF1961B0045B827 /* PRTweenTimingFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRTweenTimingFunctions.h; sourceTree = "<group>"; };
+		F0D122A51BF1961B0045B827 /* PRTweenTimingFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRTweenTimingFunctions.m; sourceTree = "<group>"; };
 		F0ECF23B1B79D5EE006DF335 /* YPTabBarController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YPTabBarController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0ECF23F1B79D5EE006DF335 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F0ECF2401B79D5EE006DF335 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -85,6 +96,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F0D1229D1BF1961B0045B827 /* PPDragDropBadgeView */ = {
+			isa = PBXGroup;
+			children = (
+				F0D1229E1BF1961B0045B827 /* PPDragDropBadgeView.bundle */,
+				F0D1229F1BF1961B0045B827 /* PPDragDropBadgeView.h */,
+				F0D122A01BF1961B0045B827 /* PPDragDropBadgeView.m */,
+				F0D122A11BF1961B0045B827 /* PRTween */,
+			);
+			path = PPDragDropBadgeView;
+			sourceTree = "<group>";
+		};
+		F0D122A11BF1961B0045B827 /* PRTween */ = {
+			isa = PBXGroup;
+			children = (
+				F0D122A21BF1961B0045B827 /* PRTween.h */,
+				F0D122A31BF1961B0045B827 /* PRTween.m */,
+				F0D122A41BF1961B0045B827 /* PRTweenTimingFunctions.h */,
+				F0D122A51BF1961B0045B827 /* PRTweenTimingFunctions.m */,
+			);
+			path = PRTween;
+			sourceTree = "<group>";
+		};
 		F0ECF2321B79D5EE006DF335 = {
 			isa = PBXGroup;
 			children = (
@@ -156,6 +189,7 @@
 		F0ECF2641B79D782006DF335 /* YPTabBarController */ = {
 			isa = PBXGroup;
 			children = (
+				F0D1229D1BF1961B0045B827 /* PPDragDropBadgeView */,
 				F0ECF2651B79D7BE006DF335 /* YPTabBarController.h */,
 				F0ECF2661B79D7BE006DF335 /* YPTabBarController.m */,
 				F0ECF2681B79D7CE006DF335 /* YPTabBar.h */,
@@ -252,6 +286,7 @@
 				F03D7C1E1B7B231800EF6642 /* tab_message_selected@2x.png in Resources */,
 				F03D7C1A1B7B231800EF6642 /* tab_discover_selected@2x.png in Resources */,
 				F03D7C1B1B7B231800EF6642 /* tab_me_normal@2x.png in Resources */,
+				F0D122A61BF1961B0045B827 /* PPDragDropBadgeView.bundle in Resources */,
 				F03D7C1D1B7B231800EF6642 /* tab_message_normal@2x.png in Resources */,
 				F03D7C191B7B231800EF6642 /* tab_discover_normal@2x.png in Resources */,
 			);
@@ -272,10 +307,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0ECF2671B79D7BE006DF335 /* YPTabBarController.m in Sources */,
+				F0D122A81BF1961B0045B827 /* PRTween.m in Sources */,
+				F0D122A71BF1961B0045B827 /* PPDragDropBadgeView.m in Sources */,
 				F0ECF2721B79E502006DF335 /* RootViewController.m in Sources */,
 				F0ECF26D1B79D7DA006DF335 /* YPTabItem.m in Sources */,
 				F0ECF26A1B79D7CE006DF335 /* YPTabBar.m in Sources */,
 				F0ECF2471B79D5EE006DF335 /* ViewController.m in Sources */,
+				F0D122A91BF1961B0045B827 /* PRTweenTimingFunctions.m in Sources */,
 				F0ECF2441B79D5EE006DF335 /* AppDelegate.m in Sources */,
 				F0ECF2411B79D5EE006DF335 /* main.m in Sources */,
 			);

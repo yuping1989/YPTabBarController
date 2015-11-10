@@ -49,11 +49,11 @@ typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
  */
 @property (nonatomic, strong) UIFont *badgeTitleFont;
 
-- (void)setImageAndTitleMarginTop:(CGFloat)marginTop
-                          spacing:(CGFloat)spacing;
-- (void)setImageAndTitleMarginTop:(CGFloat)marginTop
-                          spacing:(CGFloat)spacing
-                        imageSize:(CGSize)imageSize;
+
+@property (nonatomic, assign) BOOL contentHorizontalCenter;
+
+- (void)setContentHorizontalCenterWithMarginTop:(CGFloat)marginTop
+                                        spacing:(CGFloat)spacing;
 /**
  *  添加双击支持
  *
