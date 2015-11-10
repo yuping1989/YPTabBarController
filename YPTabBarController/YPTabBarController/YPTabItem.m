@@ -7,7 +7,6 @@
 //
 
 #import "YPTabItem.h"
-#import "PPDragDropBadgeView.h"
 struct BadgeFrame {
     CGFloat top;
     CGFloat right;
