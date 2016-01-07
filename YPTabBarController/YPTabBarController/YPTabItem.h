@@ -14,6 +14,7 @@ typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
 
 
 @interface YPTabItem : UIButton
+
 + (YPTabItem *)instance;
 
 /**
