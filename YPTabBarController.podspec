@@ -1,7 +1,7 @@
 #YPTabBarController.podspec
 Pod::Spec.new do |s|
 s.name         = "YPTabBarController"
-s.version      = "1.0.1"
+s.version      = "1.1"
 s.summary      = "a tab bar controller."
 
 s.homepage     = "https://github.com/yuping1989/YPTabBarController"
