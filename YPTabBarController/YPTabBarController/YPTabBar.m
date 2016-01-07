@@ -28,8 +28,8 @@
 
 - (void)awakeFromNib {
     _selectedItemIndex = -1;
-    _itemTitleNormalColor = [UIColor whiteColor];
-    _itemTitleSelectedColor = [UIColor blackColor];
+    _itemTitleColor = [UIColor whiteColor];
+    _itemSelectedTitleColor = [UIColor blackColor];
     _itemTitleFont = [UIFont systemFontOfSize:10];
     self.itemSelectedBgImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     self.itemContentHorizontalCenter = YES;
@@ -47,8 +47,8 @@
     }
     _items = items;
     for (YPTabItem *item in _items) {
-        [item setTitleColor:_itemTitleNormalColor forState:UIControlStateNormal];
-        [item setTitleColor:_itemTitleSelectedColor forState:UIControlStateSelected];
+        [item setTitleColor:_itemTitleColor forState:UIControlStateNormal];
+        [item setTitleColor:_itemSelectedTitleColor forState:UIControlStateSelected];
         item.titleLabel.font = _itemTitleFont;
         [self addSubview:item];
     }
@@ -63,8 +63,8 @@
     for (NSString *title in titles) {
         YPTabItem *item = [YPTabItem instance];
         [item setTitle:title forState:UIControlStateNormal];
-        [item setTitleColor:_itemTitleNormalColor forState:UIControlStateNormal];
-        [item setTitleColor:_itemTitleSelectedColor forState:UIControlStateSelected];
+        [item setTitleColor:_itemTitleColor forState:UIControlStateNormal];
+        [item setTitleColor:_itemSelectedTitleColor forState:UIControlStateSelected];
         item.titleLabel.font = _itemTitleFont;
         [items addObject:item];
         [self addSubview:item];
@@ -76,6 +76,9 @@
 
 - (void)setSelectedItemIndex:(NSInteger)selectedItemIndex
 {
+    if (self.items.count == 0) {
+        return;
+    }
     if (_itemSelectedBgImageView) {
         if (_itemSelectedBgSwitchAnimated && _selectedItemIndex >= 0 && !_itemSelectedBgScrollFollowContent) {
             [UIView animateWithDuration:0.25f
@@ -89,9 +92,15 @@
     for (YPTabItem *item in _items) {
         if (selectedItemIndex == item.index) {
             item.selected = YES;
+            if (self.itemSelectedTitleFont) {
+                item.titleLabel.font = self.itemSelectedTitleFont;
+            }
         } else {
             if (item.selected) {
                 item.selected = NO;
+                if (self.itemSelectedTitleFont) {
+                    item.titleLabel.font = self.itemTitleFont;
+                }
             }
         }
     }
@@ -128,7 +137,6 @@
     if (_items.count == 0) {
         return;
     }
-    NSLog(@"updateItemsFrame");
     float x = 0;
     float width = self.frame.size.width / _items.count;
     for (int i = 0; i < _items.count; i++) {
@@ -140,19 +148,19 @@
     }
 }
 
-- (void)setItemTitleNormalColor:(UIColor *)itemTitleNormalColor
+- (void)setItemTitleColor:(UIColor *)itemTitleColor
 {
-    _itemTitleNormalColor = itemTitleNormalColor;
+    _itemTitleColor = itemTitleColor;
     for (YPTabItem *item in _items) {
-        [item setTitleColor:_itemTitleNormalColor forState:UIControlStateNormal];
+        [item setTitleColor:_itemTitleColor forState:UIControlStateNormal];
     }
 }
 
-- (void)setItemTitleSelectedColor:(UIColor *)itemTitleSelectedColor
+- (void)setItemSelectedTitleColor:(UIColor *)itemSelectedTitleColor
 {
-    _itemTitleSelectedColor = itemTitleSelectedColor;
+    _itemSelectedTitleColor = itemSelectedTitleColor;
     for (YPTabItem *item in _items) {
-        [item setTitleColor:_itemTitleSelectedColor forState:UIControlStateSelected];
+        [item setTitleColor:_itemSelectedTitleColor forState:UIControlStateSelected];
     }
 }
 

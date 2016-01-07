@@ -79,9 +79,7 @@ BadgeFrameMake(CGFloat top, CGFloat right, CGFloat height)
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    NSLog(@"layoutSubviews-->%d", self.contentHorizontalCenter);
     if ([self imageForState:UIControlStateNormal] && self.contentHorizontalCenter) {
-        NSLog(@"center");
         CGSize titleSize = self.titleLabel.frame.size;
         CGSize imageSize = self.imageView.frame.size;
         titleSize = CGSizeMake(ceilf(titleSize.width), ceilf(titleSize.height));

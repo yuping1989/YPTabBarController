@@ -21,9 +21,10 @@
  */
 @property (nonatomic, strong, readonly) UIImageView *itemSelectedBgImageView;
 
-@property (nonatomic, strong) UIColor *itemTitleNormalColor; // 标题颜色
-@property (nonatomic, strong) UIColor *itemTitleSelectedColor; // 标题选中时的颜色
+@property (nonatomic, strong) UIColor *itemTitleColor; // 标题颜色
+@property (nonatomic, strong) UIColor *itemSelectedTitleColor; // 标题选中时的颜色
 @property (nonatomic, strong) UIFont *itemTitleFont; // 标题字体
+@property (nonatomic, strong) UIFont *itemSelectedTitleFont; // 标题选中时的字体
 
 @property (nonatomic, strong) UIColor *badgeBackgroundColor; // badge颜色
 @property (nonatomic, strong) UIImage *badgeBackgroundImage;

@@ -8,14 +8,12 @@
 
 #import "YPTabBarController.h"
 #import <objc/runtime.h>
-#define kYPTabItemTitle @"kYPTabItemTitle"
-#define kYPTabItemImage @"kYPTabItemImage"
-#define kYPTabItemSelectedImage @"kYPTabItemSelectedImage"
 @interface YPTabBarController () <UIScrollViewDelegate>
 {
     BOOL _didViewAppeared;
     UIScrollView *_scrollView;
 }
+@property (nonatomic, assign, readwrite) UIViewController *selectedController;
 @end
 
 @implementation YPTabBarController
@@ -28,14 +26,17 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.navigationController.navigationBar.translucent = NO;
     self.view.clipsToBounds = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     self.tabBar = [[YPTabBar alloc] init];
     _tabBar.delegate = self;
     [self.view addSubview:_tabBar];
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    self.tabBar.frame = CGRectMake(0, screenSize.height - 50, screenSize.width, 50);
     
+    self.tabBar.frame = CGRectMake(0, screenSize.height - 50, screenSize.width, 50);
+    self.contentViewFrame = CGRectMake(0, 0, screenSize.width, screenSize.height - 50);
     NSMutableArray *items = [NSMutableArray array];
     for (UIViewController *controller in _viewControllers) {
         YPTabItem *item = [YPTabItem instance];
@@ -46,7 +47,7 @@
     }
     _tabBar.items = items;
     
-    self.contentViewFrame = CGRectMake(0, 0, screenSize.width, screenSize.height - 50);
+    
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -62,12 +63,24 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)setViewControllers:(NSMutableArray *)viewControllers
+- (UIViewController *)selectedController {
+    if (self.selectedIndex >= 0) {
+        return self.viewControllers[self.selectedIndex];
+    }
+    return nil;
+}
+
+- (void)setViewControllers:(NSArray *)viewControllers
 {
     _viewControllers = viewControllers;
     [viewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [self addChildViewController:obj];
     }];
+}
+
+- (void)setContentViewFrame:(CGRect)contentViewFrame {
+    _contentViewFrame = contentViewFrame;
+    self.selectedController.view.frame = contentViewFrame;
 }
 
 - (void)setContentScrollEnabled:(BOOL)contentScrollEnabled {
@@ -83,6 +96,7 @@
             _scrollView.pagingEnabled = YES;
             _scrollView.showsHorizontalScrollIndicator = NO;
             _scrollView.showsVerticalScrollIndicator = NO;
+            _scrollView.scrollsToTop = NO;
             _scrollView.delegate = self;
         }
         [self.view addSubview:_scrollView];
@@ -91,8 +105,13 @@
 }
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex {
+    UIViewController *oldController = nil;
+    if (_selectedIndex >= 0) {
+        oldController = _viewControllers[_selectedIndex];
+    }
+    UIViewController *curController = _viewControllers[selectedIndex];
     if (_contentScrollEnabled) {
-        UIViewController *curController = _viewControllers[selectedIndex];
+
         if (curController.view.superview == nil) {
             curController.view.frame = CGRectMake(selectedIndex * _scrollView.frame.size.width,
                                                   0,
@@ -100,19 +119,26 @@
                                                   _scrollView.frame.size.height);
             [_scrollView addSubview:curController.view];
         }
+        
         [_scrollView scrollRectToVisible:curController.view.frame animated:_contentScrollAnimated];
     } else {
-        if (_selectedIndex >= 0) {
-            UIViewController *oldController = _viewControllers[_selectedIndex];
+        if (oldController) {
             [oldController.view removeFromSuperview];
         }
-        UIViewController *curController = _viewControllers[selectedIndex];
         [self.view insertSubview:curController.view belowSubview:_tabBar];
         if (!CGRectEqualToRect(curController.view.frame, _contentViewFrame)) {
             curController.view.frame = _contentViewFrame;
         }
     }
+    
+    if (oldController && [oldController.view isKindOfClass:[UIScrollView class]]) {
+        [(UIScrollView *)oldController.view setScrollsToTop:NO];
+    }
+    if ([curController.view isKindOfClass:[UIScrollView class]]) {
+        [(UIScrollView *)curController.view setScrollsToTop:YES];
+    }
     _selectedIndex = selectedIndex;
+    [[self selectedController] tabDidSelected];
 }
 - (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index
 {
@@ -144,26 +170,26 @@
 
 @implementation UIViewController (YPTabBarController)
 - (NSString *)yp_tabItemTitle {
-    return objc_getAssociatedObject(self, kYPTabItemTitle);
+    return objc_getAssociatedObject(self, _cmd);
 }
 
 - (void)setYp_tabItemTitle:(NSString *)yp_tabItemTitle {
-    objc_setAssociatedObject(self, kYPTabItemTitle, yp_tabItemTitle, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(yp_tabItemTitle), yp_tabItemTitle, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (UIImage *)yp_tabItemImage {
-    return objc_getAssociatedObject(self, kYPTabItemImage);
+    return objc_getAssociatedObject(self, _cmd);
 }
 
 - (void)setYp_tabItemImage:(UIImage *)yp_tabItemImage {
-    objc_setAssociatedObject(self, kYPTabItemImage, yp_tabItemImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(yp_tabItemImage), yp_tabItemImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 - (UIImage *)yp_tabItemSelectedImage {
-    return objc_getAssociatedObject(self, kYPTabItemSelectedImage);
+    return objc_getAssociatedObject(self, _cmd);
 }
 
 - (void)setYp_tabItemSelectedImage:(UIImage *)yp_tabItemSelectedImage {
-    objc_setAssociatedObject(self, kYPTabItemSelectedImage, yp_tabItemSelectedImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(yp_tabItemSelectedImage), yp_tabItemSelectedImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 - (YPTabItem *)yp_tabItem
 {
@@ -175,5 +201,7 @@
 {
     return (YPTabBarController *)self.parentViewController;
 }
-
+- (void)tabDidSelected {
+    
+}
 @end
