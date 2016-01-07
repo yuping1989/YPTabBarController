@@ -36,5 +36,5 @@
 @property (nonatomic, strong) UIImage *yp_tabItemSelectedImage; // tabItem的选中图像
 - (YPTabItem *)yp_tabItem;
 - (YPTabBarController *)yp_tabBarController;
-- (void)tabDidSelected;
+- (void)tabItemDidSelected;
 @end

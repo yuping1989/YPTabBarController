@@ -138,7 +138,7 @@
         [(UIScrollView *)curController.view setScrollsToTop:YES];
     }
     _selectedIndex = selectedIndex;
-    [[self selectedController] tabDidSelected];
+    [[self selectedController] tabItemDidSelected];
 }
 - (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index
 {
@@ -201,7 +201,7 @@
 {
     return (YPTabBarController *)self.parentViewController;
 }
-- (void)tabDidSelected {
+- (void)tabItemDidSelected {
     
 }
 @end
