@@ -54,7 +54,7 @@
     
 //    [self.tabBar setItemSelectedBgEnabledWithY:45 height:5 switchAnimated:YES];
 //    self.tabBar.itemSelectedBgScrollFollowContent = YES;
-//    [self setcontentScrollEnabled:YES animated:YES];
+    [self setcontentScrollEnabled:YES animated:NO];
 //    [self.tabBar setScrollEnabledWithItemWith:100];
 //    [self.tabBar setItemImageAndTitleMarginTop:5 spacing:5];
     

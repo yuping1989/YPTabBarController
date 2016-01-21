@@ -110,17 +110,22 @@
         oldController = _viewControllers[_selectedIndex];
     }
     UIViewController *curController = _viewControllers[selectedIndex];
+    BOOL isAppearFirstTime = YES;
     if (_contentScrollEnabled) {
+        [oldController viewWillDisappear:NO];
         if (curController.view.superview == nil) {
             curController.view.frame = CGRectMake(selectedIndex * _scrollView.frame.size.width,
                                                   0,
                                                   _scrollView.frame.size.width,
                                                   _scrollView.frame.size.height);
             [_scrollView addSubview:curController.view];
+        } else {
+            isAppearFirstTime = NO;
+            [curController viewWillAppear:NO];
         }
         
         [_scrollView scrollRectToVisible:curController.view.frame animated:_contentScrollAnimated];
-
+        
     } else {
         if (oldController) {
             [oldController.view removeFromSuperview];
@@ -140,6 +145,12 @@
     _selectedIndex = selectedIndex;
     [oldController tabItemDidDeselected];
     [curController tabItemDidSelected];
+    if (_contentScrollEnabled) {
+        [oldController viewDidDisappear:NO];
+        if (!isAppearFirstTime) {
+            [curController viewDidAppear:NO];
+        }
+    }
 }
 - (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index
 {
