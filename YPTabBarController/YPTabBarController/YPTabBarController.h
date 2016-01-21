@@ -37,4 +37,5 @@
 - (YPTabItem *)yp_tabItem;
 - (YPTabBarController *)yp_tabBarController;
 - (void)tabItemDidSelected;
+- (void)tabItemDidDeselected;
 @end

@@ -111,7 +111,6 @@
     }
     UIViewController *curController = _viewControllers[selectedIndex];
     if (_contentScrollEnabled) {
-
         if (curController.view.superview == nil) {
             curController.view.frame = CGRectMake(selectedIndex * _scrollView.frame.size.width,
                                                   0,
@@ -121,6 +120,7 @@
         }
         
         [_scrollView scrollRectToVisible:curController.view.frame animated:_contentScrollAnimated];
+
     } else {
         if (oldController) {
             [oldController.view removeFromSuperview];
@@ -138,7 +138,8 @@
         [(UIScrollView *)curController.view setScrollsToTop:YES];
     }
     _selectedIndex = selectedIndex;
-    [[self selectedController] tabItemDidSelected];
+    [oldController tabItemDidDeselected];
+    [curController tabItemDidSelected];
 }
 - (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index
 {
@@ -202,6 +203,10 @@
     return (YPTabBarController *)self.parentViewController;
 }
 - (void)tabItemDidSelected {
+    
+}
+
+- (void)tabItemDidDeselected {
     
 }
 @end

@@ -16,6 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     // Do any additional setup after loading the view, typically from a nib.
     UILabel *label = [[UILabel alloc] initWithFrame:self.view.bounds];
     label.text = self.yp_tabItemTitle;
@@ -35,6 +36,32 @@
 //    item1.badge = -1;
 //    [self.view addSubview:tabBar];
     
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+    [button setTitle:@"按钮" forState:UIControlStateNormal];
+    button.frame = CGRectMake(100, 100, 100, 50);
+    [button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *button1 = [UIButton buttonWithType:UIButtonTypeSystem];
+    [button1 setTitle:@"关闭" forState:UIControlStateNormal];
+    button1.frame = CGRectMake(100, 200, 100, 50);
+    [button1 addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+    [self.view addSubview:button1];
+    
+}
+- (void)buttonClicked:(UIButton *)button {
+    [self.parentViewController presentViewController:[[ViewController alloc] init] animated:YES completion:nil];
+}
+- (void)closeButtonClicked:(UIButton *)button {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)tabItemDidDeselected {
+    NSLog(@"Deselected--->%@", self.yp_tabItemTitle);
+}
+
+- (void)tabItemDidSelected {
+    NSLog(@"Selected--->%@", self.yp_tabItemTitle);
 }
 
 - (void)didReceiveMemoryWarning {
