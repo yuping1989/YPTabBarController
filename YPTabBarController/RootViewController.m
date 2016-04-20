@@ -16,35 +16,35 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
+        ViewController *controller1 = [[ViewController alloc] init];
+        controller1.yp_tabItemTitle = @"第一";
+        controller1.yp_tabItemImage = [UIImage imageNamed:@"tab_discover_normal"];
+        controller1.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_discover_selected"];
         
+        ViewController *controller2 = [[ViewController alloc] init];
+        controller2.yp_tabItemTitle = @"第二二";
+        controller2.yp_tabItemImage = [UIImage imageNamed:@"tab_message_normal"];
+        controller2.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_message_selected"];
+        
+        ViewController *controller3 = [[ViewController alloc] init];
+        controller3.yp_tabItemTitle = @"第三";
+        controller3.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
+        controller3.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
+        
+        ViewController *controller4 = [[ViewController alloc] init];
+        controller4.yp_tabItemTitle = @"第四";
+        controller4.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
+        controller4.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
+        
+        
+        self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, nil];
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    ViewController *controller1 = [[ViewController alloc] init];
-    controller1.yp_tabItemTitle = @"第一";
-    controller1.yp_tabItemImage = [UIImage imageNamed:@"tab_discover_normal"];
-    controller1.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_discover_selected"];
     
-    ViewController *controller2 = [[ViewController alloc] init];
-    controller2.yp_tabItemTitle = @"第二二";
-    controller2.yp_tabItemImage = [UIImage imageNamed:@"tab_message_normal"];
-    controller2.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_message_selected"];
-    
-    ViewController *controller3 = [[ViewController alloc] init];
-    controller3.yp_tabItemTitle = @"第三";
-    controller3.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
-    controller3.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
-    
-    ViewController *controller4 = [[ViewController alloc] init];
-    controller4.yp_tabItemTitle = @"第四";
-    controller4.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
-    controller4.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
-    
-    
-    self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, nil];
     
     
     
@@ -69,9 +69,9 @@
 //    [self.tabBar setItemContentHorizontalCenterWithMarginTop:20 spacing:5];
 //    self.tabBar.itemContentHorizontalCenter = NO;
 
-//    UIViewController *controller1 = self.viewControllers[0];
-//    UIViewController *controller2 = self.viewControllers[1];
-//    UIViewController *controller3 = self.viewControllers[2];
+    UIViewController *controller1 = self.viewControllers[0];
+    UIViewController *controller2 = self.viewControllers[1];
+    UIViewController *controller3 = self.viewControllers[2];
     controller1.yp_tabItem.badge = 8;
     controller2.yp_tabItem.badge = 88;
     controller3.yp_tabItem.badge = -8;

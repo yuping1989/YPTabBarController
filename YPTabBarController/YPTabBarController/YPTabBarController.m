@@ -36,13 +36,12 @@
 }
 
 - (void)awakeFromNib {
-    [super awakeFromNib];
-    _selectedIndex = -1;
+    _selectedControllerIndex = -1;
     self.tabBar = [[YPTabBar alloc] init];
     _tabBar.delegate = self;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    self.tabBar.frame = CGRectMake(0, screenSize.height - 50, screenSize.width, 50);
-    self.contentViewFrame = CGRectMake(0, 0, screenSize.width, screenSize.height - 50);
+    self.tabBar.frame = CGRectMake(0, screenSize.height - 50 - 64, screenSize.width, 50);
+    self.contentViewFrame = CGRectMake(0, 0, screenSize.width, screenSize.height - 50 - 64);
 }
 
 
@@ -54,37 +53,40 @@
     self.view.clipsToBounds = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     
-    if (self.tabBar && !self.tabBar.superview) {
-        [self.view addSubview:_tabBar];
-    }
+    [self.view addSubview:_tabBar];
+    
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-//    if (!_didViewAppeared) {
-//        
-//        _tabBar.selectedItemIndex = 0;
-//        _didViewAppeared = YES;
-//    }
+    if (!_didViewAppeared) {
+        
+        self.tabBar.selectedItemIndex = 0;
+        _didViewAppeared = YES;
+    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
 - (UIViewController *)selectedController {
-    if (self.selectedIndex >= 0) {
-        return self.viewControllers[self.selectedIndex];
+    if (self.selectedControllerIndex >= 0) {
+        return self.viewControllers[self.selectedControllerIndex];
     }
     return nil;
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers
 {
+    for (UIViewController *controller in self.viewControllers) {
+        [controller removeFromParentViewController];
+        [controller.view removeFromSuperview];
+        
+    }
     _viewControllers = viewControllers;
     [viewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [self addChildViewController:obj];
     }];
-    
     
     NSMutableArray *items = [NSMutableArray array];
     for (UIViewController *controller in _viewControllers) {
@@ -95,9 +97,8 @@
         [items addObject:item];
     }
     self.tabBar.items = items;
-    NSLog(@"isViewLoaded--->%d", [self isViewLoaded]);
-    if ([self isViewLoaded]) {
-        [self.view addSubview:_tabBar];
+    if (_didViewAppeared) {
+        _selectedControllerIndex = -1;
         self.tabBar.selectedItemIndex = 0;
     }
 }
@@ -128,17 +129,17 @@
     }
 }
 
-- (void)setSelectedIndex:(NSInteger)selectedIndex {
+- (void)setSelectedControllerIndex:(NSInteger)selectedControllerIndex {
     UIViewController *oldController = nil;
-    if (_selectedIndex >= 0) {
-        oldController = _viewControllers[_selectedIndex];
+    if (_selectedControllerIndex >= 0) {
+        oldController = _viewControllers[_selectedControllerIndex];
     }
-    UIViewController *curController = _viewControllers[selectedIndex];
+    UIViewController *curController = _viewControllers[selectedControllerIndex];
     BOOL isAppearFirstTime = YES;
     if (_contentScrollEnabled) {
         [oldController viewWillDisappear:NO];
         if (curController.view.superview == nil) {
-            curController.view.frame = CGRectMake(selectedIndex * _scrollView.frame.size.width,
+            curController.view.frame = CGRectMake(selectedControllerIndex * _scrollView.frame.size.width,
                                                   0,
                                                   _scrollView.frame.size.width,
                                                   _scrollView.frame.size.height);
@@ -166,7 +167,7 @@
     if ([curController.view isKindOfClass:[UIScrollView class]]) {
         [(UIScrollView *)curController.view setScrollsToTop:YES];
     }
-    _selectedIndex = selectedIndex;
+    _selectedControllerIndex = selectedControllerIndex;
     [oldController tabItemDidDeselected];
     [curController tabItemDidSelected];
     if (_contentScrollEnabled) {
@@ -178,10 +179,10 @@
 }
 - (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index
 {
-    if (index == _selectedIndex) {
+    if (index == _selectedControllerIndex) {
         return;
     }
-    self.selectedIndex = index;
+    self.selectedControllerIndex = index;
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {

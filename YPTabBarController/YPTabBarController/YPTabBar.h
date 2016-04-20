@@ -26,17 +26,17 @@
 @property (nonatomic, strong) UIFont *itemTitleFont; // 标题字体
 @property (nonatomic, strong) UIFont *itemSelectedTitleFont; // 标题选中时的字体
 
-@property (nonatomic, strong) UIColor *badgeBackgroundColor; // badge颜色
-@property (nonatomic, strong) UIImage *badgeBackgroundImage;
-@property (nonatomic, strong) UIColor *badgeTitleColor;
-@property (nonatomic, strong) UIFont *badgeTitleFont;
+@property (nonatomic, strong) UIColor *badgeBackgroundColor; // Badge背景颜色
+@property (nonatomic, strong) UIImage *badgeBackgroundImage; // Badge背景图像
+@property (nonatomic, strong) UIColor *badgeTitleColor; // Badge标题颜色
+@property (nonatomic, strong) UIFont *badgeTitleFont; // Badge标题字体
 
 @property (nonatomic, assign) NSInteger selectedItemIndex;
 
-@property (nonatomic, strong) NSArray *items;
-@property (nonatomic, assign) BOOL itemSelectedBgSwitchAnimated;  // tabItem选中切换时，是否显示动画
-@property (nonatomic, assign) BOOL itemSelectedBgScrollFollowContent;  // tabItem的选中背景是否随contentView滑动而移动
-@property (nonatomic, assign) BOOL itemContentHorizontalCenter; //
+@property (nonatomic, strong) NSArray<YPTabItem *> *items; // TabItems
+@property (nonatomic, assign) BOOL itemSelectedBgSwitchAnimated;  // TabItem选中切换时，是否显示动画
+@property (nonatomic, assign) BOOL itemSelectedBgScrollFollowContent;  // TabItem的选中背景是否随contentView滑动而移动
+@property (nonatomic, assign) BOOL itemContentHorizontalCenter; // 将Image和Title设置为水平居中
 
 @property (nonatomic, assign) id<YPTabBarDelegate> delegate;
 
@@ -70,6 +70,14 @@
  */
 - (void)setScrollEnabledWithItemWith:(float)width;
 
+/**
+ *  设置Badge的位置
+ *
+ *  @param marginTop   与TabItem顶部的距离
+ *  @param marginRight 与TabItem右侧的距离
+ *  @param height      Badge的高度，宽度为自适应
+ *  @param badgeStyle  Badge样式，分为数字样式和小圆点样式
+ */
 - (void)setBadgeMarginTop:(CGFloat)marginTop
               marginRight:(CGFloat)marginRight
                    height:(CGFloat)height

@@ -50,19 +50,29 @@ typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
  */
 @property (nonatomic, strong) UIFont *badgeTitleFont;
 
-
+/**
+ *  设置Image和Title水平居中
+ */
 @property (nonatomic, assign) BOOL contentHorizontalCenter;
 
 - (void)setContentHorizontalCenterWithMarginTop:(CGFloat)marginTop
                                         spacing:(CGFloat)spacing;
 /**
- *  添加双击支持
+ *  添加双击的target和action
  *
  *  @param target
  *  @param action
  */
 - (void)addDoubleTapTarget:(id)target action:(SEL)action;
 
+/**
+ *  设置Badge的位置
+ *
+ *  @param marginTop   与TabItem顶部的距离
+ *  @param marginRight 与TabItem右侧的距离
+ *  @param height      Badge的高度，宽度为自适应
+ *  @param badgeStyle  Badge样式，分为数字样式和小圆点样式
+ */
 - (void)setBadgeMarginTop:(CGFloat)marginTop
               marginRight:(CGFloat)marginRight
                    height:(CGFloat)height

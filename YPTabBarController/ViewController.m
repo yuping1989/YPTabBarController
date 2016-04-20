@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "YPTabBarController.h"
+#import "RootViewController.h"
 @interface ViewController ()
 
 @end
@@ -50,7 +51,32 @@
     
 }
 - (void)buttonClicked:(UIButton *)button {
-    [self.parentViewController presentViewController:[[ViewController alloc] init] animated:YES completion:nil];
+//    [self.parentViewController presentViewController:[[ViewController alloc] init] animated:YES completion:nil];
+    ViewController *controller1 = [[ViewController alloc] init];
+    controller1.yp_tabItemTitle = @"一";
+    controller1.yp_tabItemImage = [UIImage imageNamed:@"tab_discover_normal"];
+    controller1.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_discover_selected"];
+    
+    ViewController *controller2 = [[ViewController alloc] init];
+    controller2.yp_tabItemTitle = @"二";
+    controller2.yp_tabItemImage = [UIImage imageNamed:@"tab_message_normal"];
+    controller2.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_message_selected"];
+    
+    ViewController *controller3 = [[ViewController alloc] init];
+    controller3.yp_tabItemTitle = @"三";
+    controller3.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
+    controller3.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
+    
+    ViewController *controller4 = [[ViewController alloc] init];
+    controller4.yp_tabItemTitle = @"四";
+    controller4.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
+    controller4.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
+    NSLog(@"RootViewController");
+    RootViewController *tabBarController = (RootViewController *)self.parentViewController;
+    if (tabBarController) {
+        NSLog(@"RootViewController");
+    }
+    tabBarController.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, nil];
 }
 - (void)closeButtonClicked:(UIButton *)button {
     [self dismissViewControllerAnimated:YES completion:nil];
