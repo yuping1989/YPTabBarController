@@ -20,44 +20,52 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _selectedIndex = -1;
+        [self awakeFromNib];
     }
     return self;
 }
+
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        [self awakeFromNib];
+    }
+    return self;
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    _selectedIndex = -1;
+    self.tabBar = [[YPTabBar alloc] init];
+    _tabBar.delegate = self;
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    self.tabBar.frame = CGRectMake(0, screenSize.height - 50, screenSize.width, 50);
+    self.contentViewFrame = CGRectMake(0, 0, screenSize.width, screenSize.height - 50);
+}
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.navigationController.navigationBar.translucent = NO;
     self.view.clipsToBounds = YES;
     self.view.backgroundColor = [UIColor whiteColor];
-    self.tabBar = [[YPTabBar alloc] init];
-    _tabBar.delegate = self;
-    [self.view addSubview:_tabBar];
-    CGSize screenSize = [UIScreen mainScreen].bounds.size;
     
-    self.tabBar.frame = CGRectMake(0, screenSize.height - 50, screenSize.width, 50);
-    self.contentViewFrame = CGRectMake(0, 0, screenSize.width, screenSize.height - 50);
-    NSMutableArray *items = [NSMutableArray array];
-    for (UIViewController *controller in _viewControllers) {
-        YPTabItem *item = [YPTabItem instance];
-        [item setImage:controller.yp_tabItemImage forState:UIControlStateNormal];
-        [item setImage:controller.yp_tabItemSelectedImage forState:UIControlStateSelected];
-        [item setTitle:controller.yp_tabItemTitle forState:UIControlStateNormal];
-        [items addObject:item];
+    if (self.tabBar && !self.tabBar.superview) {
+        [self.view addSubview:_tabBar];
     }
-    _tabBar.items = items;
-    
-    
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if (!_didViewAppeared) {
-        
-        _tabBar.selectedItemIndex = 0;
-        _didViewAppeared = YES;
-    }
-    
+//    if (!_didViewAppeared) {
+//        
+//        _tabBar.selectedItemIndex = 0;
+//        _didViewAppeared = YES;
+//    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -76,6 +84,22 @@
     [viewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [self addChildViewController:obj];
     }];
+    
+    
+    NSMutableArray *items = [NSMutableArray array];
+    for (UIViewController *controller in _viewControllers) {
+        YPTabItem *item = [YPTabItem instance];
+        [item setImage:controller.yp_tabItemImage forState:UIControlStateNormal];
+        [item setImage:controller.yp_tabItemSelectedImage forState:UIControlStateSelected];
+        [item setTitle:controller.yp_tabItemTitle forState:UIControlStateNormal];
+        [items addObject:item];
+    }
+    self.tabBar.items = items;
+    NSLog(@"isViewLoaded--->%d", [self isViewLoaded]);
+    if ([self isViewLoaded]) {
+        [self.view addSubview:_tabBar];
+        self.tabBar.selectedItemIndex = 0;
+    }
 }
 
 - (void)setContentViewFrame:(CGRect)contentViewFrame {
