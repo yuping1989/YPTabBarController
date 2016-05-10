@@ -49,7 +49,9 @@
     for (YPTabItem *item in _items) {
         [item setTitleColor:_itemTitleColor forState:UIControlStateNormal];
         [item setTitleColor:_itemSelectedTitleColor forState:UIControlStateSelected];
-        item.titleLabel.font = _itemTitleFont;
+        if ([UIDevice currentDevice].systemVersion.integerValue >= 8) {
+            item.titleLabel.font = _itemTitleFont;
+        }
         [self addSubview:item];
     }
     [self updateItemsFrame];
@@ -65,7 +67,9 @@
         [item setTitle:title forState:UIControlStateNormal];
         [item setTitleColor:_itemTitleColor forState:UIControlStateNormal];
         [item setTitleColor:_itemSelectedTitleColor forState:UIControlStateSelected];
-        item.titleLabel.font = _itemTitleFont;
+        if ([UIDevice currentDevice].systemVersion.integerValue >= 8) {
+            item.titleLabel.font = _itemTitleFont;
+        }
         [items addObject:item];
         [self addSubview:item];
     }
