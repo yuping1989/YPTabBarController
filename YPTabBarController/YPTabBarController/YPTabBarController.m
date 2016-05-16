@@ -8,6 +8,9 @@
 
 #import "YPTabBarController.h"
 #import <objc/runtime.h>
+
+#define TAB_BAR_HEIGHT 50
+
 @interface YPTabBarController () <UIScrollViewDelegate>
 {
     BOOL _didViewAppeared;
@@ -26,8 +29,7 @@
 }
 
 
-- (instancetype)initWithCoder:(NSCoder *)coder
-{
+- (instancetype)initWithCoder:(NSCoder *)coder {
     self = [super initWithCoder:coder];
     if (self) {
         [self awakeFromNib];
@@ -38,16 +40,29 @@
 - (void)awakeFromNib {
     _selectedControllerIndex = -1;
     self.tabBar = [[YPTabBar alloc] init];
-    _tabBar.delegate = self;
-    CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    self.tabBar.frame = CGRectMake(0, screenSize.height - 50 - 64, screenSize.width, 50);
-    self.contentViewFrame = CGRectMake(0, 0, screenSize.width, screenSize.height - 50 - 64);
+    self.tabBar.delegate = self;
 }
 
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    CGFloat navigationAndStatusBarHeight = 0;
+    if (self.navigationController) {
+        navigationAndStatusBarHeight = self.navigationController.navigationBar.frame.size.height + 20;
+    }
+    
+    self.tabBar.frame = CGRectMake(0,
+                                   screenSize.height - TAB_BAR_HEIGHT - navigationAndStatusBarHeight,
+                                   screenSize.width,
+                                   TAB_BAR_HEIGHT);
+    
+    self.contentViewFrame = CGRectMake(0,
+                                       0,
+                                       screenSize.width,
+                                       screenSize.height - TAB_BAR_HEIGHT - navigationAndStatusBarHeight);
+    
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.navigationController.navigationBar.translucent = NO;
     self.view.clipsToBounds = YES;
@@ -56,8 +71,7 @@
     [self.view addSubview:_tabBar];
     
 }
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     if (!_didViewAppeared) {
         
@@ -109,12 +123,17 @@
 }
 
 - (void)setContentScrollEnabled:(BOOL)contentScrollEnabled {
-    [self setcontentScrollEnabled:contentScrollEnabled animated:YES];
+    [self setContentScrollEnabled:contentScrollEnabled switchAnimated:NO];
 }
 
-- (void)setcontentScrollEnabled:(BOOL)contentScrollEnabled animated:(BOOL)animated {
+- (void)setContentSwitchAnimated:(BOOL)contentSwitchAnimated {
+    [self setContentScrollEnabled:NO switchAnimated:contentSwitchAnimated];
+}
+
+- (void)setContentScrollEnabled:(BOOL)contentScrollEnabled switchAnimated:(BOOL)switchAnimated {
     _contentScrollEnabled = contentScrollEnabled;
-    _contentScrollAnimated = animated;
+    _contentSwitchAnimated = switchAnimated;
+    self.tabBar.itemSelectedBgScrollFollowContent = contentScrollEnabled;
     if (_contentScrollEnabled) {
         if (_scrollView == nil) {
             _scrollView = [[UIScrollView alloc] initWithFrame:_contentViewFrame];
@@ -125,7 +144,8 @@
             _scrollView.delegate = self;
         }
         [self.view addSubview:_scrollView];
-        _scrollView.contentSize = CGSizeMake(_contentViewFrame.size.width * _viewControllers.count, _contentViewFrame.size.height);
+        _scrollView.contentSize = CGSizeMake(_contentViewFrame.size.width * _viewControllers.count,
+                                             _contentViewFrame.size.height);
     }
 }
 
@@ -149,7 +169,7 @@
             [curController viewWillAppear:NO];
         }
         
-        [_scrollView scrollRectToVisible:curController.view.frame animated:_contentScrollAnimated];
+        [_scrollView scrollRectToVisible:curController.view.frame animated:_contentSwitchAnimated];
         
     } else {
         if (oldController) {
@@ -177,35 +197,96 @@
         }
     }
 }
-- (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index
-{
+- (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index {
     if (index == _selectedControllerIndex) {
         return;
     }
     self.selectedControllerIndex = index;
 }
 
+#pragma mark - UIScrollViewDelegate
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    
     NSInteger page = scrollView.contentOffset.x / scrollView.frame.size.width;
     self.tabBar.selectedItemIndex = page;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
+    NSLog(@"offset--->%f", scrollView.contentOffset.x);
     if (!_tabBar.itemSelectedBgScrollFollowContent) {
         return;
     }
-    if (scrollView.contentOffset.x >= 0 && scrollView.contentOffset.x <= scrollView.contentSize.width - scrollView.frame.size.width) {
-        CGRect frame = _tabBar.itemSelectedBgImageView.frame;
-        YPTabItem *item = _tabBar.items[_tabBar.selectedItemIndex];
-        frame.origin.x = ceilf((scrollView.contentOffset.x / scrollView.frame.size.width) * item.frame.size.width);
-        _tabBar.itemSelectedBgImageView.frame = frame;
+    CGFloat offsetX = scrollView.contentOffset.x;
+    CGFloat frameWidth = scrollView.frame.size.width;
+    if (offsetX < 0) {
+        return;
     }
+    
+    if (offsetX > scrollView.contentSize.width - frameWidth) {
+        return;
+    }
+    
+    
+    NSInteger leftIndex = offsetX / frameWidth;
+    NSInteger rightIndex = leftIndex + 1;
+    NSLog(@"left index--->%d, right index---%d", leftIndex, rightIndex);
+    YPTabItem *leftItem = self.tabBar.items[leftIndex];
+    YPTabItem *rightItem;
+    if (rightIndex < self.tabBar.items.count) {
+        rightItem = self.tabBar.items[rightIndex];
+    }
+    
+    CGRect frame = _tabBar.itemSelectedBgImageView.frame;
+    frame.origin.x = ceilf((offsetX / frameWidth) * self.tabBar.selectedItem.frame.size.width) + _tabBar.itemSelectedBgInsets.left;
+    _tabBar.itemSelectedBgImageView.frame = frame;
+    
+    
+    // 计算右边按钮偏移量
+    CGFloat rightScale = offsetX / frameWidth;
+    // 只想要 0~1
+    rightScale = rightScale - leftIndex;
+    CGFloat leftScale = 1 - rightScale;
+
+    NSLog(@"leftScale--->%f  rightScale--->%f", leftScale, rightScale);
+    
+//    CGFloat normalFontSize = self.tabBar.itemTitleFont.pointSize;
+//    CGFloat fontSizeDiff = self.tabBar.itemTitleSelectedFont.pointSize - normalFontSize;
+//    leftItem.titleLabel.font = [leftItem.titleLabel.font fontWithSize:leftScale * fontSizeDiff + normalFontSize];
+//    rightItem.titleLabel.font = [rightItem.titleLabel.font fontWithSize:rightScale * fontSizeDiff + normalFontSize];
+    
+    
+    CGFloat normalRed, normalGreen, normalBlue;
+    CGFloat selectedRed, selectedGreen, selectedBlue;
+    [self.tabBar.itemTitleColor getRed:&normalRed green:&normalGreen blue:&normalBlue alpha:nil];
+    [self.tabBar.itemTitleSelectedColor getRed:&selectedRed green:&selectedGreen blue:&selectedBlue alpha:nil];
+    
+    CGFloat redDiff = selectedRed - normalRed;
+    CGFloat greenDiff = selectedGreen - normalGreen;
+    CGFloat blueDiff = selectedBlue - normalBlue;
+    
+    leftItem.titleLabel.textColor = [UIColor colorWithRed:leftScale * redDiff + normalRed
+                                                    green:leftScale * greenDiff + normalRed
+                                                     blue:leftScale * blueDiff + normalRed
+                                                    alpha:1];
+    rightItem.titleLabel.textColor = [UIColor colorWithRed:rightScale * redDiff + normalRed
+                                                     green:rightScale * greenDiff + normalRed
+                                                      blue:rightScale * blueDiff + normalRed
+                                                     alpha:1];
+//    [leftItem setTitleColor:[UIColor colorWithRed:leftScale * redDiff + normalRed
+//                                            green:leftScale * greenDiff + normalRed
+//                                             blue:leftScale * blueDiff + normalRed
+//                                            alpha:1]
+//                   forState:UIControlStateNormal];
+//    [rightItem setTitleColor:[UIColor colorWithRed:rightScale * redDiff + normalRed
+//                                             green:rightScale * greenDiff + normalRed
+//                                              blue:rightScale * blueDiff + normalRed
+//                                             alpha:1]
+//                    forState:UIControlStateNormal];
 }
 @end
 
 @implementation UIViewController (YPTabBarController)
+
 - (NSString *)yp_tabItemTitle {
     return objc_getAssociatedObject(self, _cmd);
 }
@@ -221,6 +302,7 @@
 - (void)setYp_tabItemImage:(UIImage *)yp_tabItemImage {
     objc_setAssociatedObject(self, @selector(yp_tabItemImage), yp_tabItemImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
+
 - (UIImage *)yp_tabItemSelectedImage {
     return objc_getAssociatedObject(self, _cmd);
 }
@@ -228,16 +310,17 @@
 - (void)setYp_tabItemSelectedImage:(UIImage *)yp_tabItemSelectedImage {
     objc_setAssociatedObject(self, @selector(yp_tabItemSelectedImage), yp_tabItemSelectedImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
-- (YPTabItem *)yp_tabItem
-{
+
+- (YPTabItem *)yp_tabItem {
     YPTabBar *tabBar = self.yp_tabBarController.tabBar;
     NSInteger index = [self.yp_tabBarController.viewControllers indexOfObject:self];
     return tabBar.items[index];
 }
-- (YPTabBarController *)yp_tabBarController
-{
+
+- (YPTabBarController *)yp_tabBarController {
     return (YPTabBarController *)self.parentViewController;
 }
+
 - (void)tabItemDidSelected {
     
 }

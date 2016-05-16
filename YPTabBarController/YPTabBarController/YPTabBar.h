@@ -22,9 +22,9 @@
 @property (nonatomic, strong, readonly) UIImageView *itemSelectedBgImageView;
 
 @property (nonatomic, strong) UIColor *itemTitleColor; // 标题颜色
-@property (nonatomic, strong) UIColor *itemSelectedTitleColor; // 标题选中时的颜色
+@property (nonatomic, strong) UIColor *itemTitleSelectedColor; // 标题选中时的颜色
 @property (nonatomic, strong) UIFont *itemTitleFont; // 标题字体
-@property (nonatomic, strong) UIFont *itemSelectedTitleFont; // 标题选中时的字体
+@property (nonatomic, strong) UIFont *itemTitleSelectedFont; // 标题选中时的字体
 
 @property (nonatomic, strong) UIColor *badgeBackgroundColor; // Badge背景颜色
 @property (nonatomic, strong) UIImage *badgeBackgroundImage; // Badge背景图像
@@ -36,14 +36,17 @@
 @property (nonatomic, strong) NSArray<YPTabItem *> *items; // TabItems
 @property (nonatomic, assign) BOOL itemSelectedBgSwitchAnimated;  // TabItem选中切换时，是否显示动画
 @property (nonatomic, assign) BOOL itemSelectedBgScrollFollowContent;  // TabItem的选中背景是否随contentView滑动而移动
+@property (nonatomic, assign) UIEdgeInsets itemSelectedBgInsets;
 @property (nonatomic, assign) BOOL itemContentHorizontalCenter; // 将Image和Title设置为水平居中
 
 @property (nonatomic, assign) id<YPTabBarDelegate> delegate;
 
+- (YPTabItem *)selectedItem;
+
 /**
  *  根据titles创建item
  */
-- (void)setTitles:(NSArray *)titles;
+- (void)setTitles:(NSArray <NSString *> *)titles;
 
 /**
  *  设置tabItem的选中背景，这个背景可以是一个横条

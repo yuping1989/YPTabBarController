@@ -17,7 +17,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
     // Do any additional setup after loading the view, typically from a nib.
     UILabel *label = [[UILabel alloc] initWithFrame:self.view.bounds];
     label.text = self.yp_tabItemTitle;
@@ -46,9 +45,9 @@
     [button1 setTitle:@"关闭" forState:UIControlStateNormal];
     button1.frame = CGRectMake(100, 200, 100, 50);
     [button1 addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
-    [self.view addSubview:button1];
-    
+//    [self.view addSubview:button];
+//    [self.view addSubview:button1];
+    NSLog(@"viewDidLoad--->%@", self.yp_tabItemTitle);
 }
 - (void)buttonClicked:(UIButton *)button {
 //    [self.parentViewController presentViewController:[[ViewController alloc] init] animated:YES completion:nil];
@@ -116,4 +115,29 @@
 - (void)doubleClicked {
     NSLog(@"doubleClicked");
 }
+
+- (IBAction)switchValueChanged:(UISwitch *)mSwitch {
+    RootViewController *rootController = (RootViewController *)self.parentViewController;
+    switch (mSwitch.tag) {
+        case 1:
+            [rootController setContentScrollEnabled:YES switchAnimated:NO];
+            break;
+        case 2:
+//            [rootController setContentScrollEnabled:<#(BOOL)#> switchAnimated:<#(BOOL)#>];
+            break;
+        case 3:
+            
+            break;
+        case 4:
+            
+            break;
+        case 5:
+            
+            break;
+            
+        default:
+            break;
+    }
+}
+
 @end

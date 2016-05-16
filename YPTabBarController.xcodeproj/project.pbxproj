@@ -13,6 +13,8 @@
 		F03D7C1C1B7B231800EF6642 /* tab_me_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03D7C161B7B231800EF6642 /* tab_me_selected@2x.png */; };
 		F03D7C1D1B7B231800EF6642 /* tab_message_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03D7C171B7B231800EF6642 /* tab_message_normal@2x.png */; };
 		F03D7C1E1B7B231800EF6642 /* tab_message_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03D7C181B7B231800EF6642 /* tab_message_selected@2x.png */; };
+		F0D3FFB31CE5C28000888D6D /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0D3FFB21CE5C28000888D6D /* ViewController.xib */; };
+		F0D3FFB61CE5C8E100888D6D /* ScrollTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D3FFB51CE5C8E100888D6D /* ScrollTabBarController.m */; };
 		F0ECF2411B79D5EE006DF335 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF2401B79D5EE006DF335 /* main.m */; };
 		F0ECF2441B79D5EE006DF335 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF2431B79D5EE006DF335 /* AppDelegate.m */; };
 		F0ECF2471B79D5EE006DF335 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF2461B79D5EE006DF335 /* ViewController.m */; };
@@ -43,6 +45,9 @@
 		F03D7C161B7B231800EF6642 /* tab_me_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_me_selected@2x.png"; sourceTree = "<group>"; };
 		F03D7C171B7B231800EF6642 /* tab_message_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_message_normal@2x.png"; sourceTree = "<group>"; };
 		F03D7C181B7B231800EF6642 /* tab_message_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_message_selected@2x.png"; sourceTree = "<group>"; };
+		F0D3FFB21CE5C28000888D6D /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
+		F0D3FFB41CE5C8E100888D6D /* ScrollTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollTabBarController.h; sourceTree = "<group>"; };
+		F0D3FFB51CE5C8E100888D6D /* ScrollTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollTabBarController.m; sourceTree = "<group>"; };
 		F0ECF23B1B79D5EE006DF335 /* YPTabBarController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YPTabBarController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0ECF23F1B79D5EE006DF335 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F0ECF2401B79D5EE006DF335 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -112,8 +117,11 @@
 				F0ECF2431B79D5EE006DF335 /* AppDelegate.m */,
 				F0ECF2451B79D5EE006DF335 /* ViewController.h */,
 				F0ECF2461B79D5EE006DF335 /* ViewController.m */,
+				F0D3FFB21CE5C28000888D6D /* ViewController.xib */,
 				F0ECF2701B79E502006DF335 /* RootViewController.h */,
 				F0ECF2711B79E502006DF335 /* RootViewController.m */,
+				F0D3FFB41CE5C8E100888D6D /* ScrollTabBarController.h */,
+				F0D3FFB51CE5C8E100888D6D /* ScrollTabBarController.m */,
 				F03D7C151B7B231800EF6642 /* tab_me_normal@2x.png */,
 				F03D7C161B7B231800EF6642 /* tab_me_selected@2x.png */,
 				F03D7C131B7B231800EF6642 /* tab_discover_normal@2x.png */,
@@ -247,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0ECF24F1B79D5EE006DF335 /* LaunchScreen.xib in Resources */,
+				F0D3FFB31CE5C28000888D6D /* ViewController.xib in Resources */,
 				F03D7C1C1B7B231800EF6642 /* tab_me_selected@2x.png in Resources */,
 				F0ECF24C1B79D5EE006DF335 /* Images.xcassets in Resources */,
 				F03D7C1E1B7B231800EF6642 /* tab_message_selected@2x.png in Resources */,
@@ -273,6 +282,7 @@
 			files = (
 				F0ECF2671B79D7BE006DF335 /* YPTabBarController.m in Sources */,
 				F0ECF2721B79E502006DF335 /* RootViewController.m in Sources */,
+				F0D3FFB61CE5C8E100888D6D /* ScrollTabBarController.m in Sources */,
 				F0ECF26D1B79D7DA006DF335 /* YPTabItem.m in Sources */,
 				F0ECF26A1B79D7CE006DF335 /* YPTabBar.m in Sources */,
 				F0ECF2471B79D5EE006DF335 /* ViewController.m in Sources */,

@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong, readwrite) UIImageView *itemSelectedBgImageView;
-@property (nonatomic, assign) UIEdgeInsets itemSelectedBgInsets;
+
 @end
 @implementation YPTabBar
 - (instancetype)initWithFrame:(CGRect)frame
@@ -29,7 +29,7 @@
 - (void)awakeFromNib {
     _selectedItemIndex = -1;
     _itemTitleColor = [UIColor whiteColor];
-    _itemSelectedTitleColor = [UIColor blackColor];
+    _itemTitleSelectedColor = [UIColor blackColor];
     _itemTitleFont = [UIFont systemFontOfSize:10];
     self.itemSelectedBgImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     self.itemContentHorizontalCenter = YES;
@@ -48,7 +48,7 @@
     _items = items;
     for (YPTabItem *item in _items) {
         [item setTitleColor:_itemTitleColor forState:UIControlStateNormal];
-        [item setTitleColor:_itemSelectedTitleColor forState:UIControlStateSelected];
+        [item setTitleColor:_itemTitleSelectedColor forState:UIControlStateSelected];
         if ([UIDevice currentDevice].systemVersion.integerValue >= 8) {
             item.titleLabel.font = _itemTitleFont;
         }
@@ -58,20 +58,11 @@
 }
 
 - (void)setTitles:(NSArray *)titles {
-    for (YPTabItem *item in _items) {
-        [item removeFromSuperview];
-    }
     NSMutableArray *items = [NSMutableArray array];
     for (NSString *title in titles) {
         YPTabItem *item = [YPTabItem instance];
         [item setTitle:title forState:UIControlStateNormal];
-        [item setTitleColor:_itemTitleColor forState:UIControlStateNormal];
-        [item setTitleColor:_itemSelectedTitleColor forState:UIControlStateSelected];
-        if ([UIDevice currentDevice].systemVersion.integerValue >= 8) {
-            item.titleLabel.font = _itemTitleFont;
-        }
         [items addObject:item];
-        [self addSubview:item];
     }
     self.items = items;
 }
@@ -96,13 +87,13 @@
     for (YPTabItem *item in _items) {
         if (selectedItemIndex == item.index) {
             item.selected = YES;
-            if (self.itemSelectedTitleFont) {
-                item.titleLabel.font = self.itemSelectedTitleFont;
+            if (self.itemTitleSelectedFont) {
+                item.titleLabel.font = self.itemTitleSelectedFont;
             }
         } else {
             if (item.selected) {
                 item.selected = NO;
-                if (self.itemSelectedTitleFont) {
+                if (self.itemTitleSelectedFont) {
                     item.titleLabel.font = self.itemTitleFont;
                 }
             }
@@ -112,6 +103,13 @@
         [_delegate yp_tabBar:self didSelectedItemAtIndex:selectedItemIndex];
     }
     _selectedItemIndex = selectedItemIndex;
+}
+
+- (YPTabItem *)selectedItem {
+    if (self.selectedItemIndex < 0) {
+        return nil;
+    }
+    return self.items[self.selectedItemIndex];
 }
 
 
@@ -160,11 +158,11 @@
     }
 }
 
-- (void)setItemSelectedTitleColor:(UIColor *)itemSelectedTitleColor
+- (void)setItemTitleSelectedColor:(UIColor *)itemTitleSelectedColor
 {
-    _itemSelectedTitleColor = itemSelectedTitleColor;
+    _itemTitleSelectedColor = itemTitleSelectedColor;
     for (YPTabItem *item in _items) {
-        [item setTitleColor:_itemSelectedTitleColor forState:UIControlStateSelected];
+        [item setTitleColor:_itemTitleSelectedColor forState:UIControlStateSelected];
     }
 }
 
@@ -246,22 +244,22 @@
     for (UIView *view in self.subviews) {
         [view removeFromSuperview];
     }
-    if (_scrollView == nil) {
+    if (self.scrollView == nil) {
         self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-        _scrollView.showsHorizontalScrollIndicator = NO;
-        _scrollView.showsVerticalScrollIndicator = NO;
+        self.scrollView.showsHorizontalScrollIndicator = NO;
+        self.scrollView.showsVerticalScrollIndicator = NO;
     }
-    [self addSubview:_scrollView];
+    [self addSubview:self.scrollView];
     float x = 0;
     for (int i = 0; i < _items.count; i++) {
         YPTabItem *item = _items[i];
         item.frame = CGRectMake(x, 0, width, self.frame.size.height);
         item.index = i;
         [item addTarget:self action:@selector(tabItemClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [_scrollView addSubview:item];
+        [self.scrollView addSubview:item];
         x += width;
     }
-    _scrollView.contentSize = CGSizeMake(_items.count * width, _scrollView.frame.size.height);
+    self.scrollView.contentSize = CGSizeMake(_items.count * width, self.scrollView.frame.size.height);
 }
 
 
