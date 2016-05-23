@@ -7,41 +7,185 @@
 //
 
 #import "YPTabItem.h"
-struct BadgeFrame {
-    CGFloat top;
-    CGFloat right;
-    CGFloat height;
-};
-typedef struct BadgeFrame BadgeFrame;
-CG_INLINE BadgeFrame
-BadgeFrameMake(CGFloat top, CGFloat right, CGFloat height)
-{
-    BadgeFrame frame;
-    frame.top = top;
-    frame.right = right;
-    frame.height = height;
-    return frame;
-}
 
 @interface YPTabItem ()
+
 @property (nonatomic, strong) UIButton *badgeButton;
 @property (nonatomic, strong) UIView *doubleTapView;
-@property (nonatomic, assign) BadgeFrame numberBadgeFrame;
-@property (nonatomic, assign) BadgeFrame dotBadgeFrame;
-@property (nonatomic, assign) CGFloat marginTop;
+@property (nonatomic, assign) YPTabItemBadgeFrame numberBadgeFrame;
+@property (nonatomic, assign) YPTabItemBadgeFrame dotBadgeFrame;
+@property (nonatomic, assign) CGFloat verticalOffset;
 @property (nonatomic, assign) CGFloat spacing;
 @end
+
 @implementation YPTabItem
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.adjustsImageWhenHighlighted = NO;
-        self.marginTop = 5;
-        self.spacing = 5;
-        self.contentHorizontalCenter = YES;
+        [self awakeFromNib];
     }
     return self;
+}
+
+- (void)awakeFromNib {
+    self.badgeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.badgeButton.userInteractionEnabled = NO;
+    self.badgeButton.clipsToBounds = YES;
+    [self addSubview:self.badgeButton];
+    
+    self.badge = 0;
+//    _verticalOffset = 5;
+//    _spacing = 5;
+//    _contentHorizontalCenter = YES;
+//    self.badgeTitleColor = [UIColor whiteColor];
+//    self.badgeTitleFont = [UIFont systemFontOfSize:13];
+//    self.badgeBackgroundColor = BADGE_BG_COLOR_DEFAULT;
+//    self.numberBadgeFrame = YPTabItemBadgeFrameMake(2, 20, 16);
+//    self.dotBadgeFrame = YPTabItemBadgeFrameMake(5, 25, 10);
+}
+
+- (void)setHighlighted:(BOOL)highlighted {
+    
+}
+
+- (void)setContentHorizontalCenterWithVerticalOffset:(CGFloat)verticalOffset
+                                             spacing:(CGFloat)spacing {
+    self.contentHorizontalCenter = YES;
+    self.verticalOffset = verticalOffset;
+    self.spacing = spacing;
+    if (self.superview) {
+        [self layoutSubviews];
+    }
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    if ([self imageForState:UIControlStateNormal] && self.contentHorizontalCenter) {
+        CGSize titleSize = self.titleLabel.frame.size;
+        CGSize imageSize = self.imageView.frame.size;
+        titleSize = CGSizeMake(ceilf(titleSize.width), ceilf(titleSize.height));
+        CGFloat totalHeight = (imageSize.height + titleSize.height + self.spacing);
+        self.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height - self.verticalOffset), 0, 0, - titleSize.width);
+        self.titleEdgeInsets = UIEdgeInsetsMake(self.verticalOffset, - imageSize.width, - (totalHeight - titleSize.height), 0);
+    }
+}
+
+- (void)setSelected:(BOOL)selected {
+    [super setSelected:selected];
+    if (self.doubleTapView) {
+        self.doubleTapView.hidden = !selected;
+    }
+}
+- (void)addDoubleTapTarget:(id)target action:(SEL)action {
+    if (!self.doubleTapView) {
+        self.doubleTapView = [[UIView alloc] initWithFrame:self.bounds];
+        [self addSubview:self.doubleTapView];
+    }
+
+    UITapGestureRecognizer *doubleRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:target action:action];
+    doubleRecognizer.numberOfTapsRequired = 2;
+    [self.doubleTapView addGestureRecognizer:doubleRecognizer];
+}
+
+- (void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    _frameWithOutTransform = frame;
+    if (self.doubleTapView) {
+        self.doubleTapView.frame = self.bounds;
+    }
+}
+
+#pragma mark - Title and Image
+
+- (void)setTitle:(NSString *)title {
+    _title = title;
+    [self setTitle:title forState:UIControlStateNormal];
+}
+
+- (void)setTitleColor:(UIColor *)titleColor {
+    _titleColor = titleColor;
+    [self setTitleColor:titleColor forState:UIControlStateNormal];
+}
+
+- (void)setTitleSelectedColor:(UIColor *)titleSelectedColor {
+    _titleSelectedColor = titleSelectedColor;
+    [self setTitleColor:titleSelectedColor forState:UIControlStateSelected];
+}
+
+- (void)setTitleFont:(UIFont *)titleFont {
+    _titleFont = titleFont;
+    if ([UIDevice currentDevice].systemVersion.integerValue >= 8) {
+        self.titleLabel.font = titleFont;
+    }
+}
+
+- (void)setImage:(UIImage *)image {
+    _image = image;
+    [self setImage:image forState:UIControlStateNormal];
+}
+
+- (void)setSelectedImage:(UIImage *)selectedImage {
+    _selectedImage = selectedImage;
+    [self setImage:selectedImage forState:UIControlStateSelected];
+}
+
+
+#pragma mark - Badge
+
+- (void)setBadge:(NSInteger)badge {
+    _badge = badge;
+    
+    if (_badge < 0) {
+        [self.badgeButton setTitle:nil forState:UIControlStateNormal];
+        self.badgeButton.frame = CGRectMake(self.frame.size.width - self.dotBadgeFrame.right - self.dotBadgeFrame.height,
+                                        self.dotBadgeFrame.top,
+                                        self.dotBadgeFrame.height,
+                                        self.dotBadgeFrame.height);
+        self.badgeButton.layer.cornerRadius = self.badgeButton.frame.size.height / 2;
+        self.badgeButton.hidden = NO;
+    } else if (badge == 0) {
+        self.badgeButton.hidden = YES;
+    } else {
+        
+        NSString *badgeStr = @(badge).stringValue;
+        if (badge > 99) {
+            badgeStr = @"99+";
+        }
+        
+        CGSize size = [badgeStr boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
+                                                  options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                               attributes:@{NSFontAttributeName : self.badgeButton.titleLabel.font}
+                                                  context:nil].size;
+        CGFloat height = MAX(ceilf(size.height) + 2, self.numberBadgeFrame.height);
+        CGFloat width = MAX(ceilf(size.width) + 8, height);
+        self.badgeButton.frame = CGRectMake(self.frame.size.width - width - self.numberBadgeFrame.right,
+                                        self.numberBadgeFrame.top,
+                                        width,
+                                        height);
+        self.badgeButton.layer.cornerRadius = self.badgeButton.frame.size.height / 2.0f;
+        [self.badgeButton setTitle:badgeStr forState:UIControlStateNormal];
+        self.badgeButton.hidden = NO;
+    }
+}
+
+- (void)setBadgeMarginTop:(CGFloat)marginTop
+              marginRight:(CGFloat)marginRight
+                   height:(CGFloat)height
+                 forStyle:(YPTabItemBadgeStyle)badgeStyle {
+    if (badgeStyle == YPTabItemBadgeStyleNumber) {
+        self.numberBadgeFrame = YPTabItemBadgeFrameMake(marginTop, marginRight, height);
+        self.badgeButton.frame = CGRectMake(self.frame.size.width - self.badgeButton.frame.size.width - self.numberBadgeFrame.right,
+                                            self.numberBadgeFrame.top,
+                                            self.badgeButton.frame.size.width,
+                                            self.numberBadgeFrame.height);
+    } else if (badgeStyle == YPTabItemBadgeStyleDot) {
+        self.dotBadgeFrame = YPTabItemBadgeFrameMake(marginTop, marginRight, height);
+        self.badgeButton.frame = CGRectMake(self.frame.size.width - self.dotBadgeFrame.right - self.dotBadgeFrame.height,
+                                            self.dotBadgeFrame.top,
+                                            self.dotBadgeFrame.height,
+                                            self.dotBadgeFrame.height);
+    }
 }
 
 - (void)setBadgeBackgroundColor:(UIColor *)badgeBackgroundColor {
@@ -62,134 +206,5 @@ BadgeFrameMake(CGFloat top, CGFloat right, CGFloat height)
 - (void)setBadgeTitleFont:(UIFont *)badgeTitleFont {
     _badgeTitleFont = badgeTitleFont;
     self.badgeButton.titleLabel.font = badgeTitleFont;
-}
-
-+ (YPTabItem *)instance
-{
-    YPTabItem *item = [[YPTabItem alloc] init];
-    return item;
-}
-- (void)setContentHorizontalCenterWithMarginTop:(CGFloat)marginTop
-                                        spacing:(CGFloat)spacing
-{
-    self.contentHorizontalCenter = YES;
-    self.marginTop = marginTop;
-    self.spacing = spacing;
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    if ([self imageForState:UIControlStateNormal] && self.contentHorizontalCenter) {
-        CGSize titleSize = self.titleLabel.frame.size;
-        CGSize imageSize = self.imageView.frame.size;
-        titleSize = CGSizeMake(ceilf(titleSize.width), ceilf(titleSize.height));
-        CGFloat totalHeight = (imageSize.height + titleSize.height + self.spacing);
-        self.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height - self.marginTop), 0, 0, - titleSize.width);
-        self.titleEdgeInsets = UIEdgeInsetsMake(self.marginTop, - imageSize.width, - (totalHeight - titleSize.height), 0);
-    }
-}
-
-- (void)setSelected:(BOOL)selected
-{
-    [super setSelected:selected];
-    if (_doubleTapView) {
-        _doubleTapView.hidden = !selected;
-    }
-}
-- (void)addDoubleTapTarget:(id)target action:(SEL)action
-{
-    if (self.doubleTapView == nil) {
-        self.doubleTapView = [[UIView alloc] initWithFrame:self.bounds];
-        [self addSubview:_doubleTapView];
-    }
-
-    UITapGestureRecognizer *doubleRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:target action:action];
-    doubleRecognizer.numberOfTapsRequired = 2;
-    [_doubleTapView addGestureRecognizer:doubleRecognizer];
-}
-
-- (void)setFrame:(CGRect)frame
-{
-    [super setFrame:frame];
-    if (_doubleTapView) {
-        _doubleTapView.frame = self.bounds;
-    }
-}
-
-- (void)setBadge:(NSInteger)badge {
-    if (_badgeButton == nil) {
-        self.badgeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.badgeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        self.badgeTitleFont = self.badgeTitleFont ? self.badgeTitleFont : [UIFont systemFontOfSize:13];
-        self.badgeBackgroundColor = self.badgeBackgroundColor ? self.badgeBackgroundColor : [UIColor colorWithRed:252 / 255.0f green:15 / 255.0f blue:29 / 255.0f alpha:1.0f];
-        self.badgeTitleColor = self.badgeTitleColor ? self.badgeTitleColor : [UIColor whiteColor];
-        self.badgeBackgroundImage = self.badgeBackgroundImage ? self.badgeBackgroundImage : nil;
-        
-        self.badgeButton.contentMode = UIViewContentModeCenter;
-        self.badgeButton.userInteractionEnabled = NO;
-        
-        CGSize size = [@"text" boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
-                                            options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                         attributes:@{NSFontAttributeName : _badgeButton.titleLabel.font}
-                                            context:nil].size;
-        size = CGSizeMake(ceilf(size.width), ceilf(size.height));
-        self.numberBadgeFrame = BadgeFrameMake(2, 20, size.height + 2);
-        self.dotBadgeFrame = BadgeFrameMake(5, 25, 10);
-        [self addSubview:self.badgeButton];
-    }
-    
-    
-    _badge = badge;
-
-    if (badge < 0) {
-        [_badgeButton setTitle:nil forState:UIControlStateNormal];
-        _badgeButton.frame = CGRectMake(self.frame.size.width - self.dotBadgeFrame.right - self.dotBadgeFrame.height,
-                                        self.dotBadgeFrame.top,
-                                        self.dotBadgeFrame.height,
-                                        self.dotBadgeFrame.height);
-        _badgeButton.layer.cornerRadius = _badgeButton.frame.size.height / 2;
-        _badgeButton.hidden = NO;
-    } else if (badge == 0) {
-        _badgeButton.hidden = YES;
-    } else {
-        _badgeButton.hidden = NO;
-        NSString *badgeStr = @(badge).stringValue;
-        if (badge > 99) {
-            badgeStr = @"99+";
-        }
-        
-        CGSize size = [badgeStr boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
-                                                  options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                               attributes:@{NSFontAttributeName : _badgeButton.titleLabel.font}
-                                                  context:nil].size;
-        size = CGSizeMake(ceilf(size.width), ceilf(size.height));
-        CGFloat height = MAX(size.height + 2, self.numberBadgeFrame.height);
-        CGFloat width = MAX(ceilf(size.width) + 8, height);
-        _badgeButton.frame = CGRectMake(self.frame.size.width - width - self.numberBadgeFrame.right,
-                                        self.numberBadgeFrame.top,
-                                        width,
-                                        height);
-        _badgeButton.layer.cornerRadius = _badgeButton.frame.size.height / 2.0f;
-        [_badgeButton setTitle:badgeStr forState:UIControlStateNormal];
-    }
-}
-
-- (void)setBadgeMarginTop:(CGFloat)marginTop
-              marginRight:(CGFloat)marginRight
-                   height:(CGFloat)height
-                 forStyle:(YPTabItemBadgeStyle)badgeStyle {
-    if (badgeStyle == YPTabItemStyleNumber) {
-        self.numberBadgeFrame = BadgeFrameMake(marginTop, marginRight, height);
-        _badgeButton.frame = CGRectMake(self.frame.size.width - _badgeButton.frame.size.width - self.numberBadgeFrame.right,
-                                        self.numberBadgeFrame.top,
-                                        _badgeButton.frame.size.width,
-                                        self.numberBadgeFrame.height);
-    } else if (badgeStyle == YPTabItemStyleDot) {
-        self.dotBadgeFrame = BadgeFrameMake(marginTop, marginRight, height);
-        _badgeButton.frame = CGRectMake(self.frame.size.width - self.dotBadgeFrame.right - self.dotBadgeFrame.height,
-                                        self.dotBadgeFrame.top,
-                                        self.dotBadgeFrame.height,
-                                        self.dotBadgeFrame.height);
-    }
 }
 @end

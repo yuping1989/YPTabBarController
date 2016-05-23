@@ -13,6 +13,7 @@
 		F03D7C1C1B7B231800EF6642 /* tab_me_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03D7C161B7B231800EF6642 /* tab_me_selected@2x.png */; };
 		F03D7C1D1B7B231800EF6642 /* tab_message_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03D7C171B7B231800EF6642 /* tab_message_normal@2x.png */; };
 		F03D7C1E1B7B231800EF6642 /* tab_message_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F03D7C181B7B231800EF6642 /* tab_message_selected@2x.png */; };
+		F071560C1CEEFCD4009A88A4 /* DynamicItemWidthTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = F071560B1CEEFCD4009A88A4 /* DynamicItemWidthTabController.m */; };
 		F0D3FFB31CE5C28000888D6D /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0D3FFB21CE5C28000888D6D /* ViewController.xib */; };
 		F0D3FFB61CE5C8E100888D6D /* ScrollTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D3FFB51CE5C8E100888D6D /* ScrollTabBarController.m */; };
 		F0ECF2411B79D5EE006DF335 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF2401B79D5EE006DF335 /* main.m */; };
@@ -45,6 +46,8 @@
 		F03D7C161B7B231800EF6642 /* tab_me_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_me_selected@2x.png"; sourceTree = "<group>"; };
 		F03D7C171B7B231800EF6642 /* tab_message_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_message_normal@2x.png"; sourceTree = "<group>"; };
 		F03D7C181B7B231800EF6642 /* tab_message_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_message_selected@2x.png"; sourceTree = "<group>"; };
+		F071560A1CEEFCD4009A88A4 /* DynamicItemWidthTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicItemWidthTabController.h; sourceTree = "<group>"; };
+		F071560B1CEEFCD4009A88A4 /* DynamicItemWidthTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicItemWidthTabController.m; sourceTree = "<group>"; };
 		F0D3FFB21CE5C28000888D6D /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		F0D3FFB41CE5C8E100888D6D /* ScrollTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollTabBarController.h; sourceTree = "<group>"; };
 		F0D3FFB51CE5C8E100888D6D /* ScrollTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollTabBarController.m; sourceTree = "<group>"; };
@@ -122,6 +125,8 @@
 				F0ECF2711B79E502006DF335 /* RootViewController.m */,
 				F0D3FFB41CE5C8E100888D6D /* ScrollTabBarController.h */,
 				F0D3FFB51CE5C8E100888D6D /* ScrollTabBarController.m */,
+				F071560A1CEEFCD4009A88A4 /* DynamicItemWidthTabController.h */,
+				F071560B1CEEFCD4009A88A4 /* DynamicItemWidthTabController.m */,
 				F03D7C151B7B231800EF6642 /* tab_me_normal@2x.png */,
 				F03D7C161B7B231800EF6642 /* tab_me_selected@2x.png */,
 				F03D7C131B7B231800EF6642 /* tab_discover_normal@2x.png */,
@@ -223,6 +228,7 @@
 				TargetAttributes = {
 					F0ECF23A1B79D5EE006DF335 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = U259566QKD;
 					};
 					F0ECF2531B79D5EF006DF335 = {
 						CreatedOnToolsVersion = 6.4;
@@ -288,6 +294,7 @@
 				F0ECF2471B79D5EE006DF335 /* ViewController.m in Sources */,
 				F0ECF2441B79D5EE006DF335 /* AppDelegate.m in Sources */,
 				F0ECF2411B79D5EE006DF335 /* main.m in Sources */,
+				F071560C1CEEFCD4009A88A4 /* DynamicItemWidthTabController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,10 +412,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = YPTabBarController/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -416,10 +426,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = YPTabBarController/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

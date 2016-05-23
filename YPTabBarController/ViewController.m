@@ -45,37 +45,38 @@
     [button1 setTitle:@"关闭" forState:UIControlStateNormal];
     button1.frame = CGRectMake(100, 200, 100, 50);
     [button1 addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:button];
-//    [self.view addSubview:button1];
+    [self.view addSubview:button];
+    [self.view addSubview:button1];
     NSLog(@"viewDidLoad--->%@", self.yp_tabItemTitle);
 }
 - (void)buttonClicked:(UIButton *)button {
 //    [self.parentViewController presentViewController:[[ViewController alloc] init] animated:YES completion:nil];
-    ViewController *controller1 = [[ViewController alloc] init];
-    controller1.yp_tabItemTitle = @"一";
-    controller1.yp_tabItemImage = [UIImage imageNamed:@"tab_discover_normal"];
-    controller1.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_discover_selected"];
-    
-    ViewController *controller2 = [[ViewController alloc] init];
-    controller2.yp_tabItemTitle = @"二";
-    controller2.yp_tabItemImage = [UIImage imageNamed:@"tab_message_normal"];
-    controller2.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_message_selected"];
-    
-    ViewController *controller3 = [[ViewController alloc] init];
-    controller3.yp_tabItemTitle = @"三";
-    controller3.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
-    controller3.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
-    
-    ViewController *controller4 = [[ViewController alloc] init];
-    controller4.yp_tabItemTitle = @"四";
-    controller4.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
-    controller4.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
-    NSLog(@"RootViewController");
-    RootViewController *tabBarController = (RootViewController *)self.parentViewController;
-    if (tabBarController) {
-        NSLog(@"RootViewController");
-    }
-    tabBarController.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, nil];
+//    ViewController *controller1 = [[ViewController alloc] init];
+//    controller1.yp_tabItemTitle = @"一";
+//    controller1.yp_tabItemImage = [UIImage imageNamed:@"tab_discover_normal"];
+//    controller1.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_discover_selected"];
+//    
+//    ViewController *controller2 = [[ViewController alloc] init];
+//    controller2.yp_tabItemTitle = @"二";
+//    controller2.yp_tabItemImage = [UIImage imageNamed:@"tab_message_normal"];
+//    controller2.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_message_selected"];
+//    
+//    ViewController *controller3 = [[ViewController alloc] init];
+//    controller3.yp_tabItemTitle = @"三";
+//    controller3.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
+//    controller3.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
+//    
+//    ViewController *controller4 = [[ViewController alloc] init];
+//    controller4.yp_tabItemTitle = @"四";
+//    controller4.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
+//    controller4.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
+//    NSLog(@"RootViewController");
+//    RootViewController *tabBarController = (RootViewController *)self.parentViewController;
+//    if (tabBarController) {
+//        NSLog(@"RootViewController");
+//    }
+//    tabBarController.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, nil];
+//    [self.yp_tabItem setContentHorizontalCenterWithVerticalOffset:20 spacing:10];
 }
 - (void)closeButtonClicked:(UIButton *)button {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -120,7 +121,7 @@
     RootViewController *rootController = (RootViewController *)self.parentViewController;
     switch (mSwitch.tag) {
         case 1:
-            [rootController setContentScrollEnabled:YES switchAnimated:NO];
+            [rootController setContentScrollEnabledAndTapSwitchAnimated:NO];
             break;
         case 2:
 //            [rootController setContentScrollEnabled:<#(BOOL)#> switchAnimated:<#(BOOL)#>];

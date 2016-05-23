@@ -7,26 +7,53 @@
 //
 
 #import <UIKit/UIKit.h>
+
+/**
+ *  Badge样式
+ */
 typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
-    YPTabItemStyleNumber,
-    YPTabItemStyleDot,
+    YPTabItemBadgeStyleNumber, // 数字样式
+    YPTabItemBadgeStyleDot, // 小圆点
 };
+
+struct YPTabItemBadgeFrame {
+    CGFloat top;
+    CGFloat right;
+    CGFloat height;
+};
+typedef struct YPTabItemBadgeFrame YPTabItemBadgeFrame;
+CG_INLINE YPTabItemBadgeFrame
+YPTabItemBadgeFrameMake(CGFloat top, CGFloat right, CGFloat height) {
+    YPTabItemBadgeFrame frame;
+    frame.top = top;
+    frame.right = right;
+    frame.height = height;
+    return frame;
+}
 
 
 @interface YPTabItem : UIButton
-
-+ (YPTabItem *)instance;
 
 /**
  *  item在tabBar中的index
  */
 @property (nonatomic, assign) NSInteger index;
 
+@property (nonatomic, assign, readonly) CGRect frameWithOutTransform;
+
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, strong) UIColor *titleColor;
+@property (nonatomic, strong) UIColor *titleSelectedColor;
+@property (nonatomic, strong) UIFont *titleFont;
+
+@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) UIImage *selectedImage;
+
 /**
  *  badge > 99，显示99+
- *  badge < 99 && badge > 0，显示具体数值
+ *  badge <= 99 && badge > 0，显示具体数值
  *  badge == 0，隐藏badge
- *  badge < 0，显示一个小圆点，即YPTabItemStyleDot
+ *  badge < 0，显示一个小圆点，即YPTabItemBadgeStyleDot
  */
 @property (nonatomic, assign) NSInteger badge;
 
@@ -53,10 +80,16 @@ typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
 /**
  *  设置Image和Title水平居中
  */
-@property (nonatomic, assign) BOOL contentHorizontalCenter;
+@property (nonatomic, assign, getter = isContentHorizontalCenter) BOOL contentHorizontalCenter;
 
-- (void)setContentHorizontalCenterWithMarginTop:(CGFloat)marginTop
-                                        spacing:(CGFloat)spacing;
+/**
+ *  设置Image和Title水平居中
+ *
+ *  @param marginTop Image与顶部的距离
+ *  @param spacing   Image与Title的间距
+ */
+- (void)setContentHorizontalCenterWithVerticalOffset:(CGFloat)verticalOffset
+                                             spacing:(CGFloat)spacing;
 /**
  *  添加双击的target和action
  *

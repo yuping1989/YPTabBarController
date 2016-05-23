@@ -23,25 +23,14 @@
 /**
  *  被选中的ViewController的Index
  */
-@property (nonatomic, assign) NSInteger selectedControllerIndex;
+@property (nonatomic, assign, readonly) NSInteger selectedControllerIndex;
 
 /**
- *  内容视图是否支持滑动切换
- */
-@property (nonatomic, assign, readonly, getter = isContentScrollEnabled) BOOL contentScrollEnabled;
-
-/**
- *  点按tabBar切换视图时，是否有切换动画
- */
-@property (nonatomic, assign, readonly, getter = isContentSwitchAnimated) BOOL contentSwitchAnimated;
-
-/**
- *  设置内容视图是否支持滑动切换及动画
+ *  设置内容视图支持滑动切换，以及点击item切换时是否有动画
  *
- *  @param contentScrollEnabled 内容视图是否支持滑动
- *  @param animated             切换时是否支持动画
+ *  @param animated  点击切换时是否支持动画
  */
-- (void)setContentScrollEnabled:(BOOL)contentScrollEnabled switchAnimated:(BOOL)animated;
+- (void)setContentScrollEnabledAndTapSwitchAnimated:(BOOL)animated;
 
 /**
  *  获取被选中的ViewController
