@@ -17,11 +17,11 @@ pod 'YPTabBarController'
 
 ##效果展示：
          
-1. 固定宽度的TabItem：                                2. 根据TabItem的字体确认宽度的TabItem：
+1. 固定宽度的TabItem：                                 2. 根据TabItem的字体确认宽度的TabItem：<br>
 ![](https://github.com/yuping1989/YPTabBarController/blob/master/YPTabBarController/Demo/FixedItemWidthTab.gif) 
 ![](https://github.com/yuping1989/YPTabBarController/blob/master/YPTabBarController/Demo/DynamicItemWidthTab.gif)
 
-3. 内容视图不可滚动，TabItem选中背景支持切换动画：      4. 系统Segment：
+3. 内容视图不可滚动，TabItem选中背景支持切换动画：          4. 系统Segment：<br>
 ![](https://github.com/yuping1989/YPTabBarController/blob/master/YPTabBarController/Demo/UnscrollTab.gif) 
 
 ![](https://github.com/yuping1989/YPTabBarController/blob/master/YPTabBarController/Demo/Segment.gif) 
