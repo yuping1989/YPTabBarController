@@ -40,8 +40,8 @@
 
 - (void)awakeFromNib {
     _selectedControllerIndex = -1;
-    self.tabBar = [[YPTabBar alloc] init];
-    self.tabBar.delegate = self;
+    _tabBar = [[YPTabBar alloc] init];
+    _tabBar.delegate = self;
 }
 
 - (void)viewDidLoad {
@@ -80,7 +80,6 @@
     for (UIViewController *controller in self.viewControllers) {
         [controller removeFromParentViewController];
         [controller.view removeFromSuperview];
-        
     }
     _viewControllers = [viewControllers copy];
     [_viewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -100,6 +99,12 @@
         _selectedControllerIndex = -1;
         self.tabBar.selectedItemIndex = 0;
     }
+    
+    // 更新scrollView的content size
+    if (self.scrollView) {
+        self.scrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * _viewControllers.count,
+                                                 self.contentViewFrame.size.height);
+    }
 }
 
 - (void)setContentViewFrame:(CGRect)contentViewFrame {
@@ -111,12 +116,10 @@
     self.contentScrollEnabled = YES;
     self.contentSwitchAnimated = switchAnimated;
     if (_contentScrollEnabled) {
-        [self.view addSubview:self.scrollView];
         self.scrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * _viewControllers.count,
                                                  self.contentViewFrame.size.height);
     }
 }
-
 
 - (void)setSelectedControllerIndex:(NSInteger)selectedControllerIndex {
     UIViewController *oldController = nil;
@@ -126,36 +129,47 @@
     UIViewController *curController = self.viewControllers[selectedControllerIndex];
     BOOL isAppearFirstTime = YES;
     if (self.contentScrollEnabled) {
+        // contentView支持滚动
+        // 调用oldController的viewWillDisappear方法
         [oldController viewWillDisappear:NO];
-        if (curController.view.superview == nil) {
+        if (!curController.view.superview) {
+            // superview为空，表示为第一次加载，设置frame，并添加到scrollView
             curController.view.frame = CGRectMake(selectedControllerIndex * self.scrollView.frame.size.width,
                                                   0,
                                                   self.scrollView.frame.size.width,
                                                   self.scrollView.frame.size.height);
             [self.scrollView addSubview:curController.view];
         } else {
+            // superview不为空，表示为已经加载过了，调用viewWillAppear方法
             isAppearFirstTime = NO;
             [curController viewWillAppear:NO];
         }
-        
+        // 切换到curController
         [self.scrollView scrollRectToVisible:curController.view.frame animated:self.contentSwitchAnimated];
     } else {
+        // contentView不支持滚动
+        // 将oldController的view移除
         if (oldController) {
             [oldController.view removeFromSuperview];
         }
         [self.view insertSubview:curController.view belowSubview:self.tabBar];
+        // 设置curController.view的frame
         if (!CGRectEqualToRect(curController.view.frame, self.contentViewFrame)) {
             curController.view.frame = self.contentViewFrame;
         }
     }
     
+    // 当contentView为scrollView及其子类时，设置它支持点击状态栏回到顶部
     if (oldController && [oldController.view isKindOfClass:[UIScrollView class]]) {
         [(UIScrollView *)oldController.view setScrollsToTop:NO];
     }
     if ([curController.view isKindOfClass:[UIScrollView class]]) {
         [(UIScrollView *)curController.view setScrollsToTop:YES];
     }
+    
     _selectedControllerIndex = selectedControllerIndex;
+    
+    // 调用状态切换的回调方法
     [oldController tabItemDidDeselected];
     [curController tabItemDidSelected];
     if (self.contentScrollEnabled) {
@@ -173,15 +187,15 @@
     return nil;
 }
 
-
 - (UIScrollView *)scrollView {
-    if (!_scrollView) {
+    if (self.contentScrollEnabled && !_scrollView) {
         _scrollView = [[UIScrollView alloc] initWithFrame:self.contentViewFrame];
         _scrollView.pagingEnabled = YES;
         _scrollView.showsHorizontalScrollIndicator = NO;
         _scrollView.showsVerticalScrollIndicator = NO;
         _scrollView.scrollsToTop = NO;
         _scrollView.delegate = self.tabBar;
+        [self.view insertSubview:_scrollView belowSubview:self.tabBar];
     }
     return _scrollView;
 }

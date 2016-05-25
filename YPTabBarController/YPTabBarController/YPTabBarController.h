@@ -11,6 +11,7 @@
 #import "YPTabItem.h"
 
 @interface YPTabBarController : UIViewController <YPTabBarDelegate>
+
 @property (nonatomic, strong) YPTabBar *tabBar;
 
 @property (nonatomic, copy) NSArray *viewControllers;
@@ -26,16 +27,16 @@
 @property (nonatomic, assign, readonly) NSInteger selectedControllerIndex;
 
 /**
+ *  获取被选中的ViewController
+ */
+- (UIViewController *)selectedController;
+
+/**
  *  设置内容视图支持滑动切换，以及点击item切换时是否有动画
  *
  *  @param animated  点击切换时是否支持动画
  */
 - (void)setContentScrollEnabledAndTapSwitchAnimated:(BOOL)animated;
-
-/**
- *  获取被选中的ViewController
- */
-- (UIViewController *)selectedController;
 
 @end
 

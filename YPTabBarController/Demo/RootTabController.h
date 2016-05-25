@@ -1,5 +1,5 @@
 //
-//  RootViewController.h
+//  RootTabController.h
 //  YPTabBarController
 //
 //  Created by 喻平 on 15/8/11.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "YPTabBarController.h"
-@interface RootViewController : YPTabBarController
+@interface RootTabController : YPTabBarController
 
 @end

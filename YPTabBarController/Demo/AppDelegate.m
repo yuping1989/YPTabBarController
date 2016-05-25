@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "RootViewController.h"
+#import "RootTabController.h"
 
 @interface AppDelegate ()
 
@@ -17,7 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    RootViewController *controller = [[RootViewController alloc] init];
+    RootTabController *controller = [[RootTabController alloc] init];
     self.window.rootViewController = controller;
     [self.window makeKeyAndVisible];
     return YES;

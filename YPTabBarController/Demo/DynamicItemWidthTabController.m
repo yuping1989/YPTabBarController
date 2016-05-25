@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self initViewControllers];
+    
     
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     self.contentViewFrame = CGRectMake(0, 64, screenSize.width, screenSize.height - 64);
@@ -25,15 +25,20 @@
     
     self.tabBar.itemTitleColor = [UIColor lightGrayColor];
     self.tabBar.itemTitleSelectedColor = [UIColor redColor];
-    self.tabBar.itemTitleFont = [UIFont systemFontOfSize:18];
+    self.tabBar.itemTitleFont = [UIFont systemFontOfSize:17];
     self.tabBar.itemTitleSelectedFont = [UIFont systemFontOfSize:22];
+    self.tabBar.leftAndRightSpacing = 20;
     
-//    [self.tabBar setScrollEnabledAndItemWidth:90];
-    [self.tabBar setScrollEnabledAndItemFitTextWidthWithSpacing:40];
     [self setContentScrollEnabledAndTapSwitchAnimated:NO];
+    [self.tabBar setScrollEnabledAndItemFitTextWidthWithSpacing:40];
+    self.tabBar.itemFontChangeFollowContentScroll = YES;
     
-    self.tabBar.itemSelectedBgImageView.backgroundColor = [UIColor redColor];
-    [self.tabBar setItemSelectedBgInsets:UIEdgeInsetsMake(40, 15, 0, 15) switchAnimated:NO];
+    self.tabBar.itemSelectedBgScrollFollowContent = YES;
+    self.tabBar.itemSelectedBgColor = [UIColor redColor];
+    [self.tabBar setItemSelectedBgInsets:UIEdgeInsetsMake(40, 15, 0, 15) tapSwitchAnimated:NO];
+    
+    
+    [self initViewControllers];
 }
 
 - (void)didReceiveMemoryWarning {

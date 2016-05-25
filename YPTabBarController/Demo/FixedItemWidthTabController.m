@@ -1,22 +1,22 @@
 //
-//  ScrollTabBarController.m
+//  FixedItemWidthTabController.m
 //  YPTabBarController
 //
 //  Created by 喻平 on 16/5/13.
 //  Copyright © 2016年 YPTabBarController. All rights reserved.
 //
 
-#import "ScrollTabBarController.h"
+#import "FixedItemWidthTabController.h"
 #import "ViewController.h"
-@interface ScrollTabBarController ()
+@interface FixedItemWidthTabController ()
 
 @end
 
-@implementation ScrollTabBarController
+@implementation FixedItemWidthTabController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self initViewControllers];
     
     
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
@@ -25,16 +25,22 @@
 
     self.tabBar.itemTitleColor = [UIColor lightGrayColor];
     self.tabBar.itemTitleSelectedColor = [UIColor redColor];
-    self.tabBar.itemTitleFont = [UIFont systemFontOfSize:18];
+    self.tabBar.itemTitleFont = [UIFont systemFontOfSize:17];
     self.tabBar.itemTitleSelectedFont = [UIFont systemFontOfSize:22];
 
-    [self.tabBar setScrollEnabledAndItemWidth:90];
+    [self.tabBar setScrollEnabledAndItemWidth:80];
     [self setContentScrollEnabledAndTapSwitchAnimated:NO];
+    self.tabBar.itemFontChangeFollowContentScroll = YES;
+    self.tabBar.itemSelectedBgScrollFollowContent = YES;
     
-    self.tabBar.itemSelectedBgImageView.backgroundColor = [UIColor redColor];
-    [self.tabBar setItemSelectedBgInsets:UIEdgeInsetsMake(40, 20, 0, 20) switchAnimated:NO];
+    self.tabBar.itemSelectedBgColor = [UIColor redColor];
+    [self.tabBar setItemSelectedBgInsets:UIEdgeInsetsMake(40, 20, 0, 20) tapSwitchAnimated:NO];
     
-    [self initViewControllers];
+    [self.yp_tabItem setDoubleTapHandler:^{
+        NSLog(@"双击效果");
+    }];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -44,6 +50,7 @@
 - (void)initViewControllers {
     ViewController *controller1 = [[ViewController alloc] init];
     controller1.yp_tabItemTitle = @"第一";
+    
     
     ViewController *controller2 = [[ViewController alloc] init];
     controller2.yp_tabItemTitle = @"第二";
@@ -64,5 +71,6 @@
     controller7.yp_tabItemTitle = @"第七";
     
     self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, controller5, controller6, controller7, nil];
+    
 }
 @end

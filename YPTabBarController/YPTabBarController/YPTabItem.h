@@ -12,25 +12,9 @@
  *  Badge样式
  */
 typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
-    YPTabItemBadgeStyleNumber, // 数字样式
-    YPTabItemBadgeStyleDot, // 小圆点
+    YPTabItemBadgeStyleNumber = 0, // 数字样式
+    YPTabItemBadgeStyleDot = 1, // 小圆点
 };
-
-struct YPTabItemBadgeFrame {
-    CGFloat top;
-    CGFloat right;
-    CGFloat height;
-};
-typedef struct YPTabItemBadgeFrame YPTabItemBadgeFrame;
-CG_INLINE YPTabItemBadgeFrame
-YPTabItemBadgeFrameMake(CGFloat top, CGFloat right, CGFloat height) {
-    YPTabItemBadgeFrame frame;
-    frame.top = top;
-    frame.right = right;
-    frame.height = height;
-    return frame;
-}
-
 
 @interface YPTabItem : UIButton
 
@@ -56,6 +40,8 @@ YPTabItemBadgeFrameMake(CGFloat top, CGFloat right, CGFloat height) {
  *  badge < 0，显示一个小圆点，即YPTabItemBadgeStyleDot
  */
 @property (nonatomic, assign) NSInteger badge;
+
+@property (nonatomic, assign) YPTabItemBadgeStyle badgeStyle;
 
 /**
  *  badge的背景颜色
@@ -85,30 +71,37 @@ YPTabItemBadgeFrameMake(CGFloat top, CGFloat right, CGFloat height) {
 /**
  *  设置Image和Title水平居中
  *
- *  @param marginTop Image与顶部的距离
- *  @param spacing   Image与Title的间距
+ *  @param verticalOffset   竖直方向的偏移量
+ *  @param spacing          Image与Title的间距
  */
 - (void)setContentHorizontalCenterWithVerticalOffset:(CGFloat)verticalOffset
                                              spacing:(CGFloat)spacing;
 /**
- *  添加双击的target和action
- *
- *  @param target
- *  @param action
+ *  添加双击事件回调
  */
-- (void)addDoubleTapTarget:(id)target action:(SEL)action;
+- (void)setDoubleTapHandler:(void (^)(void))handler;
 
 /**
- *  设置Badge的位置
+ *  设置数字Badge的位置
  *
- *  @param marginTop   与TabItem顶部的距离
- *  @param marginRight 与TabItem右侧的距离
- *  @param height      Badge的高度，宽度为自适应
- *  @param badgeStyle  Badge样式，分为数字样式和小圆点样式
+ *  @param marginTop            与TabItem顶部的距离
+ *  @param centerMarginRight    badge的中心与TabItem右侧的距离
+ *  @param titleHorizonalSpace  Badge的标题水平方向的空间
+ *  @param titleVerticalSpace   Badge的标题竖直方向的空间
  */
-- (void)setBadgeMarginTop:(CGFloat)marginTop
-              marginRight:(CGFloat)marginRight
-                   height:(CGFloat)height
-                 forStyle:(YPTabItemBadgeStyle)badgeStyle;
+- (void)setNumberBadgeMarginTop:(CGFloat)marginTop
+              centerMarginRight:(CGFloat)centerMarginRight
+            titleHorizonalSpace:(CGFloat)titleHorizonalSpace
+             titleVerticalSpace:(CGFloat)titleVerticalSpace;
+/**
+ *  设置小圆点Badge的位置
+ *
+ *  @param marginTop            与TabItem顶部的距离
+ *  @param centerMarginRight    badge的中心与TabItem右侧的距离
+ *  @param sideLength           小圆点的边长
+ */
+- (void)setDotBadgeMarginTop:(CGFloat)marginTop
+           centerMarginRight:(CGFloat)centerMarginRight
+                  sideLength:(CGFloat)sideLength;
 
 @end

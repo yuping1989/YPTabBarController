@@ -1,5 +1,5 @@
 //
-//  ScrollTabBarController.h
+//  FixedItemWidthTabController.h
 //  YPTabBarController
 //
 //  Created by 喻平 on 16/5/13.
@@ -8,6 +8,6 @@
 
 #import "YPTabBarController.h"
 
-@interface ScrollTabBarController : YPTabBarController
+@interface FixedItemWidthTabController : YPTabBarController
 
 @end
