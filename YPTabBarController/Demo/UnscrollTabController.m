@@ -23,22 +23,18 @@
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     self.contentViewFrame = CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - 50);
     self.tabBar.frame = CGRectMake(0, 20, screenSize.width, 44);
+    self.tabBar.backgroundColor = [UIColor grayColor];
     
-    self.tabBar.itemTitleColor = [UIColor lightGrayColor];
-    self.tabBar.itemTitleSelectedColor = [UIColor redColor];
+    self.tabBar.itemTitleColor = [UIColor purpleColor];
+    self.tabBar.itemTitleSelectedColor = [UIColor whiteColor];
     self.tabBar.itemTitleFont = [UIFont systemFontOfSize:18];
-    self.tabBar.itemTitleSelectedFont = [UIFont systemFontOfSize:22];
     
-//    [self.tabBar setScrollEnabledAndItemWidth:80];
     [self setContentScrollEnabledAndTapSwitchAnimated:YES];
-    self.tabBar.itemFontChangeFollowContentScroll = YES;
     self.tabBar.itemSelectedBgScrollFollowContent = YES;
-    
-    
+    self.tabBar.itemColorChangeFollowContentScroll = NO;
     
     self.tabBar.itemSelectedBgColor = [UIColor redColor];
-    [self.tabBar setItemSelectedBgInsets:UIEdgeInsetsMake(40, 20, 0, 20) tapSwitchAnimated:YES];
-    
+    [self.tabBar setItemSelectedBgInsets:UIEdgeInsetsZero tapSwitchAnimated:YES];
     
     [self.yp_tabItem setDoubleTapHandler:^{
         NSLog(@"双击效果");

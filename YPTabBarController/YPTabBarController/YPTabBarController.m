@@ -96,6 +96,7 @@
     }
     self.tabBar.items = items;
     if (_didViewAppeared) {
+        NSLog(@"asdfasdf");
         _selectedControllerIndex = -1;
         self.tabBar.selectedItemIndex = 0;
     }
@@ -109,15 +110,45 @@
 
 - (void)setContentViewFrame:(CGRect)contentViewFrame {
     _contentViewFrame = contentViewFrame;
-    self.selectedController.view.frame = contentViewFrame;
+    [self updateContentViewsFrame];
 }
 
 - (void)setContentScrollEnabledAndTapSwitchAnimated:(BOOL)switchAnimated {
-    self.contentScrollEnabled = YES;
-    self.contentSwitchAnimated = switchAnimated;
-    if (_contentScrollEnabled) {
+    if (!self.scrollView) {
+        self.scrollView = [[UIScrollView alloc] initWithFrame:self.contentViewFrame];
+        self.scrollView.pagingEnabled = YES;
+        self.scrollView.showsHorizontalScrollIndicator = NO;
+        self.scrollView.showsVerticalScrollIndicator = NO;
+        self.scrollView.scrollsToTop = NO;
+        self.scrollView.delegate = self.tabBar;
+        [self.view insertSubview:self.scrollView belowSubview:self.tabBar];
         self.scrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * _viewControllers.count,
                                                  self.contentViewFrame.size.height);
+    }
+    [self updateContentViewsFrame];
+    self.contentSwitchAnimated = switchAnimated;
+}
+
+- (void)updateContentViewsFrame {
+    if (!_didViewAppeared) {
+        return;
+    }
+    if (self.scrollView) {
+        self.scrollView.frame = self.contentViewFrame;
+        self.scrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * _viewControllers.count,
+                                                 self.contentViewFrame.size.height);
+        [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController * _Nonnull controller,
+                                                           NSUInteger idx, BOOL * _Nonnull stop) {
+            if (controller.isViewLoaded) {
+                controller.view.frame = CGRectMake(idx * self.contentViewFrame.size.width,
+                                                   0,
+                                                   self.contentViewFrame.size.width,
+                                                   self.contentViewFrame.size.height);
+            }
+        }];
+        [self.scrollView scrollRectToVisible:self.selectedController.view.frame animated:NO];
+    } else {
+        self.selectedController.view.frame = self.contentViewFrame;
     }
 }
 
@@ -128,7 +159,7 @@
     }
     UIViewController *curController = self.viewControllers[selectedControllerIndex];
     BOOL isAppearFirstTime = YES;
-    if (self.contentScrollEnabled) {
+    if (self.scrollView) {
         // contentView支持滚动
         // 调用oldController的viewWillDisappear方法
         [oldController viewWillDisappear:NO];
@@ -172,7 +203,7 @@
     // 调用状态切换的回调方法
     [oldController tabItemDidDeselected];
     [curController tabItemDidSelected];
-    if (self.contentScrollEnabled) {
+    if (self.scrollView) {
         [oldController viewDidDisappear:NO];
         if (!isAppearFirstTime) {
             [curController viewDidAppear:NO];
@@ -185,19 +216,6 @@
         return self.viewControllers[self.selectedControllerIndex];
     }
     return nil;
-}
-
-- (UIScrollView *)scrollView {
-    if (self.contentScrollEnabled && !_scrollView) {
-        _scrollView = [[UIScrollView alloc] initWithFrame:self.contentViewFrame];
-        _scrollView.pagingEnabled = YES;
-        _scrollView.showsHorizontalScrollIndicator = NO;
-        _scrollView.showsVerticalScrollIndicator = NO;
-        _scrollView.scrollsToTop = NO;
-        _scrollView.delegate = self.tabBar;
-        [self.view insertSubview:_scrollView belowSubview:self.tabBar];
-    }
-    return _scrollView;
 }
 
 #pragma mark - YPTabBarDelegate

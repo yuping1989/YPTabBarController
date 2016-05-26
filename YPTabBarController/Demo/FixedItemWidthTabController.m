@@ -34,7 +34,7 @@
     self.tabBar.itemSelectedBgScrollFollowContent = YES;
     
     self.tabBar.itemSelectedBgColor = [UIColor redColor];
-    [self.tabBar setItemSelectedBgInsets:UIEdgeInsetsMake(40, 20, 0, 20) tapSwitchAnimated:NO];
+    [self.tabBar setItemSelectedBgInsets:UIEdgeInsetsMake(40, 10, 0, 10) tapSwitchAnimated:NO];
     
     [self.yp_tabItem setDoubleTapHandler:^{
         NSLog(@"双击效果");
@@ -49,20 +49,20 @@
 
 - (void)initViewControllers {
     ViewController *controller1 = [[ViewController alloc] init];
-    controller1.yp_tabItemTitle = @"第一";
+    controller1.yp_tabItemTitle = @"第一个";
     
     
     ViewController *controller2 = [[ViewController alloc] init];
     controller2.yp_tabItemTitle = @"第二";
     
     ViewController *controller3 = [[ViewController alloc] init];
-    controller3.yp_tabItemTitle = @"第三";
+    controller3.yp_tabItemTitle = @"第三个";
     
     ViewController *controller4 = [[ViewController alloc] init];
     controller4.yp_tabItemTitle = @"第四";
     
     ViewController *controller5 = [[ViewController alloc] init];
-    controller5.yp_tabItemTitle = @"第五";
+    controller5.yp_tabItemTitle = @"第五个";
     
     ViewController *controller6 = [[ViewController alloc] init];
     controller6.yp_tabItemTitle = @"第六";

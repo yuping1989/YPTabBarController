@@ -27,8 +27,8 @@
 		F06335FE1CF59A51009D65D2 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F06335E81CF59A51009D65D2 /* ViewController.xib */; };
 		F06335FF1CF59A51009D65D2 /* UnscrollTab.gif in Resources */ = {isa = PBXBuildFile; fileRef = F06335E91CF59A51009D65D2 /* UnscrollTab.gif */; };
 		F06336001CF59A51009D65D2 /* DynamicItemWidthTab.gif in Resources */ = {isa = PBXBuildFile; fileRef = F06335EA1CF59A51009D65D2 /* DynamicItemWidthTab.gif */; };
-		F06336011CF59A51009D65D2 /* FixedItemWidthTab.gif in Resources */ = {isa = PBXBuildFile; fileRef = F06335EB1CF59A51009D65D2 /* FixedItemWidthTab.gif */; };
-		F06336021CF59A51009D65D2 /* Segment.gif in Resources */ = {isa = PBXBuildFile; fileRef = F06335EC1CF59A51009D65D2 /* Segment.gif */; };
+		F0E32FBB1CF5B4A6001A1A34 /* FixedItemWidthTab.gif in Resources */ = {isa = PBXBuildFile; fileRef = F0E32FB91CF5B4A6001A1A34 /* FixedItemWidthTab.gif */; };
+		F0E32FBC1CF5B4A6001A1A34 /* SegmentTab.gif in Resources */ = {isa = PBXBuildFile; fileRef = F0E32FBA1CF5B4A6001A1A34 /* SegmentTab.gif */; };
 		F0ECF25B1B79D5EF006DF335 /* YPTabBarControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF25A1B79D5EF006DF335 /* YPTabBarControllerTests.m */; };
 		F0ECF2671B79D7BE006DF335 /* YPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF2661B79D7BE006DF335 /* YPTabBarController.m */; };
 		F0ECF26A1B79D7CE006DF335 /* YPTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF2691B79D7CE006DF335 /* YPTabBar.m */; };
@@ -74,8 +74,8 @@
 		F06335E81CF59A51009D65D2 /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		F06335E91CF59A51009D65D2 /* UnscrollTab.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = UnscrollTab.gif; sourceTree = "<group>"; };
 		F06335EA1CF59A51009D65D2 /* DynamicItemWidthTab.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = DynamicItemWidthTab.gif; sourceTree = "<group>"; };
-		F06335EB1CF59A51009D65D2 /* FixedItemWidthTab.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = FixedItemWidthTab.gif; sourceTree = "<group>"; };
-		F06335EC1CF59A51009D65D2 /* Segment.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Segment.gif; sourceTree = "<group>"; };
+		F0E32FB91CF5B4A6001A1A34 /* FixedItemWidthTab.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = FixedItemWidthTab.gif; sourceTree = "<group>"; };
+		F0E32FBA1CF5B4A6001A1A34 /* SegmentTab.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = SegmentTab.gif; sourceTree = "<group>"; };
 		F0ECF23B1B79D5EE006DF335 /* YPTabBarController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YPTabBarController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0ECF2541B79D5EF006DF335 /* YPTabBarControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YPTabBarControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0ECF2591B79D5EF006DF335 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -115,10 +115,10 @@
 				F06335D01CF59A51009D65D2 /* AppDelegate.m */,
 				F06335DA1CF59A51009D65D2 /* RootTabController.h */,
 				F06335DB1CF59A51009D65D2 /* RootTabController.m */,
-				F06335D51CF59A51009D65D2 /* FixedItemWidthTabController.h */,
-				F06335D61CF59A51009D65D2 /* FixedItemWidthTabController.m */,
 				F06335D31CF59A51009D65D2 /* DynamicItemWidthTabController.h */,
 				F06335D41CF59A51009D65D2 /* DynamicItemWidthTabController.m */,
+				F06335D51CF59A51009D65D2 /* FixedItemWidthTabController.h */,
+				F06335D61CF59A51009D65D2 /* FixedItemWidthTabController.m */,
 				F06335E41CF59A51009D65D2 /* UnscrollTabController.h */,
 				F06335E51CF59A51009D65D2 /* UnscrollTabController.m */,
 				F06335DC1CF59A51009D65D2 /* SegmentTabController.h */,
@@ -126,10 +126,10 @@
 				F06335E61CF59A51009D65D2 /* ViewController.h */,
 				F06335E71CF59A51009D65D2 /* ViewController.m */,
 				F06335E81CF59A51009D65D2 /* ViewController.xib */,
-				F06335E91CF59A51009D65D2 /* UnscrollTab.gif */,
 				F06335EA1CF59A51009D65D2 /* DynamicItemWidthTab.gif */,
-				F06335EB1CF59A51009D65D2 /* FixedItemWidthTab.gif */,
-				F06335EC1CF59A51009D65D2 /* Segment.gif */,
+				F0E32FB91CF5B4A6001A1A34 /* FixedItemWidthTab.gif */,
+				F06335E91CF59A51009D65D2 /* UnscrollTab.gif */,
+				F0E32FBA1CF5B4A6001A1A34 /* SegmentTab.gif */,
 				F06335DE1CF59A51009D65D2 /* tab_discover_normal@2x.png */,
 				F06335DF1CF59A51009D65D2 /* tab_discover_selected@2x.png */,
 				F06335E01CF59A51009D65D2 /* tab_me_normal@2x.png */,
@@ -286,16 +286,16 @@
 				F06335FE1CF59A51009D65D2 /* ViewController.xib in Resources */,
 				F06335F91CF59A51009D65D2 /* tab_me_selected@2x.png in Resources */,
 				F06335FF1CF59A51009D65D2 /* UnscrollTab.gif in Resources */,
-				F06336011CF59A51009D65D2 /* FixedItemWidthTab.gif in Resources */,
 				F06335FA1CF59A51009D65D2 /* tab_message_normal@2x.png in Resources */,
 				F06335F61CF59A51009D65D2 /* tab_discover_normal@2x.png in Resources */,
 				F06335EE1CF59A51009D65D2 /* LaunchScreen.xib in Resources */,
 				F06335FB1CF59A51009D65D2 /* tab_message_selected@2x.png in Resources */,
 				F06335F71CF59A51009D65D2 /* tab_discover_selected@2x.png in Resources */,
 				F06336001CF59A51009D65D2 /* DynamicItemWidthTab.gif in Resources */,
-				F06336021CF59A51009D65D2 /* Segment.gif in Resources */,
 				F06335F81CF59A51009D65D2 /* tab_me_normal@2x.png in Resources */,
+				F0E32FBC1CF5B4A6001A1A34 /* SegmentTab.gif in Resources */,
 				F06335F11CF59A51009D65D2 /* Images.xcassets in Resources */,
+				F0E32FBB1CF5B4A6001A1A34 /* FixedItemWidthTab.gif in Resources */,
 				F06335F21CF59A51009D65D2 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

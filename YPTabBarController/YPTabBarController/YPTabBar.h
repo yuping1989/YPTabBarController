@@ -42,14 +42,14 @@
 
 
 /**
- *  拖动内容视图时，item的颜色是否根据拖动位置显示渐变效果
+ *  拖动内容视图时，item的颜色是否根据拖动位置显示渐变效果，默认为YES
  */
-@property (nonatomic, assign) BOOL itemColorChangeFollowContentScroll;
+@property (nonatomic, assign, getter = isItemColorChangeFollowContentScroll) BOOL itemColorChangeFollowContentScroll;
 
 /**
- *  拖动内容视图时，item的字体是否根据拖动位置显示渐变效果
+ *  拖动内容视图时，item的字体是否根据拖动位置显示渐变效果，默认为NO
  */
-@property (nonatomic, assign) BOOL itemFontChangeFollowContentScroll;
+@property (nonatomic, assign, getter = isItemFontChangeFollowContentScroll) BOOL itemFontChangeFollowContentScroll;
 
 /**
  *  TabItem的选中背景是否随contentView滑动而移动
@@ -57,7 +57,7 @@
 @property (nonatomic, assign, getter = isItemSelectedBgScrollFollowContent) BOOL itemSelectedBgScrollFollowContent;
 
 /**
- *  将Image和Title设置为水平居中
+ *  将Image和Title设置为水平居中，默认为YES
  */
 @property (nonatomic, assign, getter = isItemContentHorizontalCenter) BOOL itemContentHorizontalCenter;
 
@@ -107,7 +107,7 @@
                                                  spacing:(CGFloat)spacing;
 
 /**
- *  设置数字Badge的位置
+ *  设置数字Badge的位置与大小
  *
  *  @param marginTop            与TabItem顶部的距离
  *  @param centerMarginRight    badge的中心与TabItem右侧的距离
@@ -119,7 +119,7 @@
             titleHorizonalSpace:(CGFloat)titleHorizonalSpace
              titleVerticalSpace:(CGFloat)titleVerticalSpace;
 /**
- *  设置小圆点Badge的位置
+ *  设置小圆点Badge的位置与大小
  *
  *  @param marginTop            与TabItem顶部的距离
  *  @param centerMarginRight    badge的中心与TabItem右侧的距离
@@ -141,6 +141,7 @@
                         width:(CGFloat)width
                     marginTop:(CGFloat)marginTop
                  marginBottom:(CGFloat)marginBottom;
+
 - (void)setItemSeparatorColor:(UIColor *)itemSeparatorColor
                     marginTop:(CGFloat)marginTop
                  marginBottom:(CGFloat)marginBottom;

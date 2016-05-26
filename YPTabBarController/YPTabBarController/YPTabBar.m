@@ -16,7 +16,7 @@
 @property (nonatomic, assign) BOOL itemSelectedBgSwitchAnimated;  // TabItem选中切换时，是否显示动画
 @property (nonatomic, assign) UIEdgeInsets itemSelectedBgInsets;
 @property (nonatomic, assign) BOOL itemFitTextWidth;
-@property (nonatomic, assign) BOOL scrollEnabled;
+//@property (nonatomic, assign) BOOL scrollEnabled;
 @property (nonatomic, assign) CGFloat itemFitTextWidthSpacing;
 @property (nonatomic, assign) CGFloat itemWidth;
 @property (nonatomic, assign) CGFloat itemContentHorizontalCenterVerticalOffset;
@@ -32,6 +32,11 @@
 @property (nonatomic, assign) CGFloat dotBadgeMarginTop;
 @property (nonatomic, assign) CGFloat dotBadgeCenterMarginRight;
 @property (nonatomic, assign) CGFloat dotBadgeSideLength;
+
+@property (nonatomic, strong) UIColor *itemSeparatorColor;
+@property (nonatomic, assign) CGFloat itemSeparatorWidth;
+@property (nonatomic, assign) CGFloat itemSeparatorMarginTop;
+@property (nonatomic, assign) CGFloat itemSeparatorMarginBottom;
 @end
 
 @implementation YPTabBar
@@ -45,6 +50,7 @@
 }
 
 - (void)awakeFromNib {
+    self.backgroundColor = [UIColor whiteColor];
     _selectedItemIndex = -1;
     _itemTitleColor = [UIColor whiteColor];
     _itemTitleSelectedColor = [UIColor blackColor];
@@ -77,6 +83,11 @@
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
     [self updateItemsFrame];
+    [self updateFrameOfSelectedBgWithIndex:self.selectedItemIndex];
+    [self updateSeperators];
+    if (self.scrollView) {
+        self.scrollView.frame = self.bounds;
+    }
 }
 
 - (void)setItems:(NSArray *)items {
@@ -129,9 +140,6 @@
     [self updateItemsFrame];
 }
 
-
-
-
 - (void)updateItemsFrame {
     if (self.items.count == 0) {
         return;
@@ -140,7 +148,7 @@
     [self.items makeObjectsPerformSelector:@selector(removeFromSuperview)];
     // 将item的选中背景从superview上删除
     [self.itemSelectedBgImageView removeFromSuperview];
-    if (self.scrollEnabled) {
+    if (self.scrollView) {
         // 支持滚动
         
         [self.scrollView addSubview:self.itemSelectedBgImageView];
@@ -237,13 +245,14 @@
         [self.delegate yp_tabBar:self didSelectedItemAtIndex:selectedItemIndex];
     }
     _selectedItemIndex = selectedItemIndex;
-    if (self.scrollEnabled) {
-        // 如果tabbar支持滚动，将选中的item放到tabbar的中央
-        [self setSelectedItemCenter];
-    }
+    // 如果tabbar支持滚动，将选中的item放到tabbar的中央
+    [self setSelectedItemCenter];
 }
 
 - (void)updateFrameOfSelectedBgWithIndex:(NSInteger)index {
+    if (index < 0) {
+        return;
+    }
     YPTabItem *item = self.items[index];
     CGFloat width = item.frameWithOutTransform.size.width - self.itemSelectedBgInsets.left - self.itemSelectedBgInsets.right;
     CGFloat height = item.frameWithOutTransform.size.height - self.itemSelectedBgInsets.top - self.itemSelectedBgInsets.bottom;
@@ -254,7 +263,12 @@
 }
 
 - (void)setScrollEnabledAndItemWidth:(CGFloat)width {
-    self.scrollEnabled = YES;
+    if (!self.scrollView) {
+        self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+        self.scrollView.showsHorizontalScrollIndicator = NO;
+        self.scrollView.showsVerticalScrollIndicator = NO;
+        [self addSubview:self.scrollView];
+    }
     self.itemWidth = width;
     self.itemFitTextWidth = NO;
     self.itemFitTextWidthSpacing = 0;
@@ -262,7 +276,12 @@
 }
 
 - (void)setScrollEnabledAndItemFitTextWidthWithSpacing:(CGFloat)spacing {
-    self.scrollEnabled = YES;
+    if (!self.scrollView) {
+        self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+        self.scrollView.showsHorizontalScrollIndicator = NO;
+        self.scrollView.showsVerticalScrollIndicator = NO;
+        [self addSubview:self.scrollView];
+    }
     self.itemFitTextWidth = YES;
     self.itemFitTextWidthSpacing = spacing;
     self.itemWidth = 0;
@@ -311,16 +330,6 @@
     if (will) {
         self.selectedItemIndex = item.index;
     }
-}
-
-- (UIScrollView *)scrollView {
-    if (self.scrollEnabled && !_scrollView) {
-        _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-        _scrollView.showsHorizontalScrollIndicator = NO;
-        _scrollView.showsVerticalScrollIndicator = NO;
-        [self addSubview:_scrollView];
-    }
-    return _scrollView;
 }
 
 - (YPTabItem *)selectedItem {
@@ -495,6 +504,7 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     NSInteger page = scrollView.contentOffset.x / scrollView.frame.size.width;
+    NSLog(@"scrollViewDidEndDecelerating");
     self.selectedItemIndex = page;
 }
 
@@ -569,29 +579,11 @@
                         width:(CGFloat)width
                     marginTop:(CGFloat)marginTop
                  marginBottom:(CGFloat)marginBottom {
-    
-    if (itemSeparatorColor) {
-        if (!self.separatorLayers) {
-            self.separatorLayers = [[NSMutableArray alloc] init];
-        }
-        [self.separatorLayers removeAllObjects];
-        [self.items enumerateObjectsUsingBlock:^(YPTabItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (idx > 0) {
-                CALayer *layer = [[CALayer alloc] init];
-                layer.backgroundColor = itemSeparatorColor.CGColor;
-                layer.frame = CGRectMake(item.frame.origin.x - width / 2,
-                                         marginTop,
-                                         width,
-                                         self.bounds.size.height - marginTop - marginBottom);
-                [self.layer addSublayer:layer];
-                [self.separatorLayers addObject:layer];
-            }
-        }];
-    } else {
-        [self.separatorLayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
-        [self.separatorLayers removeAllObjects];
-        self.separatorLayers = nil;
-    }
+    self.itemSeparatorColor = itemSeparatorColor;
+    self.itemSeparatorWidth = width;
+    self.itemSeparatorMarginTop = marginTop;
+    self.itemSeparatorMarginBottom = marginBottom;
+    [self updateSeperators];
 }
 
 - (void)setItemSeparatorColor:(UIColor *)itemSeparatorColor
@@ -609,5 +601,31 @@
                           width:onePixel
                       marginTop:marginTop
                    marginBottom:marginBottom];
+}
+
+- (void)updateSeperators {
+    if (self.itemSeparatorColor) {
+        if (!self.separatorLayers) {
+            self.separatorLayers = [[NSMutableArray alloc] init];
+        }
+        [self.separatorLayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
+        [self.separatorLayers removeAllObjects];
+        [self.items enumerateObjectsUsingBlock:^(YPTabItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (idx > 0) {
+                CALayer *layer = [[CALayer alloc] init];
+                layer.backgroundColor = self.itemSeparatorColor.CGColor;
+                layer.frame = CGRectMake(item.frame.origin.x - self.itemSeparatorWidth / 2,
+                                         self.itemSeparatorMarginTop,
+                                         self.itemSeparatorWidth,
+                                         self.bounds.size.height - self.itemSeparatorMarginTop - self.itemSeparatorMarginBottom);
+                [self.layer addSublayer:layer];
+                [self.separatorLayers addObject:layer];
+            }
+        }];
+    } else {
+        [self.separatorLayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
+        [self.separatorLayers removeAllObjects];
+        self.separatorLayers = nil;
+    }
 }
 @end

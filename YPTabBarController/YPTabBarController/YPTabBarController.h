@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) YPTabBar *tabBar;
 
-@property (nonatomic, copy) NSArray *viewControllers;
+@property (nonatomic, copy) NSArray <UIViewController *> *viewControllers;
 
 /**
  *  内容视图的Frame

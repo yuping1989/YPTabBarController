@@ -52,15 +52,16 @@
 }
 
 - (void)initViewControllers {
-    FixedItemWidthTabController *controller1 = [[FixedItemWidthTabController alloc] init];
-    controller1.yp_tabItemTitle = @"固定宽度";
-    controller1.yp_tabItemImage = [UIImage imageNamed:@"tab_discover_normal"];
-    controller1.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_discover_selected"];
     
-    DynamicItemWidthTabController *controller2 = [[DynamicItemWidthTabController alloc] init];
-    controller2.yp_tabItemTitle = @"动态宽度";
-    controller2.yp_tabItemImage = [UIImage imageNamed:@"tab_message_normal"];
-    controller2.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_message_selected"];
+    DynamicItemWidthTabController *controller1 = [[DynamicItemWidthTabController alloc] init];
+    controller1.yp_tabItemTitle = @"动态宽度";
+    controller1.yp_tabItemImage = [UIImage imageNamed:@"tab_message_normal"];
+    controller1.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_message_selected"];
+    
+    FixedItemWidthTabController *controller2 = [[FixedItemWidthTabController alloc] init];
+    controller2.yp_tabItemTitle = @"固定宽度";
+    controller2.yp_tabItemImage = [UIImage imageNamed:@"tab_discover_normal"];
+    controller2.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_discover_selected"];
     
     UnscrollTabController *controller3 = [[UnscrollTabController alloc] init];
     controller3.yp_tabItemTitle = @"不滚动tab";

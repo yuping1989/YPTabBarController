@@ -100,16 +100,6 @@
         self.doubleTapView.hidden = !selected;
     }
 }
-//- (void)addDoubleTapTarget:(id)target action:(SEL)action {
-//    if (!self.doubleTapView) {
-//        self.doubleTapView = [[UIView alloc] initWithFrame:self.bounds];
-//        [self addSubview:self.doubleTapView];
-//    }
-//    
-//    UITapGestureRecognizer *doubleRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:target action:action];
-//    doubleRecognizer.numberOfTapsRequired = 2;
-//    [self.doubleTapView addGestureRecognizer:doubleRecognizer];
-//}
 
 - (void)setDoubleTapHandler:(void (^)(void))handler {
     _doubleTapHandler = handler;
@@ -202,21 +192,22 @@
                                                  context:nil].size;
             CGFloat width = ceilf(size.width) + self.numberBadgeTitleHorizonalSpace;
             CGFloat height = ceilf(size.height) + self.numberBadgeTitleVerticalSpace;
-            self.badgeButton.frame = CGRectMake(self.frame.size.width - width / 2 - self.numberBadgeCenterMarginRight,
+            width = MAX(width, height);
+            self.badgeButton.frame = CGRectMake(self.bounds.size.width - width / 2 - self.numberBadgeCenterMarginRight,
                                                 self.numberBadgeMarginTop,
                                                 width,
                                                 height);
-            self.badgeButton.layer.cornerRadius = self.badgeButton.frame.size.height / 2;
+            self.badgeButton.layer.cornerRadius = self.badgeButton.bounds.size.height / 2;
             [self.badgeButton setTitle:badgeStr forState:UIControlStateNormal];
             self.badgeButton.hidden = NO;
         }
     } else if (self.badgeStyle == YPTabItemBadgeStyleDot) {
         [self.badgeButton setTitle:nil forState:UIControlStateNormal];
-        self.badgeButton.frame = CGRectMake(self.frame.size.width - self.dotBadgeCenterMarginRight - self.dotBadgeSideLength,
+        self.badgeButton.frame = CGRectMake(self.bounds.size.width - self.dotBadgeCenterMarginRight - self.dotBadgeSideLength,
                                             self.dotBadgeMarginTop,
                                             self.dotBadgeSideLength,
                                             self.dotBadgeSideLength);
-        self.badgeButton.layer.cornerRadius = self.badgeButton.frame.size.height / 2;
+        self.badgeButton.layer.cornerRadius = self.badgeButton.bounds.size.height / 2;
         self.badgeButton.hidden = NO;
     }
 }

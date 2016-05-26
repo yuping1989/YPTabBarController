@@ -29,11 +29,11 @@
     button.frame = CGRectMake(100, 100, 100, 50);
     [button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
 
-    
+//    [self.view addSubview:button];
     NSLog(@"viewDidLoad--->%@", self.yp_tabItemTitle);
 }
 - (void)buttonClicked:(UIButton *)button {
-    self.yp_tabBarController.tabBar.itemTitleSelectedFont = [UIFont systemFontOfSize:30];
+//    self.yp_tabBarController.contentViewFrame = CGRectMake(0, 64, 300, 500);
 }
 
 
