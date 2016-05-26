@@ -7,7 +7,7 @@ pod 'YPTabBarController'<br>
 直接将YPTabBarController文件夹拖入工程。
 
 ##功能介绍：
-功能强大的自定义TabBarController，可以自定义：
+功能强大的自定义TabBarController，可以自定义：<br>
 1. 替代系统的UITabBarController，以下属性均可自定义：<br>
     a) TabBar：位置、大小、边框、圆角、分割线、内容支持滚动等；<br>
     b) TabItem：图像、选中背景、title字体、title颜色等，均包含选中和未选中两种状态；<br>
@@ -18,15 +18,21 @@ pod 'YPTabBarController'<br>
 
 ##效果展示：
          
-1. 固定宽度的TabItem：<br>
-![](https://github.com/yuping1989/YPTabBarController/blob/master/YPTabBarController/Demo/FixedItemWidthTab.gif) 
-2. 根据TabItem的字体确认宽度的TabItem：<br>
+1. 根据TabItem的字体确认宽度的TabItem：<br>
 ![](https://github.com/yuping1989/YPTabBarController/blob/master/YPTabBarController/Demo/DynamicItemWidthTab.gif)
+<br>
+2. 固定宽度的TabItem：<br>
+![](https://github.com/yuping1989/YPTabBarController/blob/master/YPTabBarController/Demo/FixedItemWidthTab.gif) 
+<br>
 3. 内容视图不可滚动，TabItem选中背景支持切换动画：<br>
 ![](https://github.com/yuping1989/YPTabBarController/blob/master/YPTabBarController/Demo/UnscrollTab.gif) 
+<br>
 4. 系统Segment：<br>
 ![](https://github.com/yuping1989/YPTabBarController/blob/master/YPTabBarController/Demo/SegmentTab.gif) 
 
 ##使用方法
 使用方法参见Demo
 
+##TODO
+1. 支持方QQ的课拖拽消失的Badge<br>
+2. 支持插入和删除ViewController<br>
