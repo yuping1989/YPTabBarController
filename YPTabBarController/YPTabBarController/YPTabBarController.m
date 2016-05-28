@@ -176,7 +176,9 @@
             [curController viewWillAppear:NO];
         }
         // 切换到curController
-        [self.scrollView scrollRectToVisible:curController.view.frame animated:self.contentSwitchAnimated];
+        
+        // 这句滑动在不准确的计算下会造成view上跳，跳出屏幕的bug，而且需要点击一下才能恢复。去掉后可正常使用
+//        [self.scrollView scrollRectToVisible:curController.view.frame animated:self.contentSwitchAnimated];
     } else {
         // contentView不支持滚动
         // 将oldController的view移除
