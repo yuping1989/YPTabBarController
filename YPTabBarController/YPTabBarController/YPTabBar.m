@@ -174,7 +174,8 @@
             x += width;
             [self.scrollView addSubview:item];
         }
-        self.scrollView.contentSize = CGSizeMake(x + self.leftAndRightSpacing, self.scrollView.frame.size.height);
+        self.scrollView.contentSize = CGSizeMake(MAX(x + self.leftAndRightSpacing, self.scrollView.frame.size.width),
+                                                 self.scrollView.frame.size.height);
     } else {
         // 不支持滚动
         
