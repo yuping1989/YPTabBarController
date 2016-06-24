@@ -130,9 +130,6 @@
 }
 
 - (void)updateContentViewsFrame {
-    if (!_didViewAppeared) {
-        return;
-    }
     if (self.scrollView) {
         self.scrollView.frame = self.contentViewFrame;
         self.scrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * _viewControllers.count,
