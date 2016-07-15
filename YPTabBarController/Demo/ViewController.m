@@ -10,6 +10,7 @@
 #import "YPTabBarController.h"
 #import "RootTabController.h"
 @interface ViewController ()
+@property (nonatomic, weak) IBOutlet UILabel *label;
 
 @end
 
@@ -18,10 +19,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    UILabel *label = [[UILabel alloc] initWithFrame:self.view.bounds];
-    label.text = self.yp_tabItemTitle;
-    label.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:label];
+//    UILabel *label = [[UILabel alloc] initWithFrame:self.view.bounds];
+    self.label.text = self.yp_tabItemTitle;
     
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -34,33 +33,34 @@
 }
 - (void)buttonClicked:(UIButton *)button {
 //    self.yp_tabBarController.contentViewFrame = CGRectMake(0, 64, 300, 500);
+    
 }
 
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    NSLog(@"viewWillAppear--->%@", self.yp_tabItemTitle);
-}
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    NSLog(@"viewDidAppear--->%@", self.yp_tabItemTitle);
-}
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    NSLog(@"viewWillDisappear--->%@", self.yp_tabItemTitle);
-}
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    NSLog(@"viewDidDisappear--->%@", self.yp_tabItemTitle);
-}
-
-- (void)tabItemDidDeselected {
-    NSLog(@"Deselected--->%@", self.yp_tabItemTitle);
-}
-
-- (void)tabItemDidSelected {
-    NSLog(@"Selected--->%@", self.yp_tabItemTitle);
-}
+//- (void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
+//    NSLog(@"viewWillAppear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
+//}
+//- (void)viewDidAppear:(BOOL)animated {
+//    [super viewDidAppear:animated];
+//    NSLog(@"viewDidAppear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
+//}
+//- (void)viewWillDisappear:(BOOL)animated {
+//    [super viewWillDisappear:animated];
+//    NSLog(@"viewWillDisappear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
+//}
+//- (void)viewDidDisappear:(BOOL)animated {
+//    [super viewDidDisappear:animated];
+//    NSLog(@"viewDidDisappear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
+//}
+//
+//- (void)tabItemDidDeselected {
+//    NSLog(@"Deselected--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
+//}
+//
+//- (void)tabItemDidSelected {
+//    NSLog(@"Selected--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

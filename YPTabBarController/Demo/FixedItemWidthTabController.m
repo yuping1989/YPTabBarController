@@ -20,8 +20,8 @@
     
     
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    self.contentViewFrame = CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - 50);
-    self.tabBar.frame = CGRectMake(0, 20, screenSize.width, 44);
+    [self setTabBarFrame:CGRectMake(0, 20, screenSize.width, 44)
+        contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - 50)];
 
     self.tabBar.itemTitleColor = [UIColor lightGrayColor];
     self.tabBar.itemTitleSelectedColor = [UIColor redColor];
@@ -73,4 +73,5 @@
     self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, controller5, controller6, controller7, nil];
     
 }
+
 @end

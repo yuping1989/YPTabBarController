@@ -39,6 +39,8 @@
 }
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
+    
     self.badgeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.badgeButton.userInteractionEnabled = NO;
     self.badgeButton.clipsToBounds = YES;
@@ -46,17 +48,11 @@
     
     _badgeStyle = YPTabItemBadgeStyleNumber;
     self.badge = 0;
-
-//    _verticalOffset = 5;
-//    _spacing = 5;
-//    _contentHorizontalCenter = YES;
-//    self.badgeTitleColor = [UIColor whiteColor];
-//    self.badgeTitleFont = [UIFont systemFontOfSize:13];
-//    self.badgeBackgroundColor = BADGE_BG_COLOR_DEFAULT;
-//    self.numberBadgeFrame = YPTabItemBadgeFrameMake(2, 20, 16);
-//    self.dotBadgeFrame = YPTabItemBadgeFrameMake(5, 25, 10);
 }
 
+/**
+ *  覆盖父类的setHighlighted:方法，按下YPTabItem时，不高亮该item
+ */
 - (void)setHighlighted:(BOOL)highlighted {
     
 }
@@ -161,7 +157,6 @@
     [self setImage:selectedImage forState:UIControlStateSelected];
 }
 
-
 #pragma mark - Badge
 
 - (void)setBadge:(NSInteger)badge {
@@ -186,13 +181,19 @@
                 badgeStr = @"-99+";
             }
             
+            // 计算badgeStr的size
             CGSize size = [badgeStr boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
                                                  options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                               attributes:@{NSFontAttributeName : self.badgeButton.titleLabel.font}
                                                  context:nil].size;
+            // 计算badgeButton的宽度和高度
             CGFloat width = ceilf(size.width) + self.numberBadgeTitleHorizonalSpace;
             CGFloat height = ceilf(size.height) + self.numberBadgeTitleVerticalSpace;
+            
+            // 宽度取width和height的较大值，使badge为个位数时，badgeButton为圆形
             width = MAX(width, height);
+            
+            // 设置badgeButton的frame
             self.badgeButton.frame = CGRectMake(self.bounds.size.width - width / 2 - self.numberBadgeCenterMarginRight,
                                                 self.numberBadgeMarginTop,
                                                 width,
@@ -253,4 +254,5 @@
     self.badgeButton.titleLabel.font = badgeTitleFont;
     [self updateBadge];
 }
+
 @end

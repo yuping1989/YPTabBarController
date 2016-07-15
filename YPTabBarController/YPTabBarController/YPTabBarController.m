@@ -29,16 +29,9 @@
     return self;
 }
 
-
-- (instancetype)initWithCoder:(NSCoder *)coder {
-    self = [super initWithCoder:coder];
-    if (self) {
-        
-    }
-    return self;
-}
-
 - (void)awakeFromNib {
+    [super awakeFromNib];
+    
     _selectedControllerIndex = -1;
     _tabBar = [[YPTabBar alloc] init];
     _tabBar.delegate = self;
@@ -49,38 +42,57 @@
     
     // 设置默认的tabBar frame
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    CGFloat navigationAndStatusBarHeight = 0;
-    if (self.navigationController) {
-        navigationAndStatusBarHeight = self.navigationController.navigationBar.frame.size.height + 20;
+
+    CGFloat contentViewY = 0;
+    CGFloat tabBarY = screenSize.height - TAB_BAR_HEIGHT;
+    CGFloat contentViewHeight = tabBarY;
+    if ([self.parentViewController isKindOfClass:[UINavigationController class]]) {
+        if (!self.navigationController.navigationBarHidden &&
+            !self.navigationController.navigationBar.hidden) {
+            
+            CGFloat navMaxY = CGRectGetMaxY(self.navigationController.navigationBar.frame);
+            if (self.navigationController.navigationBar.translucent) {
+                contentViewY = navMaxY;
+                contentViewHeight = screenSize.height - TAB_BAR_HEIGHT - contentViewY;
+            } else {
+                tabBarY = screenSize.height - TAB_BAR_HEIGHT - contentViewY - navMaxY;
+                contentViewHeight = tabBarY;
+            }
+        }
     }
-    self.tabBar.frame = CGRectMake(0,
-                                   screenSize.height - TAB_BAR_HEIGHT - navigationAndStatusBarHeight,
-                                   screenSize.width,
-                                   TAB_BAR_HEIGHT);
-    [self.view addSubview:self.tabBar];
     
-    // 设置默认的contentViewFrame
-    self.contentViewFrame = CGRectMake(0,
-                                       0,
-                                       screenSize.width,
-                                       screenSize.height - TAB_BAR_HEIGHT - navigationAndStatusBarHeight);
+    
+    [self setTabBarFrame:CGRectMake(0, tabBarY, screenSize.width, TAB_BAR_HEIGHT)
+        contentViewFrame:CGRectMake(0, contentViewY, screenSize.width, contentViewHeight)];
+    
     self.view.clipsToBounds = YES;
     self.view.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.tabBar];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    // 在第一次调用viewWillAppear方法时，初始化选中的item
     if (!_didViewAppeared) {
         self.tabBar.selectedItemIndex = 0;
         _didViewAppeared = YES;
     }
 }
 
+- (void)setTabBarFrame:(CGRect)tabBarFrame contentViewFrame:(CGRect)contentViewFrame {
+    self.tabBar.frame = tabBarFrame;
+    _contentViewFrame = contentViewFrame;
+    [self updateContentViewsFrame];
+}
+
 - (void)setViewControllers:(NSArray *)viewControllers {
+    
     for (UIViewController *controller in self.viewControllers) {
         [controller removeFromParentViewController];
         [controller.view removeFromSuperview];
     }
+    
     _viewControllers = [viewControllers copy];
     [_viewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [self addChildViewController:obj];
@@ -95,8 +107,8 @@
         [items addObject:item];
     }
     self.tabBar.items = items;
+    
     if (_didViewAppeared) {
-        NSLog(@"asdfasdf");
         _selectedControllerIndex = -1;
         self.tabBar.selectedItemIndex = 0;
     }
@@ -106,11 +118,6 @@
         self.scrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * _viewControllers.count,
                                                  self.contentViewFrame.size.height);
     }
-}
-
-- (void)setContentViewFrame:(CGRect)contentViewFrame {
-    _contentViewFrame = contentViewFrame;
-    [self updateContentViewsFrame];
 }
 
 - (void)setContentScrollEnabledAndTapSwitchAnimated:(BOOL)switchAnimated {
@@ -269,4 +276,5 @@
 - (void)tabItemDidDeselected {
     
 }
+
 @end

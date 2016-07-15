@@ -18,7 +18,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     RootTabController *controller = [[RootTabController alloc] init];
-    self.window.rootViewController = controller;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.navigationBarHidden = YES;
+    self.window.rootViewController = navController;
     [self.window makeKeyAndVisible];
     return YES;
 }

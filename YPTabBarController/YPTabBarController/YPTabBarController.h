@@ -12,14 +12,14 @@
 
 @interface YPTabBarController : UIViewController <YPTabBarDelegate>
 
-@property (nonatomic, strong) YPTabBar *tabBar;
+@property (nonatomic, strong, readonly) YPTabBar *tabBar;
 
 @property (nonatomic, copy) NSArray <UIViewController *> *viewControllers;
 
 /**
  *  内容视图的Frame
  */
-@property (nonatomic, assign) CGRect contentViewFrame;
+@property (nonatomic, assign, readonly) CGRect contentViewFrame;
 
 /**
  *  被选中的ViewController的Index
@@ -27,9 +27,11 @@
 @property (nonatomic, assign, readonly) NSInteger selectedControllerIndex;
 
 /**
- *  获取被选中的ViewController
+ *  设置tabBar和contentView的frame
+ *  
  */
-- (UIViewController *)selectedController;
+- (void)setTabBarFrame:(CGRect)tabBarFrame contentViewFrame:(CGRect)contentViewFrame;
+
 
 /**
  *  设置内容视图支持滑动切换，以及点击item切换时是否有动画
@@ -37,6 +39,11 @@
  *  @param animated  点击切换时是否支持动画
  */
 - (void)setContentScrollEnabledAndTapSwitchAnimated:(BOOL)animated;
+
+/**
+ *  获取被选中的ViewController
+ */
+- (UIViewController *)selectedController;
 
 @end
 
@@ -58,4 +65,5 @@
  *  ViewController对应的Tab被Deselect后，执行此方法
  */
 - (void)tabItemDidDeselected;
+
 @end

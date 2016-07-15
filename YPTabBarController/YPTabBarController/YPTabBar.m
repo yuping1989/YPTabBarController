@@ -7,36 +7,56 @@
 //
 
 #import "YPTabBar.h"
-#define BADGE_BG_COLOR_DEFAULT [UIColor colorWithRed:252 / 255.0f green:15 / 255.0f blue:29 / 255.0f alpha:1.0f]
-@interface YPTabBar ()<UIScrollViewDelegate>
 
+#define BADGE_BG_COLOR_DEFAULT [UIColor colorWithRed:252 / 255.0f green:15 / 255.0f blue:29 / 255.0f alpha:1.0f]
+
+@interface YPTabBar ()
+
+// 当TabBar支持滚动时，使用此scrollView
 @property (nonatomic, strong) UIScrollView *scrollView;
+
+// 选中背景
 @property (nonatomic, strong) UIImageView *itemSelectedBgImageView;
 
-@property (nonatomic, assign) BOOL itemSelectedBgSwitchAnimated;  // TabItem选中切换时，是否显示动画
+// 选中背景相对于YPTabItem的insets
 @property (nonatomic, assign) UIEdgeInsets itemSelectedBgInsets;
+
+// TabItem选中切换时，是否显示动画
+@property (nonatomic, assign) BOOL itemSelectedBgSwitchAnimated;
+
+// Item是否匹配title的文字宽度
 @property (nonatomic, assign) BOOL itemFitTextWidth;
-//@property (nonatomic, assign) BOOL scrollEnabled;
+
+// 当Item匹配title的文字宽度时，左右留出的空隙，item的宽度 = 文字宽度 + spacing
 @property (nonatomic, assign) CGFloat itemFitTextWidthSpacing;
+
+// item的宽度
 @property (nonatomic, assign) CGFloat itemWidth;
+
+// item的内容水平居中时，image与顶部的距离
 @property (nonatomic, assign) CGFloat itemContentHorizontalCenterVerticalOffset;
+
+// item的内容水平居中时，title与image的距离
 @property (nonatomic, assign) CGFloat itemContentHorizontalCenterSpacing;
 
-@property (nonatomic, strong) NSMutableArray *separatorLayers;
-
+// 数字样式的badge相关属性
 @property (nonatomic, assign) CGFloat numberBadgeMarginTop;
 @property (nonatomic, assign) CGFloat numberBadgeCenterMarginRight;
 @property (nonatomic, assign) CGFloat numberBadgeTitleHorizonalSpace;
 @property (nonatomic, assign) CGFloat numberBadgeTitleVerticalSpace;
 
+// 小圆点样式的badge相关属性
 @property (nonatomic, assign) CGFloat dotBadgeMarginTop;
 @property (nonatomic, assign) CGFloat dotBadgeCenterMarginRight;
 @property (nonatomic, assign) CGFloat dotBadgeSideLength;
 
+// 分割线相关属性
+@property (nonatomic, strong) NSMutableArray *separatorLayers;
 @property (nonatomic, strong) UIColor *itemSeparatorColor;
 @property (nonatomic, assign) CGFloat itemSeparatorWidth;
 @property (nonatomic, assign) CGFloat itemSeparatorMarginTop;
 @property (nonatomic, assign) CGFloat itemSeparatorMarginBottom;
+
 @end
 
 @implementation YPTabBar
@@ -50,6 +70,8 @@
 }
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
+    
     self.backgroundColor = [UIColor whiteColor];
     _selectedItemIndex = -1;
     _itemTitleColor = [UIColor whiteColor];
@@ -65,9 +87,6 @@
     _badgeTitleFont = [UIFont systemFontOfSize:13];
     _badgeBackgroundColor = BADGE_BG_COLOR_DEFAULT;
     
-//    _numberBadgeFrame = YPTabItemBadgeFrameMake(2, 30, 16);
-//    _dotBadgeFrame = YPTabItemBadgeFrameMake(5, 25, 10);
-    
     _numberBadgeMarginTop = 2;
     _numberBadgeCenterMarginRight = 30;
     _numberBadgeTitleHorizonalSpace = 8;
@@ -82,9 +101,16 @@
 
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
+    
+    // 更新items的frame
     [self updateItemsFrame];
+    
+    // 更新选中背景的frame
     [self updateFrameOfSelectedBgWithIndex:self.selectedItemIndex];
+    
+    // 更新分割线
     [self updateSeperators];
+    
     if (self.scrollView) {
         self.scrollView.frame = self.bounds;
     }
@@ -153,8 +179,8 @@
         
         [self.scrollView addSubview:self.itemSelectedBgImageView];
         CGFloat x = self.leftAndRightSpacing;
-        for (int i = 0; i < self.items.count; i++) {
-            YPTabItem *item = self.items[i];
+        for (NSInteger index = 0; index < self.items.count; index++) {
+            YPTabItem *item = self.items[index];
             CGFloat width = 0;
             // item的宽度为一个固定值
             if (self.itemWidth > 0) {
@@ -170,7 +196,7 @@
             }
             
             item.frame = CGRectMake(x, 0, width, self.frame.size.height);
-            item.index = i;
+            item.index = index;
             x += width;
             [self.scrollView addSubview:item];
         }
@@ -182,10 +208,10 @@
         [self addSubview:self.itemSelectedBgImageView];
         CGFloat x = self.leftAndRightSpacing;
         CGFloat itemWidth = (self.frame.size.width - self.leftAndRightSpacing * 2) / self.items.count;
-        for (int i = 0; i < self.items.count; i++) {
-            YPTabItem *item = self.items[i];
+        for (NSInteger index = 0; index < self.items.count; index++) {
+            YPTabItem *item = self.items[index];
             item.frame = CGRectMake(x, 0, itemWidth, self.frame.size.height);
-            item.index = i;
+            item.index = index;
             
             x += itemWidth;
             [self addSubview:item];
@@ -223,7 +249,6 @@
         }
     }
     
-    NSLog(@"itemSelectedBgScrollFollowContent-->%d", self.itemSelectedBgScrollFollowContent);
     if (self.itemSelectedBgScrollFollowContent) {
         // item的选中背景位置会跟随contentView的拖动进行变化
         if (_selectedItemIndex < 0) {
@@ -246,10 +271,14 @@
         [self.delegate yp_tabBar:self didSelectedItemAtIndex:selectedItemIndex];
     }
     _selectedItemIndex = selectedItemIndex;
+    
     // 如果tabbar支持滚动，将选中的item放到tabbar的中央
     [self setSelectedItemCenter];
 }
 
+/**
+ *  更新选中背景的frame
+ */
 - (void)updateFrameOfSelectedBgWithIndex:(NSInteger)index {
     if (index < 0) {
         return;
@@ -435,7 +464,7 @@
     }
 }
 
-#pragma mark - ItemContent
+#pragma mark - Item Content
 
 - (void)setItemContentHorizontalCenter:(BOOL)itemContentHorizontalCenter {
     _itemContentHorizontalCenter = itemContentHorizontalCenter;
@@ -459,6 +488,7 @@
 }
 
 #pragma mark - Badge
+
 - (void)setBadgeBackgroundColor:(UIColor *)badgeBackgroundColor {
     _badgeBackgroundColor = badgeBackgroundColor;
     [self.items makeObjectsPerformSelector:@selector(setBadgeBackgroundColor:) withObject:badgeBackgroundColor];
@@ -483,6 +513,11 @@
               centerMarginRight:(CGFloat)centerMarginRight
             titleHorizonalSpace:(CGFloat)titleHorizonalSpace
              titleVerticalSpace:(CGFloat)titleVerticalSpace {
+    self.numberBadgeMarginTop = marginTop;
+    self.numberBadgeCenterMarginRight = centerMarginRight;
+    self.numberBadgeTitleHorizonalSpace = titleHorizonalSpace;
+    self.numberBadgeTitleVerticalSpace = titleVerticalSpace;
+    
     for (YPTabItem *item in self.items) {
         [item setNumberBadgeMarginTop:marginTop
                     centerMarginRight:centerMarginRight
@@ -494,6 +529,10 @@
 - (void)setDotBadgeMarginTop:(CGFloat)marginTop
            centerMarginRight:(CGFloat)centerMarginRight
                   sideLength:(CGFloat)sideLength {
+    self.dotBadgeMarginTop = marginTop;
+    self.dotBadgeCenterMarginRight = centerMarginRight;
+    self.dotBadgeSideLength = sideLength;
+    
     for (YPTabItem *item in self.items) {
         [item setDotBadgeMarginTop:marginTop
                  centerMarginRight:centerMarginRight
@@ -505,7 +544,6 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     NSInteger page = scrollView.contentOffset.x / scrollView.frame.size.width;
-    NSLog(@"scrollViewDidEndDecelerating");
     self.selectedItemIndex = page;
 }
 
@@ -522,7 +560,7 @@
     NSInteger leftIndex = offsetX / scrollViewWidth;
     NSInteger rightIndex = leftIndex + 1;
     YPTabItem *leftItem = self.items[leftIndex];
-    YPTabItem *rightItem;
+    YPTabItem *rightItem = nil;
     if (rightIndex < self.items.count) {
         rightItem = self.items[rightIndex];
     }
@@ -535,21 +573,26 @@
     
     if (scrollView.isDragging || scrollView.isDecelerating) {
         if (self.itemFontChangeFollowContentScroll && self.itemTitleUnselectedFontScale != 1.0f) {
+            // 如果支持title大小跟随content的拖动进行变化，并且未选中字体和已选中字体的大小不一致
+            
+            // 计算字体大小的差值
             CGFloat diff = self.itemTitleUnselectedFontScale - 1;
+            // 根据偏移量和差值，计算缩放值
             leftItem.transform = CGAffineTransformMakeScale(rightScale * diff + 1, rightScale * diff + 1);
             rightItem.transform = CGAffineTransformMakeScale(leftScale * diff + 1, leftScale * diff + 1);
         }
         
         if (self.itemColorChangeFollowContentScroll) {
-            static CGFloat normalRed, normalGreen, normalBlue;
-            static CGFloat selectedRed, selectedGreen, selectedBlue;
+            CGFloat normalRed, normalGreen, normalBlue;
+            CGFloat selectedRed, selectedGreen, selectedBlue;
+            
             [self.itemTitleColor getRed:&normalRed green:&normalGreen blue:&normalBlue alpha:nil];
             [self.itemTitleSelectedColor getRed:&selectedRed green:&selectedGreen blue:&selectedBlue alpha:nil];
             // 获取选中和未选中状态的颜色差值
             CGFloat redDiff = selectedRed - normalRed;
             CGFloat greenDiff = selectedGreen - normalGreen;
             CGFloat blueDiff = selectedBlue - normalBlue;
-            // 根据颜色值的差和偏移量，设置tabItem的标题颜色
+            // 根据颜色值的差值和偏移量，设置tabItem的标题颜色
             leftItem.titleLabel.textColor = [UIColor colorWithRed:leftScale * redDiff + normalRed
                                                             green:leftScale * greenDiff + normalGreen
                                                              blue:leftScale * blueDiff + normalBlue
@@ -576,6 +619,7 @@
 }
 
 #pragma mark - Separator
+
 - (void)setItemSeparatorColor:(UIColor *)itemSeparatorColor
                         width:(CGFloat)width
                     marginTop:(CGFloat)marginTop
@@ -629,4 +673,5 @@
         self.separatorLayers = nil;
     }
 }
+
 @end

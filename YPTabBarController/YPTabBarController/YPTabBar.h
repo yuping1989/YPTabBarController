@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "YPTabItem.h"
+
 @class YPTabBar;
+
 @protocol YPTabBarDelegate <NSObject>
 
 @optional
+
 - (BOOL)yp_tabBar:(YPTabBar *)tabBar willSelectItemAtIndex:(NSInteger)index;
 - (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index;
 
@@ -19,26 +22,25 @@
 
 @interface YPTabBar : UIView <UIScrollViewDelegate>
 
-@property (nonatomic, copy) NSArray<YPTabItem *> *items; // TabItems
+@property (nonatomic, copy) NSArray <YPTabItem *> *items;           // TabItems
 
-// 设置item选中背景
-@property (nonatomic, strong) UIColor *itemSelectedBgColor;
-@property (nonatomic, strong) UIImage *itemSelectedBgImage;
-@property (nonatomic, assign) CGFloat itemSelectedBgCornerRadius;
+@property (nonatomic, strong) UIColor *itemSelectedBgColor;         // item选中背景颜色
+@property (nonatomic, strong) UIImage *itemSelectedBgImage;         // item选中背景图像
+@property (nonatomic, assign) CGFloat itemSelectedBgCornerRadius;   // item选中背景圆角
 
-@property (nonatomic, assign) CGFloat leftAndRightSpacing; // TabBar边缘与第一个和最后一个item的距离
+@property (nonatomic, strong) UIColor *itemTitleColor;              // 标题颜色
+@property (nonatomic, strong) UIColor *itemTitleSelectedColor;      // 选中时标题的颜色
+@property (nonatomic, strong) UIFont  *itemTitleFont;               // 标题字体
+@property (nonatomic, strong) UIFont  *itemTitleSelectedFont;       // 选中时标题的字体
 
-@property (nonatomic, strong) UIColor *itemTitleColor; // 标题颜色
-@property (nonatomic, strong) UIColor *itemTitleSelectedColor; // 选中时标题的颜色
-@property (nonatomic, strong) UIFont *itemTitleFont; // 标题字体
-@property (nonatomic, strong) UIFont *itemTitleSelectedFont; // 选中时标题的字体
+@property (nonatomic, strong) UIColor *badgeBackgroundColor;        // Badge背景颜色
+@property (nonatomic, strong) UIImage *badgeBackgroundImage;        // Badge背景图像
+@property (nonatomic, strong) UIColor *badgeTitleColor;             // Badge标题颜色
+@property (nonatomic, strong) UIFont  *badgeTitleFont;              // Badge标题字体
 
-@property (nonatomic, strong) UIColor *badgeBackgroundColor; // Badge背景颜色
-@property (nonatomic, strong) UIImage *badgeBackgroundImage; // Badge背景图像
-@property (nonatomic, strong) UIColor *badgeTitleColor; // Badge标题颜色
-@property (nonatomic, strong) UIFont *badgeTitleFont; // Badge标题字体
+@property (nonatomic, assign) CGFloat leftAndRightSpacing;          // TabBar边缘与第一个和最后一个item的距离
 
-@property (nonatomic, assign) NSInteger selectedItemIndex; // 选中某一个item
+@property (nonatomic, assign) NSInteger selectedItemIndex;          // 选中某一个item
 
 
 /**
@@ -109,10 +111,10 @@
 /**
  *  设置数字Badge的位置与大小
  *
- *  @param marginTop            与TabItem顶部的距离
- *  @param centerMarginRight    badge的中心与TabItem右侧的距离
- *  @param titleHorizonalSpace  Badge的标题水平方向的空间
- *  @param titleVerticalSpace   Badge的标题竖直方向的空间
+ *  @param marginTop            与TabItem顶部的距离，默认为：2
+ *  @param centerMarginRight    中心与TabItem右侧的距离，默认为：30
+ *  @param titleHorizonalSpace  标题水平方向的空间，默认为：8
+ *  @param titleVerticalSpace   标题竖直方向的空间，默认为：2
  */
 - (void)setNumberBadgeMarginTop:(CGFloat)marginTop
               centerMarginRight:(CGFloat)centerMarginRight
@@ -121,9 +123,9 @@
 /**
  *  设置小圆点Badge的位置与大小
  *
- *  @param marginTop            与TabItem顶部的距离
- *  @param centerMarginRight    badge的中心与TabItem右侧的距离
- *  @param sideLength           小圆点的边长
+ *  @param marginTop            与TabItem顶部的距离，默认为：5
+ *  @param centerMarginRight    中心与TabItem右侧的距离，默认为：25
+ *  @param sideLength           小圆点的边长，默认为：10
  */
 - (void)setDotBadgeMarginTop:(CGFloat)marginTop
            centerMarginRight:(CGFloat)centerMarginRight
@@ -145,4 +147,5 @@
 - (void)setItemSeparatorColor:(UIColor *)itemSeparatorColor
                     marginTop:(CGFloat)marginTop
                  marginBottom:(CGFloat)marginBottom;
+
 @end

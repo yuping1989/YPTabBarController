@@ -19,10 +19,14 @@ typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
 @interface YPTabItem : UIButton
 
 /**
- *  item在tabBar中的index
+ *  item在tabBar中的index，此属性不能手动设置
  */
 @property (nonatomic, assign) NSInteger index;
 
+/**
+ *  用于记录tabItem在缩放前的frame，
+ *  在YPTabBar的属性itemFontChangeFollowContentScroll == YES时会用到
+ */
 @property (nonatomic, assign, readonly) CGRect frameWithOutTransform;
 
 @property (nonatomic, copy) NSString *title;
@@ -34,13 +38,16 @@ typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
 @property (nonatomic, strong) UIImage *selectedImage;
 
 /**
+ *  当badgeStyle == YPTabItemBadgeStyleNumber时，可以设置此属性，显示badge数值
  *  badge > 99，显示99+
- *  badge <= 99 && badge > 0，显示具体数值
- *  badge == 0，隐藏badge
- *  badge < 0，显示一个小圆点，即YPTabItemBadgeStyleDot
+ *  badge <= 99 && badge > -99，显示具体数值
+ *  badge < -99，显示-99+
  */
 @property (nonatomic, assign) NSInteger badge;
 
+/**
+ *  badge的样式，支持数字样式和小圆点
+ */
 @property (nonatomic, assign) YPTabItemBadgeStyle badgeStyle;
 
 /**
@@ -85,9 +92,9 @@ typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
  *  设置数字Badge的位置
  *
  *  @param marginTop            与TabItem顶部的距离
- *  @param centerMarginRight    badge的中心与TabItem右侧的距离
- *  @param titleHorizonalSpace  Badge的标题水平方向的空间
- *  @param titleVerticalSpace   Badge的标题竖直方向的空间
+ *  @param centerMarginRight    中心与TabItem右侧的距离
+ *  @param titleHorizonalSpace  标题水平方向的空间
+ *  @param titleVerticalSpace   标题竖直方向的空间
  */
 - (void)setNumberBadgeMarginTop:(CGFloat)marginTop
               centerMarginRight:(CGFloat)centerMarginRight
@@ -97,7 +104,7 @@ typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
  *  设置小圆点Badge的位置
  *
  *  @param marginTop            与TabItem顶部的距离
- *  @param centerMarginRight    badge的中心与TabItem右侧的距离
+ *  @param centerMarginRight    中心与TabItem右侧的距离
  *  @param sideLength           小圆点的边长
  */
 - (void)setDotBadgeMarginTop:(CGFloat)marginTop

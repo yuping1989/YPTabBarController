@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ViewController">
             <connections>
+                <outlet property="label" destination="GY1-RG-W8z" id="m4w-B8-ZuV"/>
                 <outlet property="view" destination="NR1-B2-tt7" id="wyw-bR-ne4"/>
             </connections>
         </placeholder>
@@ -14,7 +15,23 @@
         <view contentMode="scaleToFill" id="NR1-B2-tt7">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GY1-RG-W8z">
+                    <rect key="frame" x="118" y="323" width="138" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="9Ld-Eb-Dhw"/>
+                        <constraint firstAttribute="width" constant="138" id="Yzf-Lz-Kzt"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
             <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="GY1-RG-W8z" firstAttribute="centerY" secondItem="NR1-B2-tt7" secondAttribute="centerY" id="d0g-QU-626"/>
+                <constraint firstItem="GY1-RG-W8z" firstAttribute="centerX" secondItem="NR1-B2-tt7" secondAttribute="centerX" id="dCS-D0-5g0"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
             <point key="canvasLocation" x="479.5" y="270.5"/>
         </view>

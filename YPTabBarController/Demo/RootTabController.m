@@ -18,17 +18,10 @@
 @end
 
 @implementation RootTabController
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        
-    }
-    return self;
-}
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
     
+    [super viewDidLoad];
     
     [self initViewControllers];
     self.tabBar.backgroundColor = [UIColor lightGrayColor];
@@ -41,6 +34,9 @@
     controller2.yp_tabItem.badge = 88;
     controller3.yp_tabItem.badge = 120;
     controller4.yp_tabItem.badgeStyle = YPTabItemBadgeStyleDot;
+    
+    
+    NSLog(@"%@ %@", NSStringFromCGRect(self.tabBar.frame), NSStringFromCGRect(self.contentViewFrame));
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -73,8 +69,13 @@
     controller4.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
     controller4.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
     
+    ViewController *controller5 = [[ViewController alloc] init];
+    controller5.yp_tabItemTitle = @"系统Segment";
+    controller5.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
+    controller5.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
     
-    self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, nil];
+    
+    self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, controller5, nil];
 }
 
 /*
