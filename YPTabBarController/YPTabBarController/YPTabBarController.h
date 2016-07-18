@@ -19,7 +19,7 @@
 /**
  *  内容视图的Frame
  */
-@property (nonatomic, assign, readonly) CGRect contentViewFrame;
+@property (nonatomic, assign) CGRect contentViewFrame;
 
 /**
  *  被选中的ViewController的Index
