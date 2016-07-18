@@ -82,10 +82,14 @@
     }
 }
 
-- (void)setTabBarFrame:(CGRect)tabBarFrame contentViewFrame:(CGRect)contentViewFrame {
-    self.tabBar.frame = tabBarFrame;
+- (void)setContentViewFrame:(CGRect)contentViewFrame {
     _contentViewFrame = contentViewFrame;
     [self updateContentViewsFrame];
+}
+
+- (void)setTabBarFrame:(CGRect)tabBarFrame contentViewFrame:(CGRect)contentViewFrame {
+    self.tabBar.frame = tabBarFrame;
+    self.contentViewFrame = contentViewFrame;
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers {
