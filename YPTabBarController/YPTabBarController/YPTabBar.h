@@ -22,7 +22,10 @@
 
 @interface YPTabBar : UIView <UIScrollViewDelegate>
 
-@property (nonatomic, copy) NSArray <YPTabItem *> *items;           // TabItems
+/**
+ *  TabItems，提供给YPTabBarController使用，一般不手动设置此属性
+ */
+@property (nonatomic, copy) NSArray <YPTabItem *> *items;
 
 @property (nonatomic, strong) UIColor *itemSelectedBgColor;         // item选中背景颜色
 @property (nonatomic, strong) UIImage *itemSelectedBgImage;         // item选中背景图像
@@ -109,7 +112,8 @@
                                                  spacing:(CGFloat)spacing;
 
 /**
- *  设置数字Badge的位置与大小
+ *  设置数字Badge的位置与大小。
+ *  默认marginTop = 2，centerMarginRight = 30，titleHorizonalSpace = 8，titleVerticalSpace = 2。
  *
  *  @param marginTop            与TabItem顶部的距离，默认为：2
  *  @param centerMarginRight    中心与TabItem右侧的距离，默认为：30
@@ -121,7 +125,8 @@
             titleHorizonalSpace:(CGFloat)titleHorizonalSpace
              titleVerticalSpace:(CGFloat)titleVerticalSpace;
 /**
- *  设置小圆点Badge的位置与大小
+ *  设置小圆点Badge的位置与大小。
+ *  默认marginTop = 5，centerMarginRight = 25，sideLength = 10。
  *
  *  @param marginTop            与TabItem顶部的距离，默认为：5
  *  @param centerMarginRight    中心与TabItem右侧的距离，默认为：25

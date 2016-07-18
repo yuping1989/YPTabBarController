@@ -26,6 +26,17 @@
     [self initViewControllers];
     self.tabBar.backgroundColor = [UIColor lightGrayColor];
     
+    // 设置数字样式的badge的位置和大小
+    [self.tabBar setNumberBadgeMarginTop:2
+                       centerMarginRight:20
+                     titleHorizonalSpace:8
+                      titleVerticalSpace:2];
+    // 设置小圆点样式的badge的位置和大小
+    [self.tabBar setDotBadgeMarginTop:5
+                    centerMarginRight:15
+                           sideLength:10];
+    
+    
     UIViewController *controller1 = self.viewControllers[0];
     UIViewController *controller2 = self.viewControllers[1];
     UIViewController *controller3 = self.viewControllers[2];
@@ -36,7 +47,6 @@
     controller4.yp_tabItem.badgeStyle = YPTabItemBadgeStyleDot;
     
     
-    NSLog(@"%@ %@", NSStringFromCGRect(self.tabBar.frame), NSStringFromCGRect(self.contentViewFrame));
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -70,7 +80,7 @@
     controller4.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
     
     ViewController *controller5 = [[ViewController alloc] init];
-    controller5.yp_tabItemTitle = @"系统Segment";
+    controller5.yp_tabItemTitle = @"普通";
     controller5.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
     controller5.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
     
@@ -78,14 +88,10 @@
     self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, controller5, nil];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    NSLog(@"viewWillAppear");
 }
-*/
 
 @end

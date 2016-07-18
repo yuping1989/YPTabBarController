@@ -27,8 +27,8 @@
 @property (nonatomic, assign, readonly) NSInteger selectedControllerIndex;
 
 /**
- *  设置tabBar和contentView的frame
- *  
+ *  设置tabBar和contentView的frame，
+ *  默认是tabBar在底部，contentView填充其余空间
  */
 - (void)setTabBarFrame:(CGRect)tabBarFrame contentViewFrame:(CGRect)contentViewFrame;
 

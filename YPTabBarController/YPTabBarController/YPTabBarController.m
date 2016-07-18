@@ -39,28 +39,30 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     
-    // 设置默认的tabBar frame
+    // 设置默认的tabBar的frame和contentViewFrame
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
 
     CGFloat contentViewY = 0;
     CGFloat tabBarY = screenSize.height - TAB_BAR_HEIGHT;
     CGFloat contentViewHeight = tabBarY;
-    if ([self.parentViewController isKindOfClass:[UINavigationController class]]) {
-        if (!self.navigationController.navigationBarHidden &&
-            !self.navigationController.navigationBar.hidden) {
+    // 如果parentViewController为UINavigationController及其子类
+    if ([self.parentViewController isKindOfClass:[UINavigationController class]] &&
+        !self.navigationController.navigationBarHidden &&
+        !self.navigationController.navigationBar.hidden) {
             
-            CGFloat navMaxY = CGRectGetMaxY(self.navigationController.navigationBar.frame);
-            if (self.navigationController.navigationBar.translucent) {
-                contentViewY = navMaxY;
-                contentViewHeight = screenSize.height - TAB_BAR_HEIGHT - contentViewY;
-            } else {
-                tabBarY = screenSize.height - TAB_BAR_HEIGHT - contentViewY - navMaxY;
-                contentViewHeight = tabBarY;
-            }
+        CGFloat navMaxY = CGRectGetMaxY(self.navigationController.navigationBar.frame);
+        if (!self.navigationController.navigationBar.translucent ||
+            self.edgesForExtendedLayout == UIRectEdgeNone ||
+            self.edgesForExtendedLayout == UIRectEdgeTop) {
+            tabBarY = screenSize.height - TAB_BAR_HEIGHT - navMaxY;
+            contentViewHeight = tabBarY;
+        } else {
+            contentViewY = navMaxY;
+            contentViewHeight = screenSize.height - TAB_BAR_HEIGHT - contentViewY;
         }
     }
-    
     
     [self setTabBarFrame:CGRectMake(0, tabBarY, screenSize.width, TAB_BAR_HEIGHT)
         contentViewFrame:CGRectMake(0, contentViewY, screenSize.width, contentViewHeight)];

@@ -29,12 +29,13 @@
     self.tabBar.itemTitleSelectedFont = [UIFont systemFontOfSize:22];
 
     [self.tabBar setScrollEnabledAndItemWidth:80];
-    [self setContentScrollEnabledAndTapSwitchAnimated:NO];
     self.tabBar.itemFontChangeFollowContentScroll = YES;
-    self.tabBar.itemSelectedBgScrollFollowContent = YES;
     
+    self.tabBar.itemSelectedBgScrollFollowContent = YES;
     self.tabBar.itemSelectedBgColor = [UIColor redColor];
     [self.tabBar setItemSelectedBgInsets:UIEdgeInsetsMake(40, 10, 0, 10) tapSwitchAnimated:NO];
+    
+    [self setContentScrollEnabledAndTapSwitchAnimated:NO];
     
     [self.yp_tabItem setDoubleTapHandler:^{
         NSLog(@"双击效果");

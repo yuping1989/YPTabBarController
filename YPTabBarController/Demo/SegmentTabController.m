@@ -21,7 +21,7 @@
     
     
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    [self setTabBarFrame:CGRectMake(10, 27, screenSize.width - 20, 30)
+    [self setTabBarFrame:CGRectMake(30, 27, screenSize.width - 60, 30)
         contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - 50)];
     
     self.tabBar.itemTitleColor = [UIColor redColor];
@@ -32,8 +32,6 @@
     self.tabBar.layer.borderWidth = 1;
     self.tabBar.layer.borderColor = [UIColor blueColor].CGColor;
     [self.tabBar setItemSeparatorColor:[UIColor blueColor] width:1 marginTop:0 marginBottom:0];
-    
-    
     
     UIViewController *controller1 = self.viewControllers[0];
     UIViewController *controller2 = self.viewControllers[1];
