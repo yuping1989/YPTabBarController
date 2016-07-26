@@ -141,8 +141,8 @@
  *
  *  @param itemSeparatorColor 分割线颜色
  *  @param width              宽度
- *  @param marginTop          与tabbar顶部距离
- *  @param marginBottom       与tabbar底部距离
+ *  @param marginTop          与tabBar顶部距离
+ *  @param marginBottom       与tabBar底部距离
  */
 - (void)setItemSeparatorColor:(UIColor *)itemSeparatorColor
                         width:(CGFloat)width
@@ -152,5 +152,17 @@
 - (void)setItemSeparatorColor:(UIColor *)itemSeparatorColor
                     marginTop:(CGFloat)marginTop
                  marginBottom:(CGFloat)marginBottom;
+
+/**
+ *  添加一个特殊的YPTabItem到tabBar上，此TabItem不包含在tabBar的items数组里
+ *  主要用于有的项目需要在tabBar的中间放置一个单独的按钮，类似于新浪微博等。
+ *
+ *  @param item    YPTabItem对象
+ *  @param index   将其放在此index的item后面
+ *  @param handler 点击事件回调
+ */
+- (void)setSpecialItem:(YPTabItem *)item
+    afterItemWithIndex:(NSInteger)index
+            tapHandler:(void (^)(YPTabItem *item))handler;
 
 @end

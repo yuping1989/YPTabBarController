@@ -15,6 +15,9 @@
 // 当TabBar支持滚动时，使用此scrollView
 @property (nonatomic, strong) UIScrollView *scrollView;
 
+@property (nonatomic, strong) YPTabItem *specialItem;
+@property (nonatomic, copy) void (^specialItemHandler)(YPTabItem *item);
+
 // 选中背景
 @property (nonatomic, strong) UIImageView *itemSelectedBgImageView;
 
@@ -207,21 +210,38 @@
         
         [self addSubview:self.itemSelectedBgImageView];
         CGFloat x = self.leftAndRightSpacing;
-        CGFloat itemWidth = (self.frame.size.width - self.leftAndRightSpacing * 2) / self.items.count;
+        self.itemWidth = (self.frame.size.width - self.leftAndRightSpacing * 2) /
+                            (self.items.count + (self.specialItem != nil ? 1 : 0));
         // 四舍五入，取整，防止字体模糊
-        itemWidth = floorf(itemWidth + 0.5f);
-        self.itemWidth = itemWidth;
+        self.itemWidth = floorf(self.itemWidth + 0.5f);
+
         for (NSInteger index = 0; index < self.items.count; index++) {
             YPTabItem *item = self.items[index];
             if (index == self.items.count - 1) {
                 CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-                itemWidth = screenWidth - x;
+                self.itemWidth = screenWidth - x;
             }
-            item.frame = CGRectMake(x, 0, itemWidth, self.frame.size.height);
+            item.frame = CGRectMake(x, 0, self.itemWidth, self.frame.size.height);
             item.index = index;
             
-            x += itemWidth;
+            x += self.itemWidth;
             [self addSubview:item];
+            
+            // 如果有特殊的单独item，设置其位置
+            if (self.specialItem && self.specialItem.index == index) {
+                CGFloat width = self.specialItem.frame.size.width;
+                // 如果宽度为0，将其宽度设置为itemWidth
+                if (width == 0) {
+                    width = self.itemWidth;
+                }
+                CGFloat height = self.specialItem.frame.size.height;
+                // 如果高度为0，将其宽度设置为tabBar的高度
+                if (height == 0) {
+                    height = self.frame.size.height;
+                }
+                self.specialItem.frame = CGRectMake(x, self.frame.size.height - height, width, height);
+                x += width;
+            }
         }
     }
 }
@@ -369,11 +389,27 @@
     }
 }
 
+- (void)specialItemClicked:(YPTabItem *)item {
+    if (self.specialItemHandler) {
+        self.specialItemHandler(item);
+    }
+}
+
 - (YPTabItem *)selectedItem {
     if (self.selectedItemIndex < 0) {
         return nil;
     }
     return self.items[self.selectedItemIndex];
+}
+
+- (void)setSpecialItem:(YPTabItem *)item afterItemWithIndex:(NSInteger)index tapHandler:(void (^)(YPTabItem *item))handler {
+    self.specialItem = item;
+    self.specialItem.index = index;
+    [self.specialItem addTarget:self action:@selector(specialItemClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:item];
+    [self updateItemsFrame];
+    
+    self.specialItemHandler = handler;
 }
 
 #pragma mark - ItemSelectedBg

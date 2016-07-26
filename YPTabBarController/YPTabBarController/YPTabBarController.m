@@ -106,7 +106,7 @@
     
     NSMutableArray *items = [NSMutableArray array];
     for (UIViewController *controller in _viewControllers) {
-        YPTabItem *item = [[YPTabItem alloc] init];
+        YPTabItem *item = [YPTabItem buttonWithType:UIButtonTypeCustom];
         item.image = controller.yp_tabItemImage;
         item.selectedImage = controller.yp_tabItemSelectedImage;
         item.title = controller.yp_tabItemTitle;

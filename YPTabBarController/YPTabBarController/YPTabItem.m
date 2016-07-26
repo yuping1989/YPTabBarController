@@ -56,6 +56,7 @@
     self.badgeButton.clipsToBounds = YES;
     [self addSubview:self.badgeButton];
     
+    self.adjustsImageWhenHighlighted = NO;
     _badgeStyle = YPTabItemBadgeStyleNumber;
     self.badge = 0;
 }
@@ -64,7 +65,9 @@
  *  覆盖父类的setHighlighted:方法，按下YPTabItem时，不高亮该item
  */
 - (void)setHighlighted:(BOOL)highlighted {
-    
+    if (self.adjustsImageWhenHighlighted) {
+        [super setHighlighted:highlighted];
+    }
 }
 
 - (void)setContentHorizontalCenter:(BOOL)contentHorizontalCenter {
@@ -131,6 +134,16 @@
     if (self.doubleTapView) {
         self.doubleTapView.frame = self.bounds;
     }
+}
+
+- (CGSize)size {
+    return self.frame.size;
+}
+
+- (void)setSize:(CGSize)size {
+    CGRect rect = self.frame;
+    rect.size = size;
+    self.frame = rect;
 }
 
 #pragma mark - Title and Image

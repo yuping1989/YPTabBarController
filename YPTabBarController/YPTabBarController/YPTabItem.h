@@ -28,6 +28,7 @@ typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
  *  在YPTabBar的属性itemFontChangeFollowContentScroll == YES时会用到
  */
 @property (nonatomic, assign, readonly) CGRect frameWithOutTransform;
+@property (nonatomic, assign) CGSize size;
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIColor *titleColor;
