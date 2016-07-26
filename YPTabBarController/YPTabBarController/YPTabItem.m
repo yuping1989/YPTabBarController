@@ -33,7 +33,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [self awakeFromNib];
+        [self setup];
     }
     return self;
 }
@@ -41,6 +41,16 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     
+    [self setup];
+}
+
++ (instancetype)buttonWithType:(UIButtonType)buttonType {
+    YPTabItem *item = [super buttonWithType:buttonType];
+    [item setup];
+    return item;
+}
+
+- (void)setup {
     self.badgeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.badgeButton.userInteractionEnabled = NO;
     self.badgeButton.clipsToBounds = YES;

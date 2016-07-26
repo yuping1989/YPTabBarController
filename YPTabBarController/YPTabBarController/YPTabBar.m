@@ -208,8 +208,15 @@
         [self addSubview:self.itemSelectedBgImageView];
         CGFloat x = self.leftAndRightSpacing;
         CGFloat itemWidth = (self.frame.size.width - self.leftAndRightSpacing * 2) / self.items.count;
+        // 四舍五入，取整，防止字体模糊
+        itemWidth = floorf(itemWidth + 0.5f);
+        self.itemWidth = itemWidth;
         for (NSInteger index = 0; index < self.items.count; index++) {
             YPTabItem *item = self.items[index];
+            if (index == self.items.count - 1) {
+                CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+                itemWidth = screenWidth - x;
+            }
             item.frame = CGRectMake(x, 0, itemWidth, self.frame.size.height);
             item.index = index;
             
