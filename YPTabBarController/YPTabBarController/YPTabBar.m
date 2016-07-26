@@ -241,7 +241,6 @@
                 self.specialItem.frame = CGRectMake(x, self.frame.size.height - height, width, height);
                 x += width;
             }
-            NSLog(@"frame--->%@", NSStringFromCGRect(item.frame));
         }
     }
 }
