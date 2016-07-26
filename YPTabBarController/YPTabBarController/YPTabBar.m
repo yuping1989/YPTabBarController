@@ -218,8 +218,7 @@
         for (NSInteger index = 0; index < self.items.count; index++) {
             YPTabItem *item = self.items[index];
             if (index == self.items.count - 1) {
-                CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-                self.itemWidth = screenWidth - x;
+                self.itemWidth = self.frame.size.width - x;
             }
             item.frame = CGRectMake(x, 0, self.itemWidth, self.frame.size.height);
             item.index = index;
@@ -242,6 +241,7 @@
                 self.specialItem.frame = CGRectMake(x, self.frame.size.height - height, width, height);
                 x += width;
             }
+            NSLog(@"frame--->%@", NSStringFromCGRect(item.frame));
         }
     }
 }

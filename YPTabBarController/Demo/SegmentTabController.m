@@ -50,6 +50,10 @@
                     centerMarginRight:15
                            sideLength:8];
     
+//    for (YPTabItem *item in self.tabBar.items) {
+//        NSLog(@"frame--->%@", NSStringFromCGRect(item.frame));
+//    }
+    
 }
 
 - (void)didReceiveMemoryWarning {

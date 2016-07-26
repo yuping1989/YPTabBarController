@@ -83,18 +83,20 @@
 //    controller5.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
 //    controller5.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
     
-    
     self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, nil];
     
-    
+    // 生成一个居中显示的YPTabItem对象，即“+”号按钮
     YPTabItem *item = [YPTabItem buttonWithType:UIButtonTypeCustom];
-    item.size = CGSizeMake(80, 60);
     item.title = @"+";
     item.titleColor = [UIColor yellowColor];
     item.backgroundColor = [UIColor darkGrayColor];
     item.titleFont = [UIFont boldSystemFontOfSize:40];
     
+    // 设置其size，如果不设置，则默认为与其他item一样
+    item.size = CGSizeMake(80, 60);
+    // 高度大于tabBar，所以需要将此属性设置为NO
     self.tabBar.clipsToBounds = NO;
+    
     [self.tabBar setSpecialItem:item
              afterItemWithIndex:1
                      tapHandler:^(YPTabItem *item) {

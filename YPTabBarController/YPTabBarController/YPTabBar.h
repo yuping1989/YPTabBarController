@@ -156,6 +156,7 @@
 /**
  *  添加一个特殊的YPTabItem到tabBar上，此TabItem不包含在tabBar的items数组里
  *  主要用于有的项目需要在tabBar的中间放置一个单独的按钮，类似于新浪微博等。
+ *  此方法仅适用于不可滚动类型的tabBar
  *
  *  @param item    YPTabItem对象
  *  @param index   将其放在此index的item后面
