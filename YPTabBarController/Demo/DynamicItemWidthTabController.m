@@ -16,7 +16,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     [self setTabBarFrame:CGRectMake(0, 20, screenSize.width, 44)
         contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - 50)];
@@ -41,6 +40,11 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.tabBar.selectedItemIndex = 3;
 }
 
 - (void)initViewControllers {

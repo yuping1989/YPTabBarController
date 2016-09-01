@@ -134,6 +134,7 @@
     if (self.doubleTapView) {
         self.doubleTapView.frame = self.bounds;
     }
+    [self updateBadge];
 }
 
 - (CGSize)size {

@@ -18,7 +18,6 @@
     [super viewDidLoad];
     [self initViewControllers];
     
-    
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     [self setTabBarFrame:CGRectMake(0, 20, screenSize.width, 44)
         contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - 50)];

@@ -76,6 +76,8 @@
     [super awakeFromNib];
     
     self.backgroundColor = [UIColor whiteColor];
+    self.clipsToBounds = YES;
+    
     _selectedItemIndex = -1;
     _itemTitleColor = [UIColor whiteColor];
     _itemTitleSelectedColor = [UIColor blackColor];
@@ -98,8 +100,6 @@
     _dotBadgeMarginTop = 5;
     _dotBadgeCenterMarginRight = 25;
     _dotBadgeSideLength = 10;
-
-    self.clipsToBounds = YES;
 }
 
 - (void)setFrame:(CGRect)frame {
@@ -109,7 +109,7 @@
     [self updateItemsFrame];
     
     // 更新选中背景的frame
-    [self updateFrameOfSelectedBgWithIndex:self.selectedItemIndex];
+    [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
     
     // 更新分割线
     [self updateSeperators];
@@ -210,8 +210,13 @@
         
         [self addSubview:self.itemSelectedBgImageView];
         CGFloat x = self.leftAndRightSpacing;
-        self.itemWidth = (self.frame.size.width - self.leftAndRightSpacing * 2) /
-                            (self.items.count + (self.specialItem != nil ? 1 : 0));
+        CGFloat allItemsWidth = self.frame.size.width - self.leftAndRightSpacing * 2;
+        if (self.specialItem && self.specialItem.frame.size.width != 0) {
+            self.itemWidth = (allItemsWidth - self.specialItem.frame.size.width) / self.items.count;
+        } else {
+            self.itemWidth = allItemsWidth / self.items.count;
+        }
+        
         // 四舍五入，取整，防止字体模糊
         self.itemWidth = floorf(self.itemWidth + 0.5f);
 
@@ -241,6 +246,9 @@
                 self.specialItem.frame = CGRectMake(x, self.frame.size.height - height, width, height);
                 x += width;
             }
+        }
+        for (YPTabItem *item in self.items) {
+            NSLog(@"item--->%@", NSStringFromCGRect(item.frame));
         }
     }
 }
@@ -279,17 +287,17 @@
         // item的选中背景位置会跟随contentView的拖动进行变化
         if (_selectedItemIndex < 0) {
             // 仅在首次显示的时候更新它的位置，之后会根据contentView的拖动进行移动
-            [self updateFrameOfSelectedBgWithIndex:selectedItemIndex];
+            [self updateSelectedBgFrameWithIndex:selectedItemIndex];
         }
     } else {
         // item的选中背景位置不会跟随contentView的拖动进行变化
         
         if (self.itemSelectedBgSwitchAnimated && _selectedItemIndex >= 0) {
             [UIView animateWithDuration:0.25f animations:^{
-                [self updateFrameOfSelectedBgWithIndex:selectedItemIndex];
+                [self updateSelectedBgFrameWithIndex:selectedItemIndex];
             }];
         } else {
-            [self updateFrameOfSelectedBgWithIndex:selectedItemIndex];
+            [self updateSelectedBgFrameWithIndex:selectedItemIndex];
         }
     }
 
@@ -305,7 +313,7 @@
 /**
  *  更新选中背景的frame
  */
-- (void)updateFrameOfSelectedBgWithIndex:(NSInteger)index {
+- (void)updateSelectedBgFrameWithIndex:(NSInteger)index {
     if (index < 0) {
         return;
     }
@@ -438,7 +446,7 @@
 - (void)setItemSelectedBgInsets:(UIEdgeInsets)itemSelectedBgInsets {
     _itemSelectedBgInsets = itemSelectedBgInsets;
     if (self.items.count > 0 && self.selectedItemIndex >= 0) {
-        [self updateFrameOfSelectedBgWithIndex:self.selectedItemIndex];
+        [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
     }
 }
 

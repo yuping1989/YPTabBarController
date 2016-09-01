@@ -39,11 +39,30 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.automaticallyAdjustsScrollViewInsets = NO;
     
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.view.clipsToBounds = YES;
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    [self setupFrameOfTabBarAndContentView];
+    
+    [self.view addSubview:self.tabBar];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    // 在第一次调用viewWillAppear方法时，初始化选中的item
+    if (!_didViewAppeared) {
+        self.tabBar.selectedItemIndex = 0;
+        _didViewAppeared = YES;
+    }
+}
+
+- (void)setupFrameOfTabBarAndContentView {
     // 设置默认的tabBar的frame和contentViewFrame
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
-
+    
     CGFloat contentViewY = 0;
     CGFloat tabBarY = screenSize.height - TAB_BAR_HEIGHT;
     CGFloat contentViewHeight = tabBarY;
@@ -51,7 +70,7 @@
     if ([self.parentViewController isKindOfClass:[UINavigationController class]] &&
         !self.navigationController.navigationBarHidden &&
         !self.navigationController.navigationBar.hidden) {
-            
+        
         CGFloat navMaxY = CGRectGetMaxY(self.navigationController.navigationBar.frame);
         if (!self.navigationController.navigationBar.translucent ||
             self.edgesForExtendedLayout == UIRectEdgeNone ||
@@ -66,20 +85,6 @@
     
     [self setTabBarFrame:CGRectMake(0, tabBarY, screenSize.width, TAB_BAR_HEIGHT)
         contentViewFrame:CGRectMake(0, contentViewY, screenSize.width, contentViewHeight)];
-    
-    self.view.clipsToBounds = YES;
-    self.view.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:self.tabBar];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    // 在第一次调用viewWillAppear方法时，初始化选中的item
-    if (!_didViewAppeared) {
-        self.tabBar.selectedItemIndex = 0;
-        _didViewAppeared = YES;
-    }
 }
 
 - (void)setContentViewFrame:(CGRect)contentViewFrame {
@@ -143,6 +148,7 @@
 }
 
 - (void)updateContentViewsFrame {
+    NSLog(@"content view--->%@", NSStringFromCGRect(self.contentViewFrame));
     if (self.scrollView) {
         self.scrollView.frame = self.contentViewFrame;
         self.scrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * _viewControllers.count,
@@ -235,7 +241,6 @@
     }
     self.selectedControllerIndex = index;
 }
-
 
 @end
 
