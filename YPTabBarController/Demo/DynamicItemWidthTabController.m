@@ -44,24 +44,23 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.tabBar.selectedItemIndex = 3;
 }
 
 - (void)initViewControllers {
     ViewController *controller1 = [[ViewController alloc] init];
-    controller1.yp_tabItemTitle = @"第一个";
+    controller1.yp_tabItemTitle = @"推荐";
     
     ViewController *controller2 = [[ViewController alloc] init];
-    controller2.yp_tabItemTitle = @"第二";
+    controller2.yp_tabItemTitle = @"化妆品";
     
     ViewController *controller3 = [[ViewController alloc] init];
-    controller3.yp_tabItemTitle = @"第三个";
+    controller3.yp_tabItemTitle = @"海外淘";
     
     ViewController *controller4 = [[ViewController alloc] init];
     controller4.yp_tabItemTitle = @"第四";
     
     ViewController *controller5 = [[ViewController alloc] init];
-    controller5.yp_tabItemTitle = @"第五个";
+    controller5.yp_tabItemTitle = @"电子产品";
     
     ViewController *controller6 = [[ViewController alloc] init];
     controller6.yp_tabItemTitle = @"第六";

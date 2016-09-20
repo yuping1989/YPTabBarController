@@ -283,22 +283,12 @@
         }
     }
     
-    if (self.itemSelectedBgScrollFollowContent) {
-        // item的选中背景位置会跟随contentView的拖动进行变化
-        if (_selectedItemIndex < 0) {
-            // 仅在首次显示的时候更新它的位置，之后会根据contentView的拖动进行移动
+    if (self.itemSelectedBgSwitchAnimated && _selectedItemIndex >= 0) {
+        [UIView animateWithDuration:0.25f animations:^{
             [self updateSelectedBgFrameWithIndex:selectedItemIndex];
-        }
+        }];
     } else {
-        // item的选中背景位置不会跟随contentView的拖动进行变化
-        
-        if (self.itemSelectedBgSwitchAnimated && _selectedItemIndex >= 0) {
-            [UIView animateWithDuration:0.25f animations:^{
-                [self updateSelectedBgFrameWithIndex:selectedItemIndex];
-            }];
-        } else {
-            [self updateSelectedBgFrameWithIndex:selectedItemIndex];
-        }
+        [self updateSelectedBgFrameWithIndex:selectedItemIndex];
     }
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:didSelectedItemAtIndex:)]) {
@@ -598,6 +588,12 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    // 如果不是手势拖动导致的此方法被调用，不处理
+    if (!(scrollView.isDragging || scrollView.isDecelerating)) {
+        return;
+    }
+    
+    // 滑动越界不处理
     CGFloat offsetX = scrollView.contentOffset.x;
     CGFloat scrollViewWidth = scrollView.frame.size.width;
     if (offsetX < 0) {
@@ -621,40 +617,41 @@
     rightScale = rightScale - leftIndex;
     CGFloat leftScale = 1 - rightScale;
     
-    if (scrollView.isDragging || scrollView.isDecelerating) {
-        if (self.itemFontChangeFollowContentScroll && self.itemTitleUnselectedFontScale != 1.0f) {
-            // 如果支持title大小跟随content的拖动进行变化，并且未选中字体和已选中字体的大小不一致
-            
-            // 计算字体大小的差值
-            CGFloat diff = self.itemTitleUnselectedFontScale - 1;
-            // 根据偏移量和差值，计算缩放值
-            leftItem.transform = CGAffineTransformMakeScale(rightScale * diff + 1, rightScale * diff + 1);
-            rightItem.transform = CGAffineTransformMakeScale(leftScale * diff + 1, leftScale * diff + 1);
-        }
+    if (self.itemFontChangeFollowContentScroll && self.itemTitleUnselectedFontScale != 1.0f) {
+        // 如果支持title大小跟随content的拖动进行变化，并且未选中字体和已选中字体的大小不一致
         
-        if (self.itemColorChangeFollowContentScroll) {
-            CGFloat normalRed, normalGreen, normalBlue;
-            CGFloat selectedRed, selectedGreen, selectedBlue;
-            
-            [self.itemTitleColor getRed:&normalRed green:&normalGreen blue:&normalBlue alpha:nil];
-            [self.itemTitleSelectedColor getRed:&selectedRed green:&selectedGreen blue:&selectedBlue alpha:nil];
-            // 获取选中和未选中状态的颜色差值
-            CGFloat redDiff = selectedRed - normalRed;
-            CGFloat greenDiff = selectedGreen - normalGreen;
-            CGFloat blueDiff = selectedBlue - normalBlue;
-            // 根据颜色值的差值和偏移量，设置tabItem的标题颜色
-            leftItem.titleLabel.textColor = [UIColor colorWithRed:leftScale * redDiff + normalRed
-                                                            green:leftScale * greenDiff + normalGreen
-                                                             blue:leftScale * blueDiff + normalBlue
-                                                            alpha:1];
-            rightItem.titleLabel.textColor = [UIColor colorWithRed:rightScale * redDiff + normalRed
-                                                             green:rightScale * greenDiff + normalGreen
-                                                              blue:rightScale * blueDiff + normalBlue
-                                                             alpha:1];
-        }
+        // 计算字体大小的差值
+        CGFloat diff = self.itemTitleUnselectedFontScale - 1;
+        // 根据偏移量和差值，计算缩放值
+        leftItem.transform = CGAffineTransformMakeScale(rightScale * diff + 1, rightScale * diff + 1);
+        rightItem.transform = CGAffineTransformMakeScale(leftScale * diff + 1, leftScale * diff + 1);
     }
+    
+    if (self.itemColorChangeFollowContentScroll) {
+        CGFloat normalRed, normalGreen, normalBlue;
+        CGFloat selectedRed, selectedGreen, selectedBlue;
+        
+        [self.itemTitleColor getRed:&normalRed green:&normalGreen blue:&normalBlue alpha:nil];
+        [self.itemTitleSelectedColor getRed:&selectedRed green:&selectedGreen blue:&selectedBlue alpha:nil];
+        // 获取选中和未选中状态的颜色差值
+        CGFloat redDiff = selectedRed - normalRed;
+        CGFloat greenDiff = selectedGreen - normalGreen;
+        CGFloat blueDiff = selectedBlue - normalBlue;
+        // 根据颜色值的差值和偏移量，设置tabItem的标题颜色
+        leftItem.titleLabel.textColor = [UIColor colorWithRed:leftScale * redDiff + normalRed
+                                                        green:leftScale * greenDiff + normalGreen
+                                                         blue:leftScale * blueDiff + normalBlue
+                                                        alpha:1];
+        rightItem.titleLabel.textColor = [UIColor colorWithRed:rightScale * redDiff + normalRed
+                                                         green:rightScale * greenDiff + normalGreen
+                                                          blue:rightScale * blueDiff + normalBlue
+                                                         alpha:1];
+    }
+
+    // 计算背景的frame
     if (self.itemSelectedBgScrollFollowContent) {
         CGRect frame = self.itemSelectedBgImageView.frame;
+
         CGFloat xDiff = rightItem.frameWithOutTransform.origin.x - leftItem.frameWithOutTransform.origin.x;
         frame.origin.x = rightScale * xDiff + leftItem.frameWithOutTransform.origin.x + self.itemSelectedBgInsets.left;
         
@@ -663,7 +660,6 @@
             CGFloat leftSelectedBgWidth = leftItem.frameWithOutTransform.size.width - self.itemSelectedBgInsets.left - self.itemSelectedBgInsets.right;
             frame.size.width = rightScale * widthDiff + leftSelectedBgWidth;
         }
-        
         self.itemSelectedBgImageView.frame = frame;
     }
 }
