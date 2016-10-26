@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "YPTabBarController.h"
 #import "RootTabController.h"
+#import "AppDelegate.h"
 @interface ViewController ()
 @property (nonatomic, weak) IBOutlet UILabel *label;
 @property (nonatomic, weak) IBOutlet UIButton *button;
@@ -34,8 +35,10 @@
 }
 - (IBAction)buttonClicked:(UIButton *)button {
 //    self.yp_tabBarController.contentViewFrame = CGRectMake(0, 64, 300, 500);
-    [self.navigationController pushViewController:[[ViewController alloc] init] animated:YES];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    UINavigationController *navController = (UINavigationController *)delegate.window.rootViewController;
+    [navController pushViewController:[[ViewController alloc] init] animated:YES];
+    [navController setNavigationBarHidden:NO animated:YES];
 }
 
 

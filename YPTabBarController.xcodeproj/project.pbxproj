@@ -251,7 +251,7 @@
 				TargetAttributes = {
 					F0ECF23A1B79D5EE006DF335 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = U259566QKD;
+						DevelopmentTeam = 7X2852KFDE;
 					};
 					F0ECF2531B79D5EF006DF335 = {
 						CreatedOnToolsVersion = 6.4;
@@ -444,6 +444,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 7X2852KFDE;
 				INFOPLIST_FILE = YPTabBarController/Demo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -458,6 +459,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 7X2852KFDE;
 				INFOPLIST_FILE = YPTabBarController/Demo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

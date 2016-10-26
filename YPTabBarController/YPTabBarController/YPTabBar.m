@@ -628,24 +628,25 @@
     }
     
     if (self.itemColorChangeFollowContentScroll) {
-        CGFloat normalRed, normalGreen, normalBlue;
-        CGFloat selectedRed, selectedGreen, selectedBlue;
+        CGFloat normalRed, normalGreen, normalBlue, normalAlpha;
+        CGFloat selectedRed, selectedGreen, selectedBlue, selectedAlpha;
         
-        [self.itemTitleColor getRed:&normalRed green:&normalGreen blue:&normalBlue alpha:nil];
-        [self.itemTitleSelectedColor getRed:&selectedRed green:&selectedGreen blue:&selectedBlue alpha:nil];
+        [self.itemTitleColor getRed:&normalRed green:&normalGreen blue:&normalBlue alpha:&normalAlpha];
+        [self.itemTitleSelectedColor getRed:&selectedRed green:&selectedGreen blue:&selectedBlue alpha:&selectedAlpha];
         // 获取选中和未选中状态的颜色差值
         CGFloat redDiff = selectedRed - normalRed;
         CGFloat greenDiff = selectedGreen - normalGreen;
         CGFloat blueDiff = selectedBlue - normalBlue;
+        CGFloat alphaDiff = selectedAlpha - normalAlpha;
         // 根据颜色值的差值和偏移量，设置tabItem的标题颜色
         leftItem.titleLabel.textColor = [UIColor colorWithRed:leftScale * redDiff + normalRed
                                                         green:leftScale * greenDiff + normalGreen
                                                          blue:leftScale * blueDiff + normalBlue
-                                                        alpha:1];
+                                                        alpha:leftScale * alphaDiff + normalAlpha];
         rightItem.titleLabel.textColor = [UIColor colorWithRed:rightScale * redDiff + normalRed
                                                          green:rightScale * greenDiff + normalGreen
                                                           blue:rightScale * blueDiff + normalBlue
-                                                         alpha:1];
+                                                         alpha:rightScale * alphaDiff + normalAlpha];
     }
 
     // 计算背景的frame

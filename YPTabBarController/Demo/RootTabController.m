@@ -85,6 +85,8 @@
     
     self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, nil];
     
+    [self setContentScrollEnabledAndTapSwitchAnimated:NO];
+    
     // 生成一个居中显示的YPTabItem对象，即“+”号按钮
     YPTabItem *item = [YPTabItem buttonWithType:UIButtonTypeCustom];
     item.title = @"+";

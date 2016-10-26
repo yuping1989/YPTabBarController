@@ -27,11 +27,17 @@
 @property (nonatomic, assign, readonly) NSInteger selectedControllerIndex;
 
 /**
+ *  鉴于有些项目集成了左侧或者右侧侧边栏，当内容视图支持滑动切换时，不能实现在第一页向右滑动和最后一页向左滑动呼出侧边栏的功能，
+ *  此2个属性则可以拦截第一页向右滑动和最后一页向左滑动的手势，实现呼出侧边栏的功能
+ */
+@property (nonatomic, assign) BOOL interceptRightSlideGuetureInFirstPage;
+@property (nonatomic, assign) BOOL interceptLeftSlideGuetureInLastPage;
+
+/**
  *  设置tabBar和contentView的frame，
  *  默认是tabBar在底部，contentView填充其余空间
  */
 - (void)setTabBarFrame:(CGRect)tabBarFrame contentViewFrame:(CGRect)contentViewFrame;
-
 
 /**
  *  设置内容视图支持滑动切换，以及点击item切换时是否有动画

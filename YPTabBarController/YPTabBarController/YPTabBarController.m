@@ -11,27 +11,42 @@
 
 #define TAB_BAR_HEIGHT 50
 
+@interface YPTabScrollView : UIScrollView
+
+@property (nonatomic, assign) BOOL interceptLeftSlideGuetureInLastPage;
+@property (nonatomic, assign) BOOL interceptRightSlideGuetureInFirstPage;
+
+@end
+
+
 @interface YPTabBarController () {
     BOOL _didViewAppeared;
 }
-@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) YPTabScrollView *scrollView;
 
 @property (nonatomic, assign) BOOL contentScrollEnabled;
 @property (nonatomic, assign) BOOL contentSwitchAnimated;
 @end
 
 @implementation YPTabBarController
+
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [self awakeFromNib];
+        [self _setup];
     }
     return self;
 }
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        [self _setup];
+    }
+    return self;
+}
+
+- (void)_setup {
     _selectedControllerIndex = -1;
     _tabBar = [[YPTabBar alloc] init];
     _tabBar.delegate = self;
@@ -133,7 +148,7 @@
 
 - (void)setContentScrollEnabledAndTapSwitchAnimated:(BOOL)switchAnimated {
     if (!self.scrollView) {
-        self.scrollView = [[UIScrollView alloc] initWithFrame:self.contentViewFrame];
+        self.scrollView = [[YPTabScrollView alloc] initWithFrame:self.contentViewFrame];
         self.scrollView.pagingEnabled = YES;
         self.scrollView.showsHorizontalScrollIndicator = NO;
         self.scrollView.showsVerticalScrollIndicator = NO;
@@ -166,6 +181,16 @@
     } else {
         self.selectedController.view.frame = self.contentViewFrame;
     }
+}
+
+- (void)setInterceptRightSlideGuetureInFirstPage:(BOOL)interceptRightSlideGuetureInFirstPage {
+    _interceptRightSlideGuetureInFirstPage = interceptRightSlideGuetureInFirstPage;
+    self.scrollView.interceptRightSlideGuetureInFirstPage = interceptRightSlideGuetureInFirstPage;
+}
+
+- (void)setInterceptLeftSlideGuetureInLastPage:(BOOL)interceptLeftSlideGuetureInLastPage {
+    _interceptLeftSlideGuetureInLastPage = interceptLeftSlideGuetureInLastPage;
+    self.scrollView.interceptLeftSlideGuetureInLastPage = interceptLeftSlideGuetureInLastPage;
 }
 
 - (void)setSelectedControllerIndex:(NSInteger)selectedControllerIndex {
@@ -243,6 +268,35 @@
 }
 
 @end
+
+
+@implementation YPTabScrollView
+
+- (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer {
+    if (self.interceptRightSlideGuetureInFirstPage) {
+        CGPoint location = [gestureRecognizer locationInView:self];
+        CGPoint translation = [gestureRecognizer translationInView:self];
+        if (translation.x > 0 && location.x < self.frame.size.width) {
+            return NO;
+        }
+    }
+    if (self.interceptLeftSlideGuetureInLastPage) {
+        CGPoint location = [gestureRecognizer locationInView:self];
+        CGPoint translation = [gestureRecognizer translationInView:self];
+        
+        CGFloat lastPageOffset = self.contentSize.width - self.frame.size.width;
+        if (translation.x < 0 &&
+            location.x > lastPageOffset &&
+            location.x < self.contentSize.width) {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
+@end
+
 
 @implementation UIViewController (YPTabBarController)
 
