@@ -585,73 +585,6 @@
     }
 }
 
-- (void)updateSubViewsWhenParentScrollViewScroll:(UIScrollView *)scrollView {
-    CGFloat offsetX = scrollView.contentOffset.x;
-    CGFloat scrollViewWidth = scrollView.frame.size.width;
-    
-    NSInteger leftIndex = offsetX / scrollViewWidth;
-    NSInteger rightIndex = leftIndex + 1;
-    
-    YPTabItem *leftItem = self.items[leftIndex];
-    YPTabItem *rightItem = nil;
-    if (rightIndex < self.items.count) {
-        rightItem = self.items[rightIndex];
-    }
-    
-    // 计算右边按钮偏移量
-    CGFloat rightScale = offsetX / scrollViewWidth;
-    // 只想要 0~1
-    rightScale = rightScale - leftIndex;
-    CGFloat leftScale = 1 - rightScale;
-    
-    if (self.itemFontChangeFollowContentScroll && self.itemTitleUnselectedFontScale != 1.0f) {
-        // 如果支持title大小跟随content的拖动进行变化，并且未选中字体和已选中字体的大小不一致
-        
-        // 计算字体大小的差值
-        CGFloat diff = self.itemTitleUnselectedFontScale - 1;
-        // 根据偏移量和差值，计算缩放值
-        leftItem.transform = CGAffineTransformMakeScale(rightScale * diff + 1, rightScale * diff + 1);
-        rightItem.transform = CGAffineTransformMakeScale(leftScale * diff + 1, leftScale * diff + 1);
-    }
-    
-    if (self.itemColorChangeFollowContentScroll) {
-        CGFloat normalRed, normalGreen, normalBlue, normalAlpha;
-        CGFloat selectedRed, selectedGreen, selectedBlue, selectedAlpha;
-        
-        [self.itemTitleColor getRed:&normalRed green:&normalGreen blue:&normalBlue alpha:&normalAlpha];
-        [self.itemTitleSelectedColor getRed:&selectedRed green:&selectedGreen blue:&selectedBlue alpha:&selectedAlpha];
-        // 获取选中和未选中状态的颜色差值
-        CGFloat redDiff = selectedRed - normalRed;
-        CGFloat greenDiff = selectedGreen - normalGreen;
-        CGFloat blueDiff = selectedBlue - normalBlue;
-        CGFloat alphaDiff = selectedAlpha - normalAlpha;
-        // 根据颜色值的差值和偏移量，设置tabItem的标题颜色
-        leftItem.titleLabel.textColor = [UIColor colorWithRed:leftScale * redDiff + normalRed
-                                                        green:leftScale * greenDiff + normalGreen
-                                                         blue:leftScale * blueDiff + normalBlue
-                                                        alpha:leftScale * alphaDiff + normalAlpha];
-        rightItem.titleLabel.textColor = [UIColor colorWithRed:rightScale * redDiff + normalRed
-                                                         green:rightScale * greenDiff + normalGreen
-                                                          blue:rightScale * blueDiff + normalBlue
-                                                         alpha:rightScale * alphaDiff + normalAlpha];
-    }
-
-    // 计算背景的frame
-    if (self.itemSelectedBgScrollFollowContent) {
-        CGRect frame = self.itemSelectedBgImageView.frame;
-
-        CGFloat xDiff = rightItem.frameWithOutTransform.origin.x - leftItem.frameWithOutTransform.origin.x;
-        frame.origin.x = rightScale * xDiff + leftItem.frameWithOutTransform.origin.x + self.itemSelectedBgInsets.left;
-        
-        CGFloat widthDiff = rightItem.frameWithOutTransform.size.width - leftItem.frameWithOutTransform.size.width;
-        if (widthDiff != 0) {
-            CGFloat leftSelectedBgWidth = leftItem.frameWithOutTransform.size.width - self.itemSelectedBgInsets.left - self.itemSelectedBgInsets.right;
-            frame.size.width = rightScale * widthDiff + leftSelectedBgWidth;
-        }
-        self.itemSelectedBgImageView.frame = frame;
-    }
-}
-
 #pragma mark - Separator
 
 - (void)setItemSeparatorColor:(UIColor *)itemSeparatorColor
@@ -705,6 +638,75 @@
         [self.separatorLayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
         [self.separatorLayers removeAllObjects];
         self.separatorLayers = nil;
+    }
+}
+
+#pragma mark - Others
+
+- (void)updateSubViewsWhenParentScrollViewScroll:(UIScrollView *)scrollView {
+    CGFloat offsetX = scrollView.contentOffset.x;
+    CGFloat scrollViewWidth = scrollView.frame.size.width;
+    
+    NSInteger leftIndex = offsetX / scrollViewWidth;
+    NSInteger rightIndex = leftIndex + 1;
+    
+    YPTabItem *leftItem = self.items[leftIndex];
+    YPTabItem *rightItem = nil;
+    if (rightIndex < self.items.count) {
+        rightItem = self.items[rightIndex];
+    }
+    
+    // 计算右边按钮偏移量
+    CGFloat rightScale = offsetX / scrollViewWidth;
+    // 只想要 0~1
+    rightScale = rightScale - leftIndex;
+    CGFloat leftScale = 1 - rightScale;
+    
+    if (self.itemFontChangeFollowContentScroll && self.itemTitleUnselectedFontScale != 1.0f) {
+        // 如果支持title大小跟随content的拖动进行变化，并且未选中字体和已选中字体的大小不一致
+        
+        // 计算字体大小的差值
+        CGFloat diff = self.itemTitleUnselectedFontScale - 1;
+        // 根据偏移量和差值，计算缩放值
+        leftItem.transform = CGAffineTransformMakeScale(rightScale * diff + 1, rightScale * diff + 1);
+        rightItem.transform = CGAffineTransformMakeScale(leftScale * diff + 1, leftScale * diff + 1);
+    }
+    
+    if (self.itemColorChangeFollowContentScroll) {
+        CGFloat normalRed, normalGreen, normalBlue, normalAlpha;
+        CGFloat selectedRed, selectedGreen, selectedBlue, selectedAlpha;
+        
+        [self.itemTitleColor getRed:&normalRed green:&normalGreen blue:&normalBlue alpha:&normalAlpha];
+        [self.itemTitleSelectedColor getRed:&selectedRed green:&selectedGreen blue:&selectedBlue alpha:&selectedAlpha];
+        // 获取选中和未选中状态的颜色差值
+        CGFloat redDiff = selectedRed - normalRed;
+        CGFloat greenDiff = selectedGreen - normalGreen;
+        CGFloat blueDiff = selectedBlue - normalBlue;
+        CGFloat alphaDiff = selectedAlpha - normalAlpha;
+        // 根据颜色值的差值和偏移量，设置tabItem的标题颜色
+        leftItem.titleLabel.textColor = [UIColor colorWithRed:leftScale * redDiff + normalRed
+                                                        green:leftScale * greenDiff + normalGreen
+                                                         blue:leftScale * blueDiff + normalBlue
+                                                        alpha:leftScale * alphaDiff + normalAlpha];
+        rightItem.titleLabel.textColor = [UIColor colorWithRed:rightScale * redDiff + normalRed
+                                                         green:rightScale * greenDiff + normalGreen
+                                                          blue:rightScale * blueDiff + normalBlue
+                                                         alpha:rightScale * alphaDiff + normalAlpha];
+    }
+    
+    // 计算背景的frame
+    if (self.itemSelectedBgScrollFollowContent) {
+        CGRect frame = self.itemSelectedBgImageView.frame;
+        
+        CGFloat xDiff = rightItem.frameWithOutTransform.origin.x - leftItem.frameWithOutTransform.origin.x;
+        frame.origin.x = rightScale * xDiff + leftItem.frameWithOutTransform.origin.x + self.itemSelectedBgInsets.left;
+        
+        CGFloat widthDiff = rightItem.frameWithOutTransform.size.width - leftItem.frameWithOutTransform.size.width;
+        if (widthDiff != 0) {
+            CGFloat leftSelectedBgWidth = leftItem.frameWithOutTransform.size.width - self.itemSelectedBgInsets.left - self.itemSelectedBgInsets.right;
+            frame.size.width = rightScale * widthDiff + leftSelectedBgWidth;
+        }
+        self.itemSelectedBgImageView.frame = frame;
     }
 }
 
