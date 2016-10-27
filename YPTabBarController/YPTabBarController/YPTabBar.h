@@ -26,7 +26,7 @@
 
 @end
 
-@interface YPTabBar : UIView <UIScrollViewDelegate>
+@interface YPTabBar : UIView
 
 /**
  *  TabItems，提供给YPTabBarController使用，一般不手动设置此属性
@@ -171,5 +171,11 @@
 - (void)setSpecialItem:(YPTabItem *)item
     afterItemWithIndex:(NSInteger)index
             tapHandler:(void (^)(YPTabItem *item))handler;
+
+/**
+ *  当YPTabBar所属的YPTabBarController内容视图支持拖动切换时，
+ *  此方法用于同步内容视图scrollView拖动的偏移量，以此来改变YPTabBar内控件的状态
+ */
+- (void)updateSubViewsWhenParentScrollViewScroll:(UIScrollView *)scrollView;
 
 @end

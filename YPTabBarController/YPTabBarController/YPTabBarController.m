@@ -19,13 +19,15 @@
 @end
 
 
-@interface YPTabBarController () {
+@interface YPTabBarController () <UIScrollViewDelegate> {
     BOOL _didViewAppeared;
 }
+
 @property (nonatomic, strong) YPTabScrollView *scrollView;
 
 @property (nonatomic, assign) BOOL contentScrollEnabled;
 @property (nonatomic, assign) BOOL contentSwitchAnimated;
+
 @end
 
 @implementation YPTabBarController
@@ -154,7 +156,7 @@
         self.scrollView.showsHorizontalScrollIndicator = NO;
         self.scrollView.showsVerticalScrollIndicator = NO;
         self.scrollView.scrollsToTop = NO;
-        self.scrollView.delegate = self.tabBar;
+        self.scrollView.delegate = self;
         [self.view insertSubview:self.scrollView belowSubview:self.tabBar];
         self.scrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * _viewControllers.count,
                                                  self.contentViewFrame.size.height);
@@ -198,23 +200,37 @@
 }
 
 - (void)setSelectedControllerIndex:(NSInteger)selectedControllerIndex {
-    
+    self.tabBar.selectedItemIndex = selectedControllerIndex;
+}
+
+- (UIViewController *)selectedController {
+    if (self.selectedControllerIndex >= 0) {
+        return self.viewControllers[self.selectedControllerIndex];
+    }
+    return nil;
+}
+
+#pragma mark - YPTabBarDelegate
+
+- (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index {
+    if (index == self.selectedControllerIndex) {
+        return;
+    }
     UIViewController *oldController = nil;
-    if (_selectedControllerIndex >= 0) {
-        oldController = self.viewControllers[_selectedControllerIndex];
+    if (self.selectedControllerIndex >= 0) {
+        oldController = self.viewControllers[self.selectedControllerIndex];
         [oldController tabItemDidDeselected];
         [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController * _Nonnull controller, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (idx != selectedControllerIndex && controller.isViewLoaded && controller.view.superview) {
+            if (idx != index && controller.isViewLoaded && controller.view.superview) {
                 [controller.view removeFromSuperview];
             }
         }];
     }
-    
-    UIViewController *curController = self.viewControllers[selectedControllerIndex];
+    UIViewController *curController = self.viewControllers[index];
     if (self.scrollView) {
         // contentView支持滚动
         if (!curController.isViewLoaded) {
-            curController.view.frame = [self frameForControllerAtIndex:selectedControllerIndex];
+            curController.view.frame = [self frameForControllerAtIndex:index];
         }
         
         [self.scrollView addSubview:curController.view];
@@ -240,22 +256,41 @@
         [(UIScrollView *)curController.view setScrollsToTop:YES];
     }
     
-    _selectedControllerIndex = selectedControllerIndex;
+    _selectedControllerIndex = index;
 }
 
-- (UIViewController *)selectedController {
-    if (self.selectedControllerIndex >= 0) {
-        return self.viewControllers[self.selectedControllerIndex];
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    NSInteger page = scrollView.contentOffset.x / scrollView.frame.size.width;
+    self.tabBar.selectedItemIndex = page;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    // 如果不是手势拖动导致的此方法被调用，不处理
+    if (!(scrollView.isDragging || scrollView.isDecelerating)) {
+        return;
     }
-    return nil;
-}
+    
+    // 滑动越界不处理
+    CGFloat offsetX = scrollView.contentOffset.x;
+    CGFloat scrollViewWidth = scrollView.frame.size.width;
+    if (offsetX < 0) {
+        return;
+    }
+    if (offsetX > scrollView.contentSize.width - scrollViewWidth) {
+        return;
+    }
 
-#pragma mark - YPTabBarDelegate
-
-- (void)yp_tabBar:(YPTabBar *)tabBar switchingLeftIndex:(NSInteger)leftIndex rightIndex:(NSInteger)rightIndex {
+    NSInteger leftIndex = offsetX / scrollViewWidth;
+    NSInteger rightIndex = leftIndex + 1;
+    if (leftIndex == offsetX / scrollViewWidth) {
+        rightIndex = leftIndex;
+    }
+    // 将需要显示的child view放到scrollView上
     for (NSInteger index = leftIndex; index <= rightIndex; index++) {
         UIViewController *controller = self.viewControllers[index];
-
+        
         if (!controller.isViewLoaded && self.loadViewOfChildContollerWhileAppear) {
             controller.view.frame = [self frameForControllerAtIndex:index];
         }
@@ -263,13 +298,9 @@
             [self.scrollView addSubview:controller.view];
         }
     }
-}
-
-- (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index {
-    if (index == self.selectedControllerIndex) {
-        return;
-    }
-    self.selectedControllerIndex = index;
+    
+    // 同步修改tarBar的子视图状态
+    [self.tabBar updateSubViewsWhenParentScrollViewScroll:self.scrollView];
 }
 
 @end

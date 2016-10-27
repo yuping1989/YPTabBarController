@@ -63,6 +63,8 @@
 @property (nonatomic, assign) NSInteger willDisplayItemIndex;
 @property (nonatomic, assign) CGFloat contentScrollViewLastOffsetX;
 
+@property (nonatomic, assign) CGFloat scrollViewLastOffsetX;
+
 @end
 
 @implementation YPTabBar
@@ -251,14 +253,19 @@
                 x += width;
             }
         }
-        for (YPTabItem *item in self.items) {
-            NSLog(@"item--->%@", NSStringFromCGRect(item.frame));
-        }
     }
 }
 
 - (void)setSelectedItemIndex:(NSInteger)selectedItemIndex {
     if (self.items.count == 0 || selectedItemIndex < 0 || selectedItemIndex >= self.items.count) {
+        return;
+    }
+    
+    BOOL will = YES;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:willSelectItemAtIndex:)]) {
+        will = [self.delegate yp_tabBar:self willSelectItemAtIndex:selectedItemIndex];
+    }
+    if (!will) {
         return;
     }
     
@@ -381,13 +388,7 @@
     if (self.selectedItemIndex == item.index) {
         return;
     }
-    BOOL will = YES;
-    if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:willSelectItemAtIndex:)]) {
-        will = [self.delegate yp_tabBar:self willSelectItemAtIndex:item.index];
-    }
-    if (will) {
-        self.selectedItemIndex = item.index;
-    }
+    self.selectedItemIndex = item.index;
 }
 
 - (void)specialItemClicked:(YPTabItem *)item {
@@ -584,39 +585,12 @@
     }
 }
 
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    NSInteger page = scrollView.contentOffset.x / scrollView.frame.size.width;
-    self.selectedItemIndex = page;
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    // 如果不是手势拖动导致的此方法被调用，不处理
-    if (!(scrollView.isDragging || scrollView.isDecelerating)) {
-        return;
-    }
-    
-    // 滑动越界不处理
+- (void)updateSubViewsWhenParentScrollViewScroll:(UIScrollView *)scrollView {
     CGFloat offsetX = scrollView.contentOffset.x;
     CGFloat scrollViewWidth = scrollView.frame.size.width;
-    if (offsetX < 0) {
-        return;
-    }
-    if (offsetX > scrollView.contentSize.width - scrollViewWidth) {
-        return;
-    }
     
     NSInteger leftIndex = offsetX / scrollViewWidth;
     NSInteger rightIndex = leftIndex + 1;
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:switchingLeftIndex:rightIndex:)]) {
-        NSInteger newRightIndex = rightIndex;
-        if (leftIndex == offsetX / scrollViewWidth) {
-            newRightIndex = leftIndex;
-        }
-        [self.delegate yp_tabBar:self switchingLeftIndex:leftIndex rightIndex:newRightIndex];
-    }
     
     YPTabItem *leftItem = self.items[leftIndex];
     YPTabItem *rightItem = nil;

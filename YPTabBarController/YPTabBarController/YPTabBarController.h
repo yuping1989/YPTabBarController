@@ -24,7 +24,7 @@
 /**
  *  被选中的ViewController的Index
  */
-@property (nonatomic, assign, readonly) NSInteger selectedControllerIndex;
+@property (nonatomic, assign) NSInteger selectedControllerIndex;
 
 /**
  *  此属性仅在内容视图支持滑动时有效，它控制child view controller调用viewDidLoad方法的时机
