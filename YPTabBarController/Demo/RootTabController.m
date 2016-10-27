@@ -103,8 +103,6 @@
              afterItemWithIndex:1
                      tapHandler:^(YPTabItem *item) {
                          NSLog(@"item--->%ld", (long)item.index);
-//                         DynamicItemWidthTabController *controller = self.viewControllers[0];
-//                         controller.contentViewFrame = CGRectMake(0, 0, 320, 400);
                      }];
 }
 

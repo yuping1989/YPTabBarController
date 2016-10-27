@@ -63,8 +63,6 @@
 @property (nonatomic, assign) NSInteger willDisplayItemIndex;
 @property (nonatomic, assign) CGFloat contentScrollViewLastOffsetX;
 
-@property (nonatomic, assign) CGFloat scrollViewLastOffsetX;
-
 @end
 
 @implementation YPTabBar
