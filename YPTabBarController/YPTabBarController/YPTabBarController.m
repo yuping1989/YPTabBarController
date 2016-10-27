@@ -163,7 +163,6 @@
 }
 
 - (void)updateContentViewsFrame {
-    NSLog(@"content view--->%@", NSStringFromCGRect(self.contentViewFrame));
     if (self.scrollView) {
         self.scrollView.frame = self.contentViewFrame;
         self.scrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * _viewControllers.count,
@@ -194,36 +193,32 @@
 }
 
 - (void)setSelectedControllerIndex:(NSInteger)selectedControllerIndex {
+    
     UIViewController *oldController = nil;
     if (_selectedControllerIndex >= 0) {
         oldController = self.viewControllers[_selectedControllerIndex];
+        [oldController tabItemDidDeselected];
+        [oldController.view removeFromSuperview];
     }
+    
     UIViewController *curController = self.viewControllers[selectedControllerIndex];
-    BOOL isAppearFirstTime = YES;
+
+    [curController tabItemDidSelected];
     if (self.scrollView) {
         // contentView支持滚动
-        // 调用oldController的viewWillDisappear方法
-        [oldController viewWillDisappear:NO];
-        if (!curController.view.superview) {
-            // superview为空，表示为第一次加载，设置frame，并添加到scrollView
+        if (!curController.isViewLoaded) {
             curController.view.frame = CGRectMake(selectedControllerIndex * self.scrollView.frame.size.width,
                                                   0,
                                                   self.scrollView.frame.size.width,
                                                   self.scrollView.frame.size.height);
-            [self.scrollView addSubview:curController.view];
-        } else {
-            // superview不为空，表示为已经加载过了，调用viewWillAppear方法
-            isAppearFirstTime = NO;
-            [curController viewWillAppear:NO];
         }
+        
+        [self.scrollView addSubview:curController.view];
         // 切换到curController
         [self.scrollView scrollRectToVisible:curController.view.frame animated:self.contentSwitchAnimated];
     } else {
         // contentView不支持滚动
-        // 将oldController的view移除
-        if (oldController) {
-            [oldController.view removeFromSuperview];
-        }
+        
         [self.view insertSubview:curController.view belowSubview:self.tabBar];
         // 设置curController.view的frame
         if (!CGRectEqualToRect(curController.view.frame, self.contentViewFrame)) {
@@ -240,16 +235,6 @@
     }
     
     _selectedControllerIndex = selectedControllerIndex;
-    
-    // 调用状态切换的回调方法
-    [oldController tabItemDidDeselected];
-    [curController tabItemDidSelected];
-    if (self.scrollView) {
-        [oldController viewDidDisappear:NO];
-        if (!isAppearFirstTime) {
-            [curController viewDidAppear:NO];
-        }
-    }
 }
 
 - (UIViewController *)selectedController {

@@ -85,7 +85,7 @@
     
     self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, nil];
     
-    [self setContentScrollEnabledAndTapSwitchAnimated:NO];
+//    [self setContentScrollEnabledAndTapSwitchAnimated:NO];
     
     // 生成一个居中显示的YPTabItem对象，即“+”号按钮
     YPTabItem *item = [YPTabItem buttonWithType:UIButtonTypeCustom];
@@ -103,6 +103,8 @@
              afterItemWithIndex:1
                      tapHandler:^(YPTabItem *item) {
                          NSLog(@"item--->%ld", (long)item.index);
+//                         DynamicItemWidthTabController *controller = self.viewControllers[0];
+//                         controller.contentViewFrame = CGRectMake(0, 0, 320, 400);
                      }];
 }
 
@@ -110,6 +112,10 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     NSLog(@"viewWillAppear");
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
 }
 
 @end

@@ -43,31 +43,31 @@
 
 
 
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    NSLog(@"viewWillAppear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
-}
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    NSLog(@"viewDidAppear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
-}
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    NSLog(@"viewWillDisappear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
-}
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    NSLog(@"viewDidDisappear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
-}
-
-- (void)tabItemDidDeselected {
-    NSLog(@"Deselected--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
-}
-
-- (void)tabItemDidSelected {
-    NSLog(@"Selected--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
-}
+//
+//- (void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
+//    NSLog(@"viewWillAppear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
+//}
+//- (void)viewDidAppear:(BOOL)animated {
+//    [super viewDidAppear:animated];
+//    NSLog(@"viewDidAppear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
+//}
+//- (void)viewWillDisappear:(BOOL)animated {
+//    [super viewWillDisappear:animated];
+//    NSLog(@"viewWillDisappear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
+//}
+//- (void)viewDidDisappear:(BOOL)animated {
+//    [super viewDidDisappear:animated];
+//    NSLog(@"viewDidDisappear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
+//}
+//
+//- (void)tabItemDidDeselected {
+//    NSLog(@"Deselected--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
+//}
+//
+//- (void)tabItemDidSelected {
+//    NSLog(@"Selected--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

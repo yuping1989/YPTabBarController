@@ -60,6 +60,8 @@
 @property (nonatomic, assign) CGFloat itemSeparatorMarginTop;
 @property (nonatomic, assign) CGFloat itemSeparatorMarginBottom;
 
+@property (nonatomic, assign) NSInteger willDisplayItemIndex;
+
 @end
 
 @implementation YPTabBar
@@ -79,6 +81,7 @@
     self.clipsToBounds = YES;
     
     _selectedItemIndex = -1;
+    _willDisplayItemIndex = -1;
     _itemTitleColor = [UIColor whiteColor];
     _itemTitleSelectedColor = [UIColor blackColor];
     _itemTitleFont = [UIFont systemFontOfSize:10];
@@ -603,13 +606,30 @@
         return;
     }
     
-    NSInteger leftIndex = offsetX / scrollViewWidth;
+    CGFloat pageOffset = offsetX / scrollViewWidth;
+    NSInteger leftIndex = pageOffset;
+    NSInteger willDisplayIndex = self.selectedItemIndex;
+    if (pageOffset > self.selectedItemIndex) {
+        willDisplayIndex = self.selectedItemIndex + 1;
+    } else if (pageOffset < self.selectedItemIndex) {
+        willDisplayIndex = self.selectedItemIndex - 1;
+    }
+    if (willDisplayIndex != self.willDisplayItemIndex) {
+        self.willDisplayItemIndex = willDisplayIndex;
+        if (willDisplayIndex != self.selectedItemIndex && willDisplayIndex >= 0) {
+            NSLog(@"will select--->%d", willDisplayIndex);
+        }
+    }
+    
+    
     NSInteger rightIndex = leftIndex + 1;
     YPTabItem *leftItem = self.items[leftIndex];
     YPTabItem *rightItem = nil;
     if (rightIndex < self.items.count) {
         rightItem = self.items[rightIndex];
     }
+    
+//    NSLog(@"offset--->%f left-->%d right-->%d", offsetX, leftIndex, rightIndex);
     
     // 计算右边按钮偏移量
     CGFloat rightScale = offsetX / scrollViewWidth;
