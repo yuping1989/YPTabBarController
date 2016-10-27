@@ -61,6 +61,7 @@
 @property (nonatomic, assign) CGFloat itemSeparatorMarginBottom;
 
 @property (nonatomic, assign) NSInteger willDisplayItemIndex;
+@property (nonatomic, assign) CGFloat contentScrollViewLastOffsetX;
 
 @end
 
@@ -606,30 +607,22 @@
         return;
     }
     
-    CGFloat pageOffset = offsetX / scrollViewWidth;
-    NSInteger leftIndex = pageOffset;
-    NSInteger willDisplayIndex = self.selectedItemIndex;
-    if (pageOffset > self.selectedItemIndex) {
-        willDisplayIndex = self.selectedItemIndex + 1;
-    } else if (pageOffset < self.selectedItemIndex) {
-        willDisplayIndex = self.selectedItemIndex - 1;
-    }
-    if (willDisplayIndex != self.willDisplayItemIndex) {
-        self.willDisplayItemIndex = willDisplayIndex;
-        if (willDisplayIndex != self.selectedItemIndex && willDisplayIndex >= 0) {
-            NSLog(@"will select--->%d", willDisplayIndex);
-        }
-    }
-    
-    
+    NSInteger leftIndex = offsetX / scrollViewWidth;
     NSInteger rightIndex = leftIndex + 1;
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:switchingLeftIndex:rightIndex:)]) {
+        NSInteger newRightIndex = rightIndex;
+        if (leftIndex == offsetX / scrollViewWidth) {
+            newRightIndex = leftIndex;
+        }
+        [self.delegate yp_tabBar:self switchingLeftIndex:leftIndex rightIndex:newRightIndex];
+    }
+    
     YPTabItem *leftItem = self.items[leftIndex];
     YPTabItem *rightItem = nil;
     if (rightIndex < self.items.count) {
         rightItem = self.items[rightIndex];
     }
-    
-//    NSLog(@"offset--->%f left-->%d right-->%d", offsetX, leftIndex, rightIndex);
     
     // 计算右边按钮偏移量
     CGFloat rightScale = offsetX / scrollViewWidth;

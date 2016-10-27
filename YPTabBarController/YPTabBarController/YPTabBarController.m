@@ -50,6 +50,8 @@
     _selectedControllerIndex = -1;
     _tabBar = [[YPTabBar alloc] init];
     _tabBar.delegate = self;
+    
+    _loadViewOfChildContollerWhileAppear = NO;
 }
 
 - (void)viewDidLoad {
@@ -114,18 +116,17 @@
 
 - (void)setViewControllers:(NSArray *)viewControllers {
     
-    for (UIViewController *controller in self.viewControllers) {
+    for (UIViewController *controller in _viewControllers) {
         [controller removeFromParentViewController];
         [controller.view removeFromSuperview];
     }
     
     _viewControllers = [viewControllers copy];
-    [_viewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [self addChildViewController:obj];
-    }];
     
     NSMutableArray *items = [NSMutableArray array];
     for (UIViewController *controller in _viewControllers) {
+        [self addChildViewController:controller];
+        
         YPTabItem *item = [YPTabItem buttonWithType:UIButtonTypeCustom];
         item.image = controller.yp_tabItemImage;
         item.selectedImage = controller.yp_tabItemSelectedImage;
@@ -170,16 +171,20 @@
         [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController * _Nonnull controller,
                                                            NSUInteger idx, BOOL * _Nonnull stop) {
             if (controller.isViewLoaded) {
-                controller.view.frame = CGRectMake(idx * self.contentViewFrame.size.width,
-                                                   0,
-                                                   self.contentViewFrame.size.width,
-                                                   self.contentViewFrame.size.height);
+                controller.view.frame = [self frameForControllerAtIndex:idx];
             }
         }];
         [self.scrollView scrollRectToVisible:self.selectedController.view.frame animated:NO];
     } else {
         self.selectedController.view.frame = self.contentViewFrame;
     }
+}
+
+- (CGRect)frameForControllerAtIndex:(NSInteger)index {
+    return CGRectMake(index * self.contentViewFrame.size.width,
+                      0,
+                      self.contentViewFrame.size.width,
+                      self.contentViewFrame.size.height);
 }
 
 - (void)setInterceptRightSlideGuetureInFirstPage:(BOOL)interceptRightSlideGuetureInFirstPage {
@@ -198,19 +203,18 @@
     if (_selectedControllerIndex >= 0) {
         oldController = self.viewControllers[_selectedControllerIndex];
         [oldController tabItemDidDeselected];
-        [oldController.view removeFromSuperview];
+        [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController * _Nonnull controller, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (idx != selectedControllerIndex && controller.isViewLoaded && controller.view.superview) {
+                [controller.view removeFromSuperview];
+            }
+        }];
     }
     
     UIViewController *curController = self.viewControllers[selectedControllerIndex];
-
-    [curController tabItemDidSelected];
     if (self.scrollView) {
         // contentView支持滚动
         if (!curController.isViewLoaded) {
-            curController.view.frame = CGRectMake(selectedControllerIndex * self.scrollView.frame.size.width,
-                                                  0,
-                                                  self.scrollView.frame.size.width,
-                                                  self.scrollView.frame.size.height);
+            curController.view.frame = [self frameForControllerAtIndex:selectedControllerIndex];
         }
         
         [self.scrollView addSubview:curController.view];
@@ -225,6 +229,8 @@
             curController.view.frame = self.contentViewFrame;
         }
     }
+    
+    [curController tabItemDidSelected];
     
     // 当contentView为scrollView及其子类时，设置它支持点击状态栏回到顶部
     if (oldController && [oldController.view isKindOfClass:[UIScrollView class]]) {
@@ -245,6 +251,20 @@
 }
 
 #pragma mark - YPTabBarDelegate
+
+- (void)yp_tabBar:(YPTabBar *)tabBar switchingLeftIndex:(NSInteger)leftIndex rightIndex:(NSInteger)rightIndex {
+    for (NSInteger index = leftIndex; index <= rightIndex; index++) {
+        UIViewController *controller = self.viewControllers[index];
+
+        if (!controller.isViewLoaded && self.loadViewOfChildContollerWhileAppear) {
+            controller.view.frame = [self frameForControllerAtIndex:index];
+        }
+        if (controller.isViewLoaded && !controller.view.superview) {
+            [self.scrollView addSubview:controller.view];
+        }
+    }
+}
+
 - (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index {
     if (index == self.selectedControllerIndex) {
         return;

@@ -34,6 +34,7 @@
     [self.tabBar setScrollEnabledAndItemFitTextWidthWithSpacing:40];
     
     [self setContentScrollEnabledAndTapSwitchAnimated:NO];
+    self.loadViewOfChildContollerWhileAppear = YES;
     
     [self initViewControllers];
 }

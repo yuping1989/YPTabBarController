@@ -16,6 +16,12 @@
 @optional
 
 - (BOOL)yp_tabBar:(YPTabBar *)tabBar willSelectItemAtIndex:(NSInteger)index;
+
+/**
+ *  当YPTabBarController的内容视图支持滚动时
+ */
+- (void)yp_tabBar:(YPTabBar *)tabBar switchingLeftIndex:(NSInteger )leftIndex rightIndex:(NSInteger)rightIndex;
+
 - (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index;
 
 @end

@@ -35,8 +35,8 @@
 }
 - (IBAction)buttonClicked:(UIButton *)button {
 //    self.yp_tabBarController.contentViewFrame = CGRectMake(0, 64, 300, 500);
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    UINavigationController *navController = (UINavigationController *)delegate.window.rootViewController;
+//    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    UINavigationController *navController = self.navigationController;
     [navController pushViewController:[[ViewController alloc] init] animated:YES];
     [navController setNavigationBarHidden:NO animated:YES];
 }
@@ -52,10 +52,10 @@
 //    [super viewDidAppear:animated];
 //    NSLog(@"viewDidAppear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
 //}
-//- (void)viewWillDisappear:(BOOL)animated {
-//    [super viewWillDisappear:animated];
-//    NSLog(@"viewWillDisappear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
-//}
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    NSLog(@"viewWillDisappear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
+}
 //- (void)viewDidDisappear:(BOOL)animated {
 //    [super viewDidDisappear:animated];
 //    NSLog(@"viewDidDisappear--->%@ %@", NSStringFromClass(self.class), self.yp_tabItemTitle);
