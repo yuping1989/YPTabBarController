@@ -255,16 +255,21 @@
 }
 
 - (void)setSelectedItemIndex:(NSInteger)selectedItemIndex {
-    if (self.items.count == 0 || selectedItemIndex < 0 || selectedItemIndex >= self.items.count) {
+    if (selectedItemIndex == _selectedItemIndex ||
+        selectedItemIndex < 0 ||
+        selectedItemIndex >= self.items.count ||
+        self.items.count == 0) {
         return;
     }
     
-    BOOL will = YES;
-    if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:willSelectItemAtIndex:)]) {
-        will = [self.delegate yp_tabBar:self willSelectItemAtIndex:selectedItemIndex];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:shouldSelectItemAtIndex:)]) {
+        BOOL should = [self.delegate yp_tabBar:self shouldSelectItemAtIndex:selectedItemIndex];
+        if (!should) {
+            return;
+        }
     }
-    if (!will) {
-        return;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:willSelectItemAtIndex:)]) {
+        [self.delegate yp_tabBar:self willSelectItemAtIndex:selectedItemIndex];
     }
     
     if (_selectedItemIndex >= 0) {
@@ -300,13 +305,14 @@
         [self updateSelectedBgFrameWithIndex:selectedItemIndex];
     }
 
-    if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:didSelectedItemAtIndex:)]) {
-        [self.delegate yp_tabBar:self didSelectedItemAtIndex:selectedItemIndex];
-    }
     _selectedItemIndex = selectedItemIndex;
     
     // 如果tabbar支持滚动，将选中的item放到tabbar的中央
     [self setSelectedItemCenter];
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:didSelectedItemAtIndex:)]) {
+        [self.delegate yp_tabBar:self didSelectedItemAtIndex:selectedItemIndex];
+    }
 }
 
 /**
@@ -383,9 +389,6 @@
 }
 
 - (void)tabItemClicked:(YPTabItem *)item {
-    if (self.selectedItemIndex == item.index) {
-        return;
-    }
     self.selectedItemIndex = item.index;
 }
 
@@ -474,7 +477,6 @@
             // 未设置选中字体，更新所有item
             [self.items makeObjectsPerformSelector:@selector(setTitleFont:) withObject:itemTitleFont];
         }
-        
     }
     if (self.itemFitTextWidth) {
         // 如果item的宽度是匹配文字的，更新item的位置

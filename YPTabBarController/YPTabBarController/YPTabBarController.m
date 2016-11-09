@@ -11,7 +11,23 @@
 
 #define TAB_BAR_HEIGHT 50
 
-@interface YPTabScrollView : UIScrollView
+/**
+ *  自定义UIScrollView，在需要时可以拦截其滑动手势
+ */
+
+@class YPTabContentScrollView;
+
+@protocol YPTabContentScrollViewDelegate <NSObject>
+
+@optional
+
+- (BOOL)scrollView:(YPTabContentScrollView *)scrollView shouldScrollToPageIndex:(NSUInteger)index;
+
+@end
+
+@interface YPTabContentScrollView : UIScrollView
+
+@property (nonatomic, weak) id<YPTabContentScrollViewDelegate> yp_delegate;
 
 @property (nonatomic, assign) BOOL interceptLeftSlideGuetureInLastPage;
 @property (nonatomic, assign) BOOL interceptRightSlideGuetureInFirstPage;
@@ -19,11 +35,11 @@
 @end
 
 
-@interface YPTabBarController () <UIScrollViewDelegate> {
+@interface YPTabBarController () <UIScrollViewDelegate, YPTabContentScrollViewDelegate> {
     BOOL _didViewAppeared;
 }
 
-@property (nonatomic, strong) YPTabScrollView *scrollView;
+@property (nonatomic, strong) YPTabContentScrollView *contentScrollView;
 
 @property (nonatomic, assign) BOOL contentScrollEnabled;
 @property (nonatomic, assign) BOOL contentSwitchAnimated;
@@ -143,32 +159,32 @@
     }
     
     // 更新scrollView的content size
-    if (self.scrollView) {
-        self.scrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * _viewControllers.count,
+    if (self.contentScrollView) {
+        self.contentScrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * _viewControllers.count,
                                                  self.contentViewFrame.size.height);
     }
 }
 
 - (void)setContentScrollEnabledAndTapSwitchAnimated:(BOOL)switchAnimated {
-    if (!self.scrollView) {
-        self.scrollView = [[YPTabScrollView alloc] initWithFrame:self.contentViewFrame];
-        self.scrollView.pagingEnabled = YES;
-        self.scrollView.showsHorizontalScrollIndicator = NO;
-        self.scrollView.showsVerticalScrollIndicator = NO;
-        self.scrollView.scrollsToTop = NO;
-        self.scrollView.delegate = self;
-        [self.view insertSubview:self.scrollView belowSubview:self.tabBar];
-        self.scrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * _viewControllers.count,
-                                                 self.contentViewFrame.size.height);
+    if (!self.contentScrollView) {
+        self.contentScrollView = [[YPTabContentScrollView alloc] initWithFrame:self.contentViewFrame];
+        self.contentScrollView.pagingEnabled = YES;
+        self.contentScrollView.showsHorizontalScrollIndicator = NO;
+        self.contentScrollView.showsVerticalScrollIndicator = NO;
+        self.contentScrollView.scrollsToTop = NO;
+        self.contentScrollView.delegate = self;
+        self.contentScrollView.yp_delegate = self;
+        [self.view insertSubview:self.contentScrollView belowSubview:self.tabBar];
+        self.contentScrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * self.viewControllers.count, self.contentViewFrame.size.height);
     }
     [self updateContentViewsFrame];
     self.contentSwitchAnimated = switchAnimated;
 }
 
 - (void)updateContentViewsFrame {
-    if (self.scrollView) {
-        self.scrollView.frame = self.contentViewFrame;
-        self.scrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * _viewControllers.count,
+    if (self.contentScrollView) {
+        self.contentScrollView.frame = self.contentViewFrame;
+        self.contentScrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * self.viewControllers.count,
                                                  self.contentViewFrame.size.height);
         [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController * _Nonnull controller,
                                                            NSUInteger idx, BOOL * _Nonnull stop) {
@@ -176,7 +192,7 @@
                 controller.view.frame = [self frameForControllerAtIndex:idx];
             }
         }];
-        [self.scrollView scrollRectToVisible:self.selectedController.view.frame animated:NO];
+        [self.contentScrollView scrollRectToVisible:self.selectedController.view.frame animated:NO];
     } else {
         self.selectedController.view.frame = self.contentViewFrame;
     }
@@ -191,12 +207,12 @@
 
 - (void)setInterceptRightSlideGuetureInFirstPage:(BOOL)interceptRightSlideGuetureInFirstPage {
     _interceptRightSlideGuetureInFirstPage = interceptRightSlideGuetureInFirstPage;
-    self.scrollView.interceptRightSlideGuetureInFirstPage = interceptRightSlideGuetureInFirstPage;
+    self.contentScrollView.interceptRightSlideGuetureInFirstPage = interceptRightSlideGuetureInFirstPage;
 }
 
 - (void)setInterceptLeftSlideGuetureInLastPage:(BOOL)interceptLeftSlideGuetureInLastPage {
     _interceptLeftSlideGuetureInLastPage = interceptLeftSlideGuetureInLastPage;
-    self.scrollView.interceptLeftSlideGuetureInLastPage = interceptLeftSlideGuetureInLastPage;
+    self.contentScrollView.interceptLeftSlideGuetureInLastPage = interceptLeftSlideGuetureInLastPage;
 }
 
 - (void)setSelectedControllerIndex:(NSInteger)selectedControllerIndex {
@@ -227,15 +243,15 @@
         }];
     }
     UIViewController *curController = self.viewControllers[index];
-    if (self.scrollView) {
+    if (self.contentScrollView) {
         // contentView支持滚动
         if (!curController.isViewLoaded) {
             curController.view.frame = [self frameForControllerAtIndex:index];
         }
         
-        [self.scrollView addSubview:curController.view];
+        [self.contentScrollView addSubview:curController.view];
         // 切换到curController
-        [self.scrollView scrollRectToVisible:curController.view.frame animated:self.contentSwitchAnimated];
+        [self.contentScrollView scrollRectToVisible:curController.view.frame animated:self.contentSwitchAnimated];
     } else {
         // contentView不支持滚动
         
@@ -255,8 +271,17 @@
     if ([curController.view isKindOfClass:[UIScrollView class]]) {
         [(UIScrollView *)curController.view setScrollsToTop:YES];
     }
-    
+//    UIResponder
     _selectedControllerIndex = index;
+}
+
+#pragma mark - YPTabContentScrollViewDelegate
+
+- (BOOL)scrollView:(YPTabContentScrollView *)scrollView shouldScrollToPageIndex:(NSUInteger)index {
+    if ([self respondsToSelector:@selector(yp_tabBar:shouldSelectItemAtIndex:)]) {
+        return [self yp_tabBar:self.tabBar shouldSelectItemAtIndex:index];
+    }
+    return YES;
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -295,37 +320,49 @@
             controller.view.frame = [self frameForControllerAtIndex:index];
         }
         if (controller.isViewLoaded && !controller.view.superview) {
-            [self.scrollView addSubview:controller.view];
+            [self.contentScrollView addSubview:controller.view];
         }
     }
     
     // 同步修改tarBar的子视图状态
-    [self.tabBar updateSubViewsWhenParentScrollViewScroll:self.scrollView];
+    [self.tabBar updateSubViewsWhenParentScrollViewScroll:self.contentScrollView];
 }
 
 @end
 
 
-@implementation YPTabScrollView
+@implementation YPTabContentScrollView
 
+/**
+ *  重写此方法，在需要的时候，拦截UIPanGestureRecognizer
+ */
 - (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer {
-    if (self.interceptRightSlideGuetureInFirstPage) {
-        CGPoint location = [gestureRecognizer locationInView:self];
-        CGPoint translation = [gestureRecognizer translationInView:self];
-        if (translation.x > 0 && location.x < self.frame.size.width) {
+    // 计算可能切换到的index
+    NSInteger currentIndex = self.contentOffset.x / self.frame.size.width;
+    NSInteger targetIndex = currentIndex;
+    CGPoint translation = [gestureRecognizer translationInView:self];
+    if (translation.x > 0) {
+        targetIndex = currentIndex - 1;
+    } else {
+        targetIndex = currentIndex + 1;
+    }
+    
+    // 第一页往右滑动
+    if (self.interceptRightSlideGuetureInFirstPage && targetIndex < 0) {
+        return NO;
+    }
+    
+    // 最后一页往左滑动
+    if (self.interceptLeftSlideGuetureInLastPage) {
+        NSInteger numberOfPage = self.contentSize.width / self.frame.size.width;
+        if (targetIndex >= numberOfPage) {
             return NO;
         }
     }
-    if (self.interceptLeftSlideGuetureInLastPage) {
-        CGPoint location = [gestureRecognizer locationInView:self];
-        CGPoint translation = [gestureRecognizer translationInView:self];
-        
-        CGFloat lastPageOffset = self.contentSize.width - self.frame.size.width;
-        if (translation.x < 0 &&
-            location.x > lastPageOffset &&
-            location.x < self.contentSize.width) {
-            return NO;
-        }
+    
+    // 其他情况
+    if (self.yp_delegate && [self.yp_delegate respondsToSelector:@selector(scrollView:shouldScrollToPageIndex:)]) {
+        return [self.yp_delegate scrollView:self shouldScrollToPageIndex:targetIndex];
     }
     
     return YES;

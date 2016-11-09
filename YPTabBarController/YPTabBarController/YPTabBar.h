@@ -15,13 +15,19 @@
 
 @optional
 
-- (BOOL)yp_tabBar:(YPTabBar *)tabBar willSelectItemAtIndex:(NSInteger)index;
+/**
+ *  是否能切换到指定index
+ */
+- (BOOL)yp_tabBar:(YPTabBar *)tabBar shouldSelectItemAtIndex:(NSInteger)index;
 
 /**
- *  当YPTabBarController的内容视图支持滚动时
+ *  将要切换到指定index
  */
-- (void)yp_tabBar:(YPTabBar *)tabBar switchingLeftIndex:(NSInteger )leftIndex rightIndex:(NSInteger)rightIndex;
+- (void)yp_tabBar:(YPTabBar *)tabBar willSelectItemAtIndex:(NSInteger)index;
 
+/**
+ *  已经切换到指定index
+ */
 - (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index;
 
 @end
