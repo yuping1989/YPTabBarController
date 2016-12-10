@@ -26,6 +26,7 @@
 @property (nonatomic, assign) CGFloat dotBadgeSideLength;
 
 @property (nonatomic, copy) void (^doubleTapHandler)(void);
+
 @end
 
 @implementation YPTabItem

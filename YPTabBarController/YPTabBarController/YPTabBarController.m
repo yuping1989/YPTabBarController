@@ -11,6 +11,8 @@
 
 #define TAB_BAR_HEIGHT 50
 
+#pragma mark - YPTabContentScrollView
+
 /**
  *  自定义UIScrollView，在需要时可以拦截其滑动手势
  */
@@ -35,8 +37,78 @@
 @end
 
 
+#pragma mark - UIViewController (YPTabBarController)
+
+@implementation UIViewController (YPTabBarController)
+
+- (NSString *)yp_tabItemTitle {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void)setYp_tabItemTitle:(NSString *)yp_tabItemTitle {
+    self.yp_tabItem.title = yp_tabItemTitle;
+    objc_setAssociatedObject(self, @selector(yp_tabItemTitle), yp_tabItemTitle, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (UIImage *)yp_tabItemImage {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void)setYp_tabItemImage:(UIImage *)yp_tabItemImage {
+    self.yp_tabItem.image = yp_tabItemImage;
+    objc_setAssociatedObject(self, @selector(yp_tabItemImage), yp_tabItemImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIImage *)yp_tabItemSelectedImage {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void)setYp_tabItemSelectedImage:(UIImage *)yp_tabItemSelectedImage {
+    self.yp_tabItem.selectedImage = yp_tabItemSelectedImage;
+    objc_setAssociatedObject(self, @selector(yp_tabItemSelectedImage), yp_tabItemSelectedImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (YPTabItem *)yp_tabItem {
+    YPTabBar *tabBar = self.yp_tabBarController.tabBar;
+    if (!tabBar) {
+        return nil;
+    }
+    if (![self.yp_tabBarController.viewControllers containsObject:self]) {
+        return nil;
+    }
+    
+    NSUInteger index = [self.yp_tabBarController.viewControllers indexOfObject:self];
+    return tabBar.items[index];
+}
+
+- (YPTabBarController *)yp_tabBarController {
+    return (YPTabBarController *)self.parentViewController;
+}
+
+- (void)yp_tabItemDidSelected:(BOOL)isFirstTime {}
+
+- (void)tabItemDidSelected {}
+
+- (void)yp_tabItemDidDeselected {}
+
+- (void)tabItemDidDeselected {}
+
+- (BOOL)yp_isTabItemSelectedFirstTime {
+    id selected = objc_getAssociatedObject(self, _cmd);
+    if (!selected) {
+        return YES;
+    }
+    return [selected boolValue];
+}
+
+@end
+
+
+#pragma mark - YPTabBarController
+
 @interface YPTabBarController () <UIScrollViewDelegate, YPTabContentScrollViewDelegate> {
     BOOL _didViewAppeared;
+    CGFloat _lastContentScrollViewOffsetX;
 }
 
 @property (nonatomic, strong) YPTabContentScrollView *contentScrollView;
@@ -65,11 +137,12 @@
 }
 
 - (void)_setup {
-    _selectedControllerIndex = -1;
+    _selectedControllerIndex = NSNotFound;
     _tabBar = [[YPTabBar alloc] init];
     _tabBar.delegate = self;
     
     _loadViewOfChildContollerWhileAppear = NO;
+    _defaultSelectedControllerIndex = 0;
 }
 
 - (void)viewDidLoad {
@@ -89,7 +162,7 @@
     
     // 在第一次调用viewWillAppear方法时，初始化选中的item
     if (!_didViewAppeared) {
-        self.tabBar.selectedItemIndex = 0;
+        self.tabBar.selectedItemIndex = self.defaultSelectedControllerIndex;
         _didViewAppeared = YES;
     }
 }
@@ -133,10 +206,11 @@
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers {
-    
     for (UIViewController *controller in _viewControllers) {
         [controller removeFromParentViewController];
-        [controller.view removeFromSuperview];
+        if (controller.isViewLoaded) {
+            [controller.view removeFromSuperview];
+        }
     }
     
     _viewControllers = [viewControllers copy];
@@ -154,7 +228,7 @@
     self.tabBar.items = items;
     
     if (_didViewAppeared) {
-        _selectedControllerIndex = -1;
+        _selectedControllerIndex = NSNotFound;
         self.tabBar.selectedItemIndex = 0;
     }
     
@@ -198,7 +272,7 @@
     }
 }
 
-- (CGRect)frameForControllerAtIndex:(NSInteger)index {
+- (CGRect)frameForControllerAtIndex:(NSUInteger)index {
     return CGRectMake(index * self.contentViewFrame.size.width,
                       0,
                       self.contentViewFrame.size.width,
@@ -215,27 +289,30 @@
     self.contentScrollView.interceptLeftSlideGuetureInLastPage = interceptLeftSlideGuetureInLastPage;
 }
 
-- (void)setSelectedControllerIndex:(NSInteger)selectedControllerIndex {
+- (void)setSelectedControllerIndex:(NSUInteger)selectedControllerIndex {
     self.tabBar.selectedItemIndex = selectedControllerIndex;
 }
 
 - (UIViewController *)selectedController {
-    if (self.selectedControllerIndex >= 0) {
+    if (self.selectedControllerIndex != NSNotFound) {
         return self.viewControllers[self.selectedControllerIndex];
     }
     return nil;
 }
 
+- (void)didSelectViewControllerAtIndex:(NSUInteger)index {}
+
 #pragma mark - YPTabBarDelegate
 
-- (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index {
+- (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSUInteger)index {
     if (index == self.selectedControllerIndex) {
         return;
     }
     UIViewController *oldController = nil;
-    if (self.selectedControllerIndex >= 0) {
+    if (self.selectedControllerIndex != NSNotFound) {
         oldController = self.viewControllers[self.selectedControllerIndex];
-        [oldController tabItemDidDeselected];
+        [oldController yp_tabItemDidDeselected];
+        [oldController tabItemDidDeselected]; // 废弃方法
         [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController * _Nonnull controller, NSUInteger idx, BOOL * _Nonnull stop) {
             if (idx != index && controller.isViewLoaded && controller.view.superview) {
                 [controller.view removeFromSuperview];
@@ -262,7 +339,13 @@
         }
     }
     
-    [curController tabItemDidSelected];
+    BOOL isSelectedFirstTime = [curController yp_isTabItemSelectedFirstTime];
+    if (isSelectedFirstTime) {
+        objc_setAssociatedObject(curController, @selector(yp_isTabItemSelectedFirstTime), @(NO), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    
+    [curController yp_tabItemDidSelected:isSelectedFirstTime];
+    [curController tabItemDidSelected]; // 废弃方法
     
     // 当contentView为scrollView及其子类时，设置它支持点击状态栏回到顶部
     if (oldController && [oldController.view isKindOfClass:[UIScrollView class]]) {
@@ -271,8 +354,10 @@
     if ([curController.view isKindOfClass:[UIScrollView class]]) {
         [(UIScrollView *)curController.view setScrollsToTop:YES];
     }
-//    UIResponder
+
     _selectedControllerIndex = index;
+    
+    [self didSelectViewControllerAtIndex:_selectedControllerIndex];
 }
 
 #pragma mark - YPTabContentScrollViewDelegate
@@ -287,7 +372,7 @@
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    NSInteger page = scrollView.contentOffset.x / scrollView.frame.size.width;
+    NSUInteger page = scrollView.contentOffset.x / scrollView.frame.size.width;
     self.tabBar.selectedItemIndex = page;
 }
 
@@ -300,6 +385,7 @@
     // 滑动越界不处理
     CGFloat offsetX = scrollView.contentOffset.x;
     CGFloat scrollViewWidth = scrollView.frame.size.width;
+    
     if (offsetX < 0) {
         return;
     }
@@ -307,13 +393,33 @@
         return;
     }
 
-    NSInteger leftIndex = offsetX / scrollViewWidth;
-    NSInteger rightIndex = leftIndex + 1;
+    NSUInteger leftIndex = offsetX / scrollViewWidth;
+    NSUInteger rightIndex = leftIndex + 1;
+    
+    // 这里处理shouldSelectItemAtIndex方法
+    if ([self respondsToSelector:@selector(yp_tabBar:shouldSelectItemAtIndex:)] && !scrollView.isDecelerating) {
+        NSUInteger targetIndex;
+        if (_lastContentScrollViewOffsetX < (CGFloat)offsetX) {
+            // 向左
+            targetIndex = rightIndex;
+        } else {
+            // 向右
+            targetIndex = leftIndex;
+        }
+        if (targetIndex != self.selectedControllerIndex) {
+            if (![self yp_tabBar:self.tabBar shouldSelectItemAtIndex:targetIndex]) {
+                [scrollView setContentOffset:CGPointMake(self.selectedControllerIndex * scrollViewWidth, 0) animated:NO];
+            }
+        }
+    }
+    _lastContentScrollViewOffsetX = offsetX;
+    
+    // 刚好处于能完整显示一个child view的位置
     if (leftIndex == offsetX / scrollViewWidth) {
         rightIndex = leftIndex;
     }
     // 将需要显示的child view放到scrollView上
-    for (NSInteger index = leftIndex; index <= rightIndex; index++) {
+    for (NSUInteger index = leftIndex; index <= rightIndex; index++) {
         UIViewController *controller = self.viewControllers[index];
         
         if (!controller.isViewLoaded && self.loadViewOfChildContollerWhileAppear) {
@@ -354,7 +460,7 @@
     
     // 最后一页往左滑动
     if (self.interceptLeftSlideGuetureInLastPage) {
-        NSInteger numberOfPage = self.contentSize.width / self.frame.size.width;
+        NSUInteger numberOfPage = self.contentSize.width / self.frame.size.width;
         if (targetIndex >= numberOfPage) {
             return NO;
         }
@@ -366,53 +472,6 @@
     }
     
     return YES;
-}
-
-@end
-
-
-@implementation UIViewController (YPTabBarController)
-
-- (NSString *)yp_tabItemTitle {
-    return objc_getAssociatedObject(self, _cmd);
-}
-
-- (void)setYp_tabItemTitle:(NSString *)yp_tabItemTitle {
-    objc_setAssociatedObject(self, @selector(yp_tabItemTitle), yp_tabItemTitle, OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
-
-- (UIImage *)yp_tabItemImage {
-    return objc_getAssociatedObject(self, _cmd);
-}
-
-- (void)setYp_tabItemImage:(UIImage *)yp_tabItemImage {
-    objc_setAssociatedObject(self, @selector(yp_tabItemImage), yp_tabItemImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (UIImage *)yp_tabItemSelectedImage {
-    return objc_getAssociatedObject(self, _cmd);
-}
-
-- (void)setYp_tabItemSelectedImage:(UIImage *)yp_tabItemSelectedImage {
-    objc_setAssociatedObject(self, @selector(yp_tabItemSelectedImage), yp_tabItemSelectedImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (YPTabItem *)yp_tabItem {
-    YPTabBar *tabBar = self.yp_tabBarController.tabBar;
-    NSInteger index = [self.yp_tabBarController.viewControllers indexOfObject:self];
-    return tabBar.items[index];
-}
-
-- (YPTabBarController *)yp_tabBarController {
-    return (YPTabBarController *)self.parentViewController;
-}
-
-- (void)tabItemDidSelected {
-    
-}
-
-- (void)tabItemDidDeselected {
-    
 }
 
 @end

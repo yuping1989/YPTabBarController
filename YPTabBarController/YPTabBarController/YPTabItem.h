@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
 /**
  *  item在tabBar中的index，此属性不能手动设置
  */
-@property (nonatomic, assign) NSInteger index;
+@property (nonatomic, assign) NSUInteger index;
 
 /**
  *  用于记录tabItem在缩放前的frame，

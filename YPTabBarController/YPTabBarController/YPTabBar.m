@@ -60,9 +60,6 @@
 @property (nonatomic, assign) CGFloat itemSeparatorMarginTop;
 @property (nonatomic, assign) CGFloat itemSeparatorMarginBottom;
 
-@property (nonatomic, assign) NSInteger willDisplayItemIndex;
-@property (nonatomic, assign) CGFloat contentScrollViewLastOffsetX;
-
 @end
 
 @implementation YPTabBar
@@ -81,8 +78,7 @@
     self.backgroundColor = [UIColor whiteColor];
     self.clipsToBounds = YES;
     
-    _selectedItemIndex = -1;
-    _willDisplayItemIndex = -1;
+    _selectedItemIndex = NSNotFound;
     _itemTitleColor = [UIColor whiteColor];
     _itemTitleSelectedColor = [UIColor blackColor];
     _itemTitleFont = [UIFont systemFontOfSize:10];
@@ -124,6 +120,9 @@
 }
 
 - (void)setItems:(NSArray *)items {
+    _selectedItemIndex = NSNotFound;
+    [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
+    
     // 将老的item从superview上删除
     [_items makeObjectsPerformSelector:@selector(removeFromSuperview)];
     _items = [items copy];
@@ -186,7 +185,7 @@
         
         [self.scrollView addSubview:self.itemSelectedBgImageView];
         CGFloat x = self.leftAndRightSpacing;
-        for (NSInteger index = 0; index < self.items.count; index++) {
+        for (NSUInteger index = 0; index < self.items.count; index++) {
             YPTabItem *item = self.items[index];
             CGFloat width = 0;
             // item的宽度为一个固定值
@@ -224,7 +223,7 @@
         // 四舍五入，取整，防止字体模糊
         self.itemWidth = floorf(self.itemWidth + 0.5f);
 
-        for (NSInteger index = 0; index < self.items.count; index++) {
+        for (NSUInteger index = 0; index < self.items.count; index++) {
             YPTabItem *item = self.items[index];
             if (index == self.items.count - 1) {
                 self.itemWidth = self.frame.size.width - x;
@@ -254,9 +253,8 @@
     }
 }
 
-- (void)setSelectedItemIndex:(NSInteger)selectedItemIndex {
+- (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex {
     if (selectedItemIndex == _selectedItemIndex ||
-        selectedItemIndex < 0 ||
         selectedItemIndex >= self.items.count ||
         self.items.count == 0) {
         return;
@@ -272,7 +270,7 @@
         [self.delegate yp_tabBar:self willSelectItemAtIndex:selectedItemIndex];
     }
     
-    if (_selectedItemIndex >= 0) {
+    if (_selectedItemIndex != NSNotFound) {
         YPTabItem *oldSelectedItem = self.items[_selectedItemIndex];
         oldSelectedItem.selected = NO;
         if (self.itemFontChangeFollowContentScroll) {
@@ -297,7 +295,7 @@
         }
     }
     
-    if (self.itemSelectedBgSwitchAnimated && _selectedItemIndex >= 0) {
+    if (self.itemSelectedBgSwitchAnimated && _selectedItemIndex != NSNotFound) {
         [UIView animateWithDuration:0.25f animations:^{
             [self updateSelectedBgFrameWithIndex:selectedItemIndex];
         }];
@@ -318,8 +316,9 @@
 /**
  *  更新选中背景的frame
  */
-- (void)updateSelectedBgFrameWithIndex:(NSInteger)index {
-    if (index < 0) {
+- (void)updateSelectedBgFrameWithIndex:(NSUInteger)index {
+    if (index == NSNotFound) {
+        self.itemSelectedBgImageView.frame = CGRectZero;
         return;
     }
     YPTabItem *item = self.items[index];
@@ -399,13 +398,13 @@
 }
 
 - (YPTabItem *)selectedItem {
-    if (self.selectedItemIndex < 0) {
+    if (self.selectedItemIndex == NSNotFound) {
         return nil;
     }
     return self.items[self.selectedItemIndex];
 }
 
-- (void)setSpecialItem:(YPTabItem *)item afterItemWithIndex:(NSInteger)index tapHandler:(void (^)(YPTabItem *item))handler {
+- (void)setSpecialItem:(YPTabItem *)item afterItemWithIndex:(NSUInteger)index tapHandler:(void (^)(YPTabItem *item))handler {
     self.specialItem = item;
     self.specialItem.index = index;
     [self.specialItem addTarget:self action:@selector(specialItemClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -441,7 +440,7 @@
 
 - (void)setItemSelectedBgInsets:(UIEdgeInsets)itemSelectedBgInsets {
     _itemSelectedBgInsets = itemSelectedBgInsets;
-    if (self.items.count > 0 && self.selectedItemIndex >= 0) {
+    if (self.items.count > 0 && self.selectedItemIndex != NSNotFound) {
         [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
     }
 }
@@ -647,8 +646,8 @@
     CGFloat offsetX = scrollView.contentOffset.x;
     CGFloat scrollViewWidth = scrollView.frame.size.width;
     
-    NSInteger leftIndex = offsetX / scrollViewWidth;
-    NSInteger rightIndex = leftIndex + 1;
+    NSUInteger leftIndex = offsetX / scrollViewWidth;
+    NSUInteger rightIndex = leftIndex + 1;
     
     YPTabItem *leftItem = self.items[leftIndex];
     YPTabItem *rightItem = nil;

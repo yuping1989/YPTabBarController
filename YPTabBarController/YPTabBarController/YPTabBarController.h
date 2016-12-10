@@ -22,9 +22,14 @@
 @property (nonatomic, assign) CGRect contentViewFrame;
 
 /**
- *  被选中的ViewController的Index
+ *  第一次显示时，默认被选中的ViewController的Index，在viewWillAppear方法被调用前设置有效
  */
-@property (nonatomic, assign) NSInteger selectedControllerIndex;
+@property (nonatomic, assign) NSUInteger defaultSelectedControllerIndex;
+
+/**
+ *  设置被选中的ViewController的Index，界面会自动切换
+ */
+@property (nonatomic, assign) NSUInteger selectedControllerIndex;
 
 /**
  *  此属性仅在内容视图支持滑动时有效，它控制child view controller调用viewDidLoad方法的时机
@@ -59,6 +64,11 @@
  */
 - (UIViewController *)selectedController;
 
+/**
+ *  ViewController被选中时调用此方法，此方法为回调方法
+ */
+- (void)didSelectViewControllerAtIndex:(NSUInteger)index;
+
 @end
 
 @interface UIViewController (YPTabBarController)
@@ -71,13 +81,25 @@
 - (YPTabBarController *)yp_tabBarController;
 
 /**
- *  ViewController对应的Tab被Select后，执行此方法
+ *  ViewController对应的Tab被Select后，执行此方法，此方法为回调方法
+ *
+ *  @param isFirstTime  是否为第一次被选中
  */
-- (void)tabItemDidSelected;
+- (void)yp_tabItemDidSelected:(BOOL)isFirstTime;
 
 /**
- *  ViewController对应的Tab被Deselect后，执行此方法
+ *  ViewController对应的Tab被Deselect后，执行此方法，此方法为回调方法
  */
-- (void)tabItemDidDeselected;
+- (void)yp_tabItemDidDeselected;
+
+/**
+ *  废弃，用yp_tabItemDidSelected:替换
+ */
+- (void)tabItemDidSelected __deprecated_msg("废弃，用yp_tabItemDidSelected:替换");
+
+/**
+ *  废弃，用yp_tabItemDidDeselected替换
+ */
+- (void)tabItemDidDeselected __deprecated_msg("废弃，用yp_tabItemDidDeselected替换");
 
 @end

@@ -18,17 +18,17 @@
 /**
  *  是否能切换到指定index
  */
-- (BOOL)yp_tabBar:(YPTabBar *)tabBar shouldSelectItemAtIndex:(NSInteger)index;
+- (BOOL)yp_tabBar:(YPTabBar *)tabBar shouldSelectItemAtIndex:(NSUInteger)index;
 
 /**
  *  将要切换到指定index
  */
-- (void)yp_tabBar:(YPTabBar *)tabBar willSelectItemAtIndex:(NSInteger)index;
+- (void)yp_tabBar:(YPTabBar *)tabBar willSelectItemAtIndex:(NSUInteger)index;
 
 /**
  *  已经切换到指定index
  */
-- (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSInteger)index;
+- (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSUInteger)index;
 
 @end
 
@@ -55,7 +55,7 @@
 
 @property (nonatomic, assign) CGFloat leftAndRightSpacing;          // TabBar边缘与第一个和最后一个item的距离
 
-@property (nonatomic, assign) NSInteger selectedItemIndex;          // 选中某一个item
+@property (nonatomic, assign) NSUInteger selectedItemIndex;          // 选中某一个item
 
 
 /**
@@ -175,7 +175,7 @@
  *  @param handler 点击事件回调
  */
 - (void)setSpecialItem:(YPTabItem *)item
-    afterItemWithIndex:(NSInteger)index
+    afterItemWithIndex:(NSUInteger)index
             tapHandler:(void (^)(YPTabItem *item))handler;
 
 /**
