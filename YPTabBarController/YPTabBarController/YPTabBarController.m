@@ -312,7 +312,9 @@
     if (self.selectedControllerIndex != NSNotFound) {
         oldController = self.viewControllers[self.selectedControllerIndex];
         [oldController yp_tabItemDidDeselected];
-        [oldController tabItemDidDeselected]; // 废弃方法
+        if ([oldController respondsToSelector:@selector(tabItemDidDeselected)]) {
+            [oldController performSelector:@selector(tabItemDidDeselected)];
+        }
         [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController * _Nonnull controller, NSUInteger idx, BOOL * _Nonnull stop) {
             if (idx != index && controller.isViewLoaded && controller.view.superview) {
                 [controller.view removeFromSuperview];
@@ -345,7 +347,9 @@
     }
     
     [curController yp_tabItemDidSelected:isSelectedFirstTime];
-    [curController tabItemDidSelected]; // 废弃方法
+    if ([curController respondsToSelector:@selector(tabItemDidSelected)]) {
+        [curController performSelector:@selector(tabItemDidSelected)];
+    }
     
     // 当contentView为scrollView及其子类时，设置它支持点击状态栏回到顶部
     if (oldController && [oldController.view isKindOfClass:[UIScrollView class]]) {
