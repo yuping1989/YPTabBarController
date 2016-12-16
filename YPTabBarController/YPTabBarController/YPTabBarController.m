@@ -447,9 +447,13 @@
  *  重写此方法，在需要的时候，拦截UIPanGestureRecognizer
  */
 - (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer {
+    if (![gestureRecognizer respondsToSelector:@selector(translationInView:)]) {
+        return YES;
+    }
     // 计算可能切换到的index
     NSInteger currentIndex = self.contentOffset.x / self.frame.size.width;
     NSInteger targetIndex = currentIndex;
+    
     CGPoint translation = [gestureRecognizer translationInView:self];
     if (translation.x > 0) {
         targetIndex = currentIndex - 1;
