@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "YPTabBar.h"
 #import "YPTabItem.h"
+#import "UIViewController+YPTabBarController.h"
 
 @interface YPTabBarController : UIViewController <YPTabBarDelegate>
 
@@ -52,12 +53,21 @@
  */
 - (void)setTabBarFrame:(CGRect)tabBarFrame contentViewFrame:(CGRect)contentViewFrame;
 
+- (void)setHeaderView:(UIView *)headerView
+          needStretch:(BOOL)needStretch
+         headerHeight:(CGFloat)headerHeight
+         tabBarHeight:(CGFloat)tabBarHeight
+    contentViewHeight:(CGFloat)contentViewHeight
+tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight;
+
+
 /**
  *  设置内容视图支持滑动切换，以及点击item切换时是否有动画
  *
  *  @param animated  点击切换时是否支持动画
  */
 - (void)setContentScrollEnabledAndTapSwitchAnimated:(BOOL)animated;
+
 
 /**
  *  获取被选中的ViewController
@@ -71,35 +81,4 @@
 
 @end
 
-@interface UIViewController (YPTabBarController)
 
-@property (nonatomic, copy) NSString *yp_tabItemTitle; // tabItem的标题
-@property (nonatomic, strong) UIImage *yp_tabItemImage; // tabItem的图像
-@property (nonatomic, strong) UIImage *yp_tabItemSelectedImage; // tabItem的选中图像
-
-- (YPTabItem *)yp_tabItem;
-- (YPTabBarController *)yp_tabBarController;
-
-/**
- *  ViewController对应的Tab被Select后，执行此方法，此方法为回调方法
- *
- *  @param isFirstTime  是否为第一次被选中
- */
-- (void)yp_tabItemDidSelected:(BOOL)isFirstTime;
-
-/**
- *  ViewController对应的Tab被Deselect后，执行此方法，此方法为回调方法
- */
-- (void)yp_tabItemDidDeselected;
-
-/**
- *  废弃，用yp_tabItemDidSelected:替换
- */
-- (void)tabItemDidSelected __deprecated_msg("废弃，用yp_tabItemDidSelected:替换");
-
-/**
- *  废弃，用yp_tabItemDidDeselected替换
- */
-- (void)tabItemDidDeselected __deprecated_msg("废弃，用yp_tabItemDidDeselected替换");
-
-@end

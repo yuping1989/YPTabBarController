@@ -30,11 +30,11 @@
     self.tabBar.itemTitleSelectedColor = [UIColor whiteColor];
     self.tabBar.itemTitleFont = [UIFont systemFontOfSize:18];
     
-    self.tabBar.itemSelectedBgScrollFollowContent = YES;
+    self.tabBar.indicatorScrollFollowContent = YES;
     self.tabBar.itemColorChangeFollowContentScroll = NO;
     
-    self.tabBar.itemSelectedBgColor = [UIColor redColor];
-    [self.tabBar setItemSelectedBgInsets:UIEdgeInsetsZero tapSwitchAnimated:YES];
+    self.tabBar.indicatorColor = [UIColor redColor];
+    [self.tabBar setIndicatorInsets:UIEdgeInsetsZero tapSwitchAnimated:YES];
     
     [self setContentScrollEnabledAndTapSwitchAnimated:YES];
     

@@ -30,9 +30,10 @@
     [self.tabBar setScrollEnabledAndItemWidth:80];
     self.tabBar.itemFontChangeFollowContentScroll = YES;
     
-    self.tabBar.itemSelectedBgScrollFollowContent = YES;
-    self.tabBar.itemSelectedBgColor = [UIColor redColor];
-    [self.tabBar setItemSelectedBgInsets:UIEdgeInsetsMake(40, 10, 0, 10) tapSwitchAnimated:NO];
+    self.tabBar.indicatorScrollFollowContent = YES;
+    self.tabBar.indicatorColor = [UIColor redColor];
+    [self.tabBar setIndicatorInsets:UIEdgeInsetsMake(40, 10, 0, 10) tapSwitchAnimated:NO];
+    self.tabBar.indicatorAnimationStyle = YPTabBarIndicatorAnimationStyle1;
     
     [self setContentScrollEnabledAndTapSwitchAnimated:NO];
     

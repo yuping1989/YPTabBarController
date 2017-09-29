@@ -27,11 +27,13 @@
     self.tabBar.leftAndRightSpacing = 20;
     
     self.tabBar.itemFontChangeFollowContentScroll = YES;
-    self.tabBar.itemSelectedBgScrollFollowContent = YES;
-    self.tabBar.itemSelectedBgColor = [UIColor redColor];
+    self.tabBar.indicatorScrollFollowContent = YES;
+    self.tabBar.indicatorColor = [UIColor redColor];
     
-    [self.tabBar setItemSelectedBgInsets:UIEdgeInsetsMake(40, 15, 0, 15) tapSwitchAnimated:NO];
+    [self.tabBar setIndicatorInsets:UIEdgeInsetsMake(40, 15, 0, 15) tapSwitchAnimated:NO];
     [self.tabBar setScrollEnabledAndItemFitTextWidthWithSpacing:40];
+    self.tabBar.indicatorAnimationStyle = YPTabBarIndicatorAnimationStyle1;
+    
     
     [self setContentScrollEnabledAndTapSwitchAnimated:NO];
     self.loadViewOfChildContollerWhileAppear = YES;

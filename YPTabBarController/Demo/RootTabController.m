@@ -12,6 +12,7 @@
 #import "DynamicItemWidthTabController.h"
 #import "SegmentTabController.h"
 #import "UnscrollTabController.h"
+#import "HeaderViewTabController.h"
 
 @interface RootTabController ()
 
@@ -78,14 +79,12 @@
     controller4.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
     controller4.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
     
-//    ViewController *controller5 = [[ViewController alloc] init];
-//    controller5.yp_tabItemTitle = @"普通";
-//    controller5.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
-//    controller5.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
+    HeaderViewTabController *controller5 = [[HeaderViewTabController alloc] init];
+    controller5.yp_tabItemTitle = @"HeadrView";
+    controller5.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
+    controller5.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
     
-    self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, nil];
-    
-//    [self setContentScrollEnabledAndTapSwitchAnimated:NO];
+    self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, controller5, nil];
     
     // 生成一个居中显示的YPTabItem对象，即“+”号按钮
     YPTabItem *item = [YPTabItem buttonWithType:UIButtonTypeCustom];
@@ -99,11 +98,11 @@
     // 高度大于tabBar，所以需要将此属性设置为NO
     self.tabBar.clipsToBounds = NO;
     
-    [self.tabBar setSpecialItem:item
-             afterItemWithIndex:1
-                     tapHandler:^(YPTabItem *item) {
-                         NSLog(@"item--->%ld", (long)item.index);
-                     }];
+//    [self.tabBar setSpecialItem:item
+//             afterItemWithIndex:1
+//                     tapHandler:^(YPTabItem *item) {
+//                         NSLog(@"item--->%ld", (long)item.index);
+//                     }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

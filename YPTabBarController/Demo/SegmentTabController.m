@@ -8,6 +8,7 @@
 
 #import "SegmentTabController.h"
 #import "ViewController.h"
+#import "TableViewController.h"
 
 @interface SegmentTabController ()
 
@@ -27,7 +28,7 @@
     self.tabBar.itemTitleColor = [UIColor redColor];
     self.tabBar.itemTitleSelectedColor = [UIColor whiteColor];
     self.tabBar.itemTitleFont = [UIFont systemFontOfSize:15];
-    self.tabBar.itemSelectedBgColor = [UIColor blueColor];
+    self.tabBar.indicatorColor = [UIColor blueColor];
     self.tabBar.layer.cornerRadius = 5;
     self.tabBar.layer.borderWidth = 1;
     self.tabBar.layer.borderColor = [UIColor blueColor].CGColor;

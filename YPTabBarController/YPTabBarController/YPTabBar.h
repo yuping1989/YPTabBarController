@@ -9,6 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "YPTabItem.h"
 
+typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
+    YPTabBarIndicatorAnimationStyleDefault = 0,
+    YPTabBarIndicatorAnimationStyle1,
+};
+
 @class YPTabBar;
 
 @protocol YPTabBarDelegate <NSObject>
@@ -39,9 +44,10 @@
  */
 @property (nonatomic, copy) NSArray <YPTabItem *> *items;
 
-@property (nonatomic, strong) UIColor *itemSelectedBgColor;         // item选中背景颜色
-@property (nonatomic, strong) UIImage *itemSelectedBgImage;         // item选中背景图像
-@property (nonatomic, assign) CGFloat itemSelectedBgCornerRadius;   // item选中背景圆角
+@property (nonatomic, strong) UIColor *indicatorColor;         // item指示器颜色
+@property (nonatomic, strong) UIImage *indicatorImage;         // item指示器图像
+@property (nonatomic, assign) CGFloat indicatorCornerRadius;   // item指示器圆角
+@property (nonatomic, assign) CGFloat indicatorAnimationStyle;
 
 @property (nonatomic, strong) UIColor *itemTitleColor;              // 标题颜色
 @property (nonatomic, strong) UIColor *itemTitleSelectedColor;      // 选中时标题的颜色
@@ -71,7 +77,7 @@
 /**
  *  TabItem的选中背景是否随contentView滑动而移动
  */
-@property (nonatomic, assign, getter = isItemSelectedBgScrollFollowContent) BOOL itemSelectedBgScrollFollowContent;
+@property (nonatomic, assign, getter = isIndicatorScrollFollowContent) BOOL indicatorScrollFollowContent;
 
 /**
  *  将Image和Title设置为水平居中，默认为YES
@@ -96,7 +102,7 @@
  *  @param insets       选中背景的insets
  *  @param animated     点击item进行背景切换的时候，是否支持动画
  */
-- (void)setItemSelectedBgInsets:(UIEdgeInsets)insets tapSwitchAnimated:(BOOL)animated;
+- (void)setIndicatorInsets:(UIEdgeInsets)insets tapSwitchAnimated:(BOOL)animated;
 
 /**
  *  设置tabBar可以左右滑动
