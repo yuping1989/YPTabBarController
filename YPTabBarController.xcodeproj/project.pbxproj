@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E07EE481F7F41D200473930 /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E07EE471F7F41CA00473930 /* UINavigationController+FDFullscreenPopGesture.m */; };
 		7E2107351F70BA99002586C5 /* UIViewController+YPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2107341F70BA99002586C5 /* UIViewController+YPTabBarController.m */; };
 		7E2107911F78FECC002586C5 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E21078F1F78FECC002586C5 /* TableViewController.m */; };
 		7E2107951F78FF68002586C5 /* HeaderViewTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2107941F78FF68002586C5 /* HeaderViewTabController.m */; };
@@ -51,6 +52,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7E07EE461F7F41CA00473930 /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
+		7E07EE471F7F41CA00473930 /* UINavigationController+FDFullscreenPopGesture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FDFullscreenPopGesture.m"; sourceTree = "<group>"; };
 		7E2107331F70BA99002586C5 /* UIViewController+YPTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+YPTabBarController.h"; sourceTree = "<group>"; };
 		7E2107341F70BA99002586C5 /* UIViewController+YPTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+YPTabBarController.m"; sourceTree = "<group>"; };
 		7E21078E1F78FECC002586C5 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
@@ -119,6 +122,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7E07EE451F7F41CA00473930 /* FDFullscreenPopGesture */ = {
+			isa = PBXGroup;
+			children = (
+				7E07EE461F7F41CA00473930 /* UINavigationController+FDFullscreenPopGesture.h */,
+				7E07EE471F7F41CA00473930 /* UINavigationController+FDFullscreenPopGesture.m */,
+			);
+			path = FDFullscreenPopGesture;
+			sourceTree = "<group>";
+		};
 		F06335CE1CF59A51009D65D2 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +153,7 @@
 				F06335E81CF59A51009D65D2 /* ViewController.xib */,
 				7E21078E1F78FECC002586C5 /* TableViewController.h */,
 				7E21078F1F78FECC002586C5 /* TableViewController.m */,
+				7E07EE451F7F41CA00473930 /* FDFullscreenPopGesture */,
 				F06335EA1CF59A51009D65D2 /* DynamicItemWidthTab.gif */,
 				F0E32FB91CF5B4A6001A1A34 /* FixedItemWidthTab.gif */,
 				F06335E91CF59A51009D65D2 /* UnscrollTab.gif */,
@@ -333,6 +346,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E07EE481F7F41D200473930 /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
 				F06335F01CF59A51009D65D2 /* FixedItemWidthTabController.m in Sources */,
 				7E2107951F78FF68002586C5 /* HeaderViewTabController.m in Sources */,
 				F06335FC1CF59A51009D65D2 /* UnscrollTabController.m in Sources */,

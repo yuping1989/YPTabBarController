@@ -32,7 +32,6 @@
     
     [self.tabBar setIndicatorInsets:UIEdgeInsetsMake(40, 15, 0, 15) tapSwitchAnimated:NO];
     [self.tabBar setScrollEnabledAndItemFitTextWidthWithSpacing:40];
-    self.tabBar.indicatorAnimationStyle = YPTabBarIndicatorAnimationStyle1;
     
     
     [self setContentScrollEnabledAndTapSwitchAnimated:NO];

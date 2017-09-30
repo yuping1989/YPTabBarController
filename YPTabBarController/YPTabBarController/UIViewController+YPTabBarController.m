@@ -56,7 +56,10 @@
 }
 
 - (YPTabBarController *)yp_tabBarController {
-    return (YPTabBarController *)self.parentViewController;
+    if ([self.parentViewController isKindOfClass:[YPTabBarController class]]) {
+        return (YPTabBarController *)self.parentViewController;
+    }
+    return nil;
 }
 
 - (void)yp_tabItemDidSelected:(BOOL)isFirstTime {}

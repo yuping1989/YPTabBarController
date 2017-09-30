@@ -13,12 +13,12 @@
 
 @interface UIViewController (YPTabBarController)
 
+@property (nonatomic, strong, readonly) YPTabItem *yp_tabItem;
+@property (nonatomic, strong, readonly) YPTabBarController *yp_tabBarController;
+
 @property (nonatomic, copy) NSString *yp_tabItemTitle; // tabItem的标题
 @property (nonatomic, strong) UIImage *yp_tabItemImage; // tabItem的图像
 @property (nonatomic, strong) UIImage *yp_tabItemSelectedImage; // tabItem的选中图像
-
-- (YPTabItem *)yp_tabItem;
-- (YPTabBarController *)yp_tabBarController;
 
 /**
  *  ViewController对应的Tab被Select后，执行此方法，此方法为回调方法

@@ -40,8 +40,6 @@
     [self.yp_tabItem setDoubleTapHandler:^{
         NSLog(@"双击效果");
     }];
-    
-    
 }
 
 - (void)didReceiveMemoryWarning {

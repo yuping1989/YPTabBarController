@@ -25,21 +25,15 @@
 //    UILabel *label = [[UILabel alloc] initWithFrame:self.view.bounds];
     self.label.text = self.yp_tabItemTitle;
     
-    
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    [button setTitle:@"按钮" forState:UIControlStateNormal];
-    button.frame = CGRectMake(100, 100, 100, 50);
-    [button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-
-//    [self.view addSubview:button];
     NSLog(@"viewDidLoad--->%@", self.yp_tabItemTitle);
 }
 - (IBAction)buttonClicked:(UIButton *)button {
 //    self.yp_tabBarController.contentViewFrame = CGRectMake(0, 64, 300, 500);
 //    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    UINavigationController *navController = self.navigationController;
-    [navController pushViewController:[[HeaderViewTabController alloc] init] animated:YES];
-    [navController setNavigationBarHidden:NO animated:YES];
+    
+    HeaderViewTabController *vc = [[HeaderViewTabController alloc] init];
+//    vc.interceptRightSlideGuetureInFirstPage = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

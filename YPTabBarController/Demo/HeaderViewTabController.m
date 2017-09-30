@@ -8,6 +8,7 @@
 
 #import "HeaderViewTabController.h"
 #import "TableViewController.h"
+#import "UINavigationController+FDFullscreenPopGesture.h"
 
 @interface HeaderViewTabController ()
 
@@ -17,7 +18,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.fd_prefersNavigationBarHidden = YES;
+    
     [self initViewControllers];
+    
+    self.interceptRightSlideGuetureInFirstPage = YES;
     
     self.tabBar.itemTitleColor = [UIColor lightGrayColor];
     self.tabBar.itemTitleSelectedColor = [UIColor redColor];
@@ -30,10 +36,11 @@
     self.tabBar.indicatorColor = [UIColor redColor];
     [self.tabBar setIndicatorInsets:UIEdgeInsetsMake(40, 10, 0, 10) tapSwitchAnimated:NO];
     
+    self.yp_tabItem.badgeStyle = YPTabItemBadgeStyleDot;
+    
     self.loadViewOfChildContollerWhileAppear = YES;
     
     [self setContentScrollEnabledAndTapSwitchAnimated:NO];
-    
     
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"image" ofType:@"jpg"];
@@ -48,7 +55,8 @@
            headerHeight:250
            tabBarHeight:44
       contentViewHeight:screenSize.height - 250 - 44 - 50
-  tabBarStopOnTopHeight:64];
+  tabBarStopOnTopHeight:20];
+    
 }
 
 - (void)didReceiveMemoryWarning {

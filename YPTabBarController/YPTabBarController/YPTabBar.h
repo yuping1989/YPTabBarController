@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 @property (nonatomic, strong) UIColor *indicatorColor;         // item指示器颜色
 @property (nonatomic, strong) UIImage *indicatorImage;         // item指示器图像
 @property (nonatomic, assign) CGFloat indicatorCornerRadius;   // item指示器圆角
-@property (nonatomic, assign) CGFloat indicatorAnimationStyle;
+@property (nonatomic, assign) YPTabBarIndicatorAnimationStyle indicatorAnimationStyle;
 
 @property (nonatomic, strong) UIColor *itemTitleColor;              // 标题颜色
 @property (nonatomic, strong) UIColor *itemTitleSelectedColor;      // 选中时标题的颜色

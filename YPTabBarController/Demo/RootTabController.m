@@ -13,6 +13,7 @@
 #import "SegmentTabController.h"
 #import "UnscrollTabController.h"
 #import "HeaderViewTabController.h"
+#import "UINavigationController+FDFullscreenPopGesture.h"
 
 @interface RootTabController ()
 
@@ -23,6 +24,8 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    
+    self.fd_prefersNavigationBarHidden = YES;
     
     [self initViewControllers];
     self.tabBar.backgroundColor = [UIColor lightGrayColor];
@@ -36,21 +39,19 @@
     [self.tabBar setDotBadgeMarginTop:5
                     centerMarginRight:15
                            sideLength:10];
+    self.tabBar.leftAndRightSpacing = 50;
     
-    
-    UIViewController *controller1 = self.viewControllers[0];
     UIViewController *controller2 = self.viewControllers[1];
     UIViewController *controller3 = self.viewControllers[2];
     UIViewController *controller4 = self.viewControllers[3];
-    controller1.yp_tabItem.badge = 8;
-    controller2.yp_tabItem.badge = 88;
-    controller3.yp_tabItem.badge = 120;
-    controller4.yp_tabItem.badgeStyle = YPTabItemBadgeStyleDot;
+    UIViewController *controller5 = self.viewControllers[4];
+    controller2.yp_tabItem.badge = 8;
+    controller3.yp_tabItem.badge = 88;
+    controller4.yp_tabItem.badge = 120;
+    controller5.yp_tabItem.badgeStyle = YPTabItemBadgeStyleDot;
     
-}
-
-- (void)viewDidAppear:(BOOL)animated {
     
+//    [self addSpecialItem];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -85,7 +86,9 @@
     controller5.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];
     
     self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, controller5, nil];
-    
+}
+
+- (void)addSpecialItem {
     // 生成一个居中显示的YPTabItem对象，即“+”号按钮
     YPTabItem *item = [YPTabItem buttonWithType:UIButtonTypeCustom];
     item.title = @"+";
@@ -98,21 +101,11 @@
     // 高度大于tabBar，所以需要将此属性设置为NO
     self.tabBar.clipsToBounds = NO;
     
-//    [self.tabBar setSpecialItem:item
-//             afterItemWithIndex:1
-//                     tapHandler:^(YPTabItem *item) {
-//                         NSLog(@"item--->%ld", (long)item.index);
-//                     }];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    NSLog(@"viewWillAppear");
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
+    [self.tabBar setSpecialItem:item
+             afterItemWithIndex:1
+                     tapHandler:^(YPTabItem *item) {
+                         NSLog(@"item--->%ld", (long)item.index);
+                     }];
 }
 
 @end

@@ -181,6 +181,9 @@ static NSString * const kContentOffset = @"contentOffset";
 }
 
 - (void)setTabBarFrame:(CGRect)tabBarFrame contentViewFrame:(CGRect)contentViewFrame {
+    if (self.headerView) {
+        return;
+    }
     self.tabBar.frame = tabBarFrame;
     self.contentViewFrame = contentViewFrame;
 }
@@ -232,6 +235,9 @@ static NSString * const kContentOffset = @"contentOffset";
         self.contentScrollView.scrollsToTop = NO;
         self.contentScrollView.delegate = self;
         self.contentScrollView.yp_delegate = self;
+        self.contentScrollView.interceptRightSlideGuetureInFirstPage = self.interceptRightSlideGuetureInFirstPage;
+        self.contentScrollView.interceptLeftSlideGuetureInLastPage = self.interceptLeftSlideGuetureInLastPage;
+        
         [self.view insertSubview:self.contentScrollView belowSubview:self.tabBar];
         self.contentScrollView.contentSize = CGSizeMake(self.contentViewFrame.size.width * self.viewControllers.count, self.contentViewFrame.size.height);
     }
@@ -330,6 +336,7 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if ([kContentOffset isEqualToString:keyPath]) {
+        NSLog(@"value--->%@", change);
         NSValue *value = change[NSKeyValueChangeNewKey];
         CGFloat offsetY = [value CGPointValue].y + self.headerViewDefaultHeight + self.tabBar.frame.size.height;
         CGRect headerFrame;
@@ -434,7 +441,6 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
         UIScrollView *curScrollView = (UIScrollView *)curController.yp_displayView;
         [curScrollView setScrollsToTop:YES];
         if (self.headerView) {
-            
             UIEdgeInsets inset = UIEdgeInsetsMake(self.headerViewDefaultHeight + self.tabBar.frame.size.height, 0, 0, 0);
             curScrollView.contentInset = inset;
             curScrollView.scrollIndicatorInsets = inset;
