@@ -17,10 +17,9 @@ pod 'YPTabBarController'<br>
 4. 多个代理方法，可以自由适应各种需求；<br>
 5. 可以添加一个居中的特殊的YPTabItem按钮，类似于新浪微博中间的“+”号按钮；
 
-##2.2版本功能更新：
-1. YPTabBarController增加interceptRightSlideGuetureInFirstPage和interceptLeftSlideGuetureInLastPage属性，设置为YES可拦截content scrollView的滑动手势，避免左右侧边栏和右拖返回的手势冲突；<br>
-2. YPTabBar代理方法完善，支持should、will、did等3个代理方法；<br>
-3. 修复跳转到其他界面，所有child view controller都调用viewWillAppear等方法的问题；
+##2.3版本功能更新：
+1. 可以为TabBarController设置headerView，其样式可在demo中展示；
+2. demo适配iPhone X，只需在调用setTabBarFrame方法时，将iPhone X的屏幕变化考虑进去即可。
 
 ##效果展示：
          
