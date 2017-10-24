@@ -57,7 +57,6 @@
 
 /**
  *  设置HeaderView
- *  @param headerView
  *  @param needStretch 内容视图向下滚动时，headerView是否拉伸
  *  @param headerHeight headerView的默认高度
  *  @param tabBarHeight tabBar的高度
