@@ -19,8 +19,13 @@
     [self initViewControllers];
     
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    [self setTabBarFrame:CGRectMake(0, 20, screenSize.width, 44)
-        contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - 50)];
+    if (screenSize.height == 812) {
+        [self setTabBarFrame:CGRectMake(0, 44, screenSize.width, 44)
+            contentViewFrame:CGRectMake(0, 88, screenSize.width, screenSize.height - 88 - 50 - 34)];
+    } else {
+        [self setTabBarFrame:CGRectMake(0, 20, screenSize.width, 44)
+            contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - 50)];
+    }
 
     self.tabBar.itemTitleColor = [UIColor lightGrayColor];
     self.tabBar.itemTitleSelectedColor = [UIColor redColor];

@@ -54,7 +54,7 @@
             needStretch:YES
            headerHeight:250
            tabBarHeight:44
-      contentViewHeight:screenSize.height - 250 - 44 - 50
+      contentViewHeight:screenSize.height - 250 - 44 - 50 - 34
   tabBarStopOnTopHeight:20];
     
 }

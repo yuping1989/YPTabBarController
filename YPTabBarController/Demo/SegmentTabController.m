@@ -25,6 +25,14 @@
     [self setTabBarFrame:CGRectMake(30, 27, screenSize.width - 60, 30)
         contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - 50)];
     
+    if (screenSize.height == 812) {
+        [self setTabBarFrame:CGRectMake(30, 51, screenSize.width - 60, 30)
+            contentViewFrame:CGRectMake(0, 88, screenSize.width, screenSize.height - 88 - 50 - 34)];
+    } else {
+        [self setTabBarFrame:CGRectMake(30, 27, screenSize.width - 60, 30)
+            contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - 50)];
+    }
+    
     self.tabBar.itemTitleColor = [UIColor redColor];
     self.tabBar.itemTitleSelectedColor = [UIColor whiteColor];
     self.tabBar.itemTitleFont = [UIFont systemFontOfSize:15];

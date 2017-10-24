@@ -153,6 +153,9 @@ static NSString * const kContentOffset = @"contentOffset";
     
     CGFloat contentViewY = 0;
     CGFloat tabBarY = screenSize.height - TAB_BAR_HEIGHT;
+    if (screenSize.height == 812) {
+        tabBarY -= 34;
+    }
     CGFloat contentViewHeight = tabBarY;
     // 如果parentViewController为UINavigationController及其子类
     if ([self.parentViewController isKindOfClass:[UINavigationController class]] &&
