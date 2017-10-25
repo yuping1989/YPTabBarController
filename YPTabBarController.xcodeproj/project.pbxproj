@@ -17,7 +17,6 @@
 		F06335EF1CF59A51009D65D2 /* DynamicItemWidthTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335D41CF59A51009D65D2 /* DynamicItemWidthTabController.m */; };
 		F06335F01CF59A51009D65D2 /* FixedItemWidthTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335D61CF59A51009D65D2 /* FixedItemWidthTabController.m */; };
 		F06335F11CF59A51009D65D2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06335D71CF59A51009D65D2 /* Images.xcassets */; };
-		F06335F21CF59A51009D65D2 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F06335D81CF59A51009D65D2 /* Info.plist */; };
 		F06335F31CF59A51009D65D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335D91CF59A51009D65D2 /* main.m */; };
 		F06335F41CF59A51009D65D2 /* RootTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335DB1CF59A51009D65D2 /* RootTabController.m */; };
 		F06335F51CF59A51009D65D2 /* SegmentTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335DD1CF59A51009D65D2 /* SegmentTabController.m */; };
@@ -327,7 +326,6 @@
 				F0E32FBC1CF5B4A6001A1A34 /* SegmentTab.gif in Resources */,
 				F06335F11CF59A51009D65D2 /* Images.xcassets in Resources */,
 				F0E32FBB1CF5B4A6001A1A34 /* FixedItemWidthTab.gif in Resources */,
-				F06335F21CF59A51009D65D2 /* Info.plist in Resources */,
 				7E2107991F7B40F9002586C5 /* image.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
