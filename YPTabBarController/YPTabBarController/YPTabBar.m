@@ -25,6 +25,8 @@
 
 // 选中背景相对于YPTabItem的insets
 @property (nonatomic, assign) UIEdgeInsets indicatorInsets;
+@property (nonatomic, assign) BOOL indicatorWidthFixTitle;
+@property (nonatomic, assign) CGFloat indicatorWidthFixTitleAdditional;
 
 // TabItem选中切换时，是否显示动画
 @property (nonatomic, assign) BOOL indicatorSwitchAnimated;
@@ -69,14 +71,17 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self awakeFromNib];
+        [self _setup];
     }
     return self;
 }
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    
+    [self _setup];
+}
+
+- (void)_setup {
     self.backgroundColor = [UIColor whiteColor];
     self.clipsToBounds = YES;
     
@@ -102,10 +107,19 @@
     _dotBadgeMarginTop = 5;
     _dotBadgeCenterMarginRight = 25;
     _dotBadgeSideLength = 10;
+    
+    _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+    _scrollView.showsHorizontalScrollIndicator = NO;
+    _scrollView.showsVerticalScrollIndicator = NO;
+    _scrollView.scrollEnabled = NO;
+    [self addSubview:_scrollView];
+    
+    [_scrollView addSubview:_indicatorImageView];
 }
 
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
+    self.scrollView.frame = self.bounds;
     
     // 更新items的frame
     [self updateItemsFrame];
@@ -115,15 +129,10 @@
     
     // 更新分割线
     [self updateSeperators];
-    
-    if (self.scrollView) {
-        self.scrollView.frame = self.bounds;
-    }
 }
 
 - (void)setItems:(NSArray *)items {
     _selectedItemIndex = NSNotFound;
-    [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
     
     // 将老的item从superview上删除
     [_items makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -151,12 +160,12 @@
                         sideLength:self.dotBadgeSideLength];
         
         [item addTarget:self action:@selector(tabItemClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [self.scrollView addSubview:item];
     }
-    // 更新每个item的位置
-    [self updateItemsFrame];
     
     // 更新item的大小缩放
     [self updateItemsScaleIfNeeded];
+    [self updateUI];
 }
 
 - (void)setTitles:(NSArray *)titles {
@@ -174,18 +183,19 @@
     [self updateItemsFrame];
 }
 
+- (void)updateUI {
+    [self updateItemsFrame];
+    [self updateItemIndicatorInsets];
+    [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
+}
+
 - (void)updateItemsFrame {
     if (self.items.count == 0) {
         return;
     }
-    // 将item从superview上删除
-    [self.items makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    // 将item的选中背景从superview上删除
-    [self.indicatorImageView removeFromSuperview];
-    if (self.scrollView) {
+    
+    if (self.scrollView.scrollEnabled) {
         // 支持滚动
-        
-        [self.scrollView addSubview:self.indicatorImageView];
         CGFloat x = self.leftAndRightSpacing;
         for (NSUInteger index = 0; index < self.items.count; index++) {
             YPTabItem *item = self.items[index];
@@ -196,24 +206,17 @@
             }
             // item的宽度为根据字体大小和spacing进行适配
             if (self.itemFitTextWidth) {
-                CGSize size = [item.title boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
-                                                       options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                    attributes:@{NSFontAttributeName : self.itemTitleFont}
-                                                       context:nil].size;
-                width = ceilf(size.width) + self.itemFitTextWidthSpacing;
+                width = item.titleWidth + self.itemFitTextWidthSpacing;
             }
-            
             item.frame = CGRectMake(x, 0, width, self.frame.size.height);
             item.index = index;
             x += width;
-            [self.scrollView addSubview:item];
         }
         self.scrollView.contentSize = CGSizeMake(MAX(x + self.leftAndRightSpacing, self.scrollView.frame.size.width),
                                                  self.scrollView.frame.size.height);
     } else {
         // 不支持滚动
         
-        [self addSubview:self.indicatorImageView];
         CGFloat x = self.leftAndRightSpacing;
         CGFloat allItemsWidth = self.frame.size.width - self.leftAndRightSpacing * 2;
         if (self.specialItem && self.specialItem.frame.size.width != 0) {
@@ -234,7 +237,6 @@
             item.index = index;
             
             x += self.itemWidth;
-            [self addSubview:item];
             
             // 如果有特殊的单独item，设置其位置
             if (self.specialItem && self.specialItem.index == index) {
@@ -252,7 +254,20 @@
                 x += width;
             }
         }
+        self.scrollView.contentSize = CGSizeMake(self.bounds.size.width, self.bounds.size.height);
     }
+}
+
+/**
+ *  更新选中背景的frame
+ */
+- (void)updateSelectedBgFrameWithIndex:(NSUInteger)index {
+    if (self.items.count == 0 || index == NSNotFound) {
+        self.indicatorImageView.frame = CGRectZero;
+        return;
+    }
+    YPTabItem *item = self.items[index];
+    self.indicatorImageView.frame = item.indicatorFrame;
 }
 
 - (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex {
@@ -315,30 +330,8 @@
     }
 }
 
-/**
- *  更新选中背景的frame
- */
-- (void)updateSelectedBgFrameWithIndex:(NSUInteger)index {
-    if (index == NSNotFound) {
-        self.indicatorImageView.frame = CGRectZero;
-        return;
-    }
-    YPTabItem *item = self.items[index];
-    CGFloat width = item.frameWithOutTransform.size.width - self.indicatorInsets.left - self.indicatorInsets.right;
-    CGFloat height = item.frameWithOutTransform.size.height - self.indicatorInsets.top - self.indicatorInsets.bottom;
-    self.indicatorImageView.frame = CGRectMake(item.frameWithOutTransform.origin.x + self.indicatorInsets.left,
-                                                    item.frameWithOutTransform.origin.y + self.indicatorInsets.top,
-                                                    width,
-                                                    height);
-}
-
 - (void)setScrollEnabledAndItemWidth:(CGFloat)width {
-    if (!self.scrollView) {
-        self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-        self.scrollView.showsHorizontalScrollIndicator = NO;
-        self.scrollView.showsVerticalScrollIndicator = NO;
-        [self addSubview:self.scrollView];
-    }
+    self.scrollView.scrollEnabled = YES;
     self.itemWidth = width;
     self.itemFitTextWidth = NO;
     self.itemFitTextWidthSpacing = 0;
@@ -346,12 +339,7 @@
 }
 
 - (void)setScrollEnabledAndItemFitTextWidthWithSpacing:(CGFloat)spacing {
-    if (!self.scrollView) {
-        self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-        self.scrollView.showsHorizontalScrollIndicator = NO;
-        self.scrollView.showsVerticalScrollIndicator = NO;
-        [self addSubview:self.scrollView];
-    }
+    self.scrollView.scrollEnabled = YES;
     self.itemFitTextWidth = YES;
     self.itemFitTextWidthSpacing = spacing;
     self.itemWidth = 0;
@@ -359,7 +347,7 @@
 }
 
 - (void)setSelectedItemCenter {
-    if (!self.scrollView) {
+    if (!self.scrollView.scrollEnabled) {
         return;
     }
     // 修改偏移量
@@ -410,7 +398,7 @@
     self.specialItem = item;
     self.specialItem.index = index;
     [self.specialItem addTarget:self action:@selector(specialItemClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:item];
+    [self.scrollView addSubview:item];
     [self updateItemsFrame];
     
     self.specialItemHandler = handler;
@@ -435,18 +423,44 @@
 }
 
 - (void)setIndicatorInsets:(UIEdgeInsets)insets
-              tapSwitchAnimated:(BOOL)animated{
-    self.indicatorInsets = insets;
+         tapSwitchAnimated:(BOOL)animated {
+    self.indicatorWidthFixTitle = NO;
     self.indicatorSwitchAnimated = animated;
+    self.indicatorInsets = insets;
+    
+    [self updateItemIndicatorInsets];
+    [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
 }
 
-- (void)setIndicatorInsets:(UIEdgeInsets)indicatorInsets {
-    _indicatorInsets = indicatorInsets;
-    if (self.items.count > 0 && self.selectedItemIndex != NSNotFound) {
-        [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
+- (void)setIndicatorWidthFixTextAndMarginTop:(CGFloat)top
+                                marginBottom:(CGFloat)bottom
+                             widthAdditional:(CGFloat)additional
+                           tapSwitchAnimated:(BOOL)animated {
+    self.indicatorWidthFixTitle = YES;
+    self.indicatorSwitchAnimated = animated;
+    self.indicatorInsets = UIEdgeInsetsMake(top, 0, bottom, 0);
+    self.indicatorWidthFixTitleAdditional = additional;
+    
+    [self updateItemIndicatorInsets];
+    [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
+}
+
+- (void)updateItemIndicatorInsets {
+    for (YPTabItem *item in self.items) {
+        if (self.indicatorWidthFixTitle) {
+            CGRect frame = item.frameWithOutTransform;
+            CGFloat space = (frame.size.width - item.titleWidth - self.indicatorWidthFixTitleAdditional) / 2;
+            item.indicatorInsets = UIEdgeInsetsMake(self.indicatorInsets.top,
+                                                    space,
+                                                    self.indicatorInsets.bottom,
+                                                    space);
+        } else {
+            for (YPTabItem *item in self.items) {
+                item.indicatorInsets = self.indicatorInsets;
+            }
+        }
     }
 }
-
 
 #pragma mark - ItemTitle
 
@@ -471,7 +485,7 @@
             // 设置了选中字体，则只更新未选中的item
             for (YPTabItem *item in self.items) {
                 if (!item.selected) {
-                    [item setTitleFont:itemTitleFont];
+                    item.titleFont = itemTitleFont;
                 }
             }
         } else {
@@ -483,6 +497,7 @@
         // 如果item的宽度是匹配文字的，更新item的位置
         [self updateItemsFrame];
     }
+    [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
 }
 
 - (void)setItemTitleSelectedFont:(UIFont *)itemTitleSelectedFont {
@@ -631,7 +646,7 @@
                                          self.itemSeparatorMarginTop,
                                          self.itemSeparatorWidth,
                                          self.bounds.size.height - self.itemSeparatorMarginTop - self.itemSeparatorMarginBottom);
-                [self.layer addSublayer:layer];
+                [self.scrollView.layer addSublayer:layer];
                 [self.separatorLayers addObject:layer];
             }
         }];
@@ -700,14 +715,13 @@
         
         if (self.indicatorAnimationStyle == YPTabBarIndicatorAnimationStyleDefault) {
             CGRect frame = self.indicatorImageView.frame;
-            CGFloat xDiff = rightItem.frameWithOutTransform.origin.x - leftItem.frameWithOutTransform.origin.x;
-            frame.origin.x = rightScale * xDiff + leftItem.frameWithOutTransform.origin.x + self.indicatorInsets.left;
+            CGFloat xDiff = rightItem.indicatorFrame.origin.x - leftItem.indicatorFrame.origin.x;
             
-            CGFloat widthDiff = rightItem.frameWithOutTransform.size.width - leftItem.frameWithOutTransform.size.width;
-            if (widthDiff != 0) {
-                CGFloat leftSelectedBgWidth = leftItem.frameWithOutTransform.size.width - self.indicatorInsets.left - self.indicatorInsets.right;
-                frame.size.width = rightScale * widthDiff + leftSelectedBgWidth;
-            }
+            frame.origin.x = rightScale * xDiff + leftItem.indicatorFrame.origin.x;
+            
+            CGFloat widthDiff = rightItem.indicatorFrame.size.width - leftItem.indicatorFrame.size.width;
+            frame.size.width = rightScale * widthDiff + leftItem.indicatorFrame.size.width;
+
             self.indicatorImageView.frame = frame;
         } else if (self.indicatorAnimationStyle == YPTabBarIndicatorAnimationStyle1) {
             NSUInteger page = offsetX / scrollViewWidth;
@@ -737,32 +751,30 @@
             CGFloat currentItemWidth = currentItem.frameWithOutTransform.size.width;
             CGFloat targetItemWidth = targetItem.frameWithOutTransform.size.width;
             
-            CGFloat inset = self.indicatorInsets.left + self.indicatorInsets.right;
-            
             // 设置滑动过程中，指示器的位置
             if (targetIndex > currentIndex) {
                 if (scale < 1) {
-                    CGFloat addition = scale * targetItemWidth;
+                    CGFloat addition = scale * (CGRectGetMaxX(targetItem.indicatorFrame) - CGRectGetMaxX(currentItem.indicatorFrame));
                     // 小于半个屏幕距离
-                    [self setIndicatorX:currentItem.frameWithOutTransform.origin.x + self.indicatorInsets.left
-                                  width:addition + currentItemWidth - inset];
+                    [self setIndicatorX:currentItem.indicatorFrame.origin.x
+                                  width:addition + currentItem.indicatorFrame.size.width];
                 } else if (scale > 1) {
                     // 大于等于半个屏幕距离
                     scale = scale - 1;
-                    CGFloat addition = scale * currentItemWidth;
-                    [self setIndicatorX:currentItem.frameWithOutTransform.origin.x + self.indicatorInsets.left + addition
-                                  width:targetItemWidth + currentItemWidth - addition - inset];
+                    CGFloat addition = scale * (targetItem.indicatorFrame.origin.x - currentItem.indicatorFrame.origin.x);
+                    [self setIndicatorX:currentItem.indicatorFrame.origin.x + addition
+                                  width:targetItemWidth + currentItemWidth - addition - currentItem.indicatorInsets.left - targetItem.indicatorInsets.right];
                 }
             } else {
                 if (scale < 1) {
-                    CGFloat addition = scale * targetItemWidth;
-                    [self setIndicatorX:currentItem.frameWithOutTransform.origin.x + self.indicatorInsets.left - addition
-                                  width:addition + currentItemWidth - inset];
+                    CGFloat addition = scale * (currentItem.indicatorFrame.origin.x - targetItem.indicatorFrame.origin.x);
+                    [self setIndicatorX:currentItem.indicatorFrame.origin.x - addition
+                                  width:addition + currentItem.indicatorFrame.size.width];
                 } else if (scale > 1) {
                     scale = scale - 1;
-                    CGFloat addition = scale * currentItemWidth;
-                    [self setIndicatorX:targetItem.frameWithOutTransform.origin.x + self.indicatorInsets.left
-                                  width:targetItemWidth + currentItemWidth - addition - inset];
+                    CGFloat addition = (1 - scale) * (CGRectGetMaxX(currentItem.indicatorFrame) - CGRectGetMaxX(targetItem.indicatorFrame));
+                    [self setIndicatorX:targetItem.indicatorFrame.origin.x
+                                  width:targetItem.indicatorFrame.size.width + addition];
                 }
             }
         }

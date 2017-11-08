@@ -97,12 +97,28 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 - (void)setTitles:(NSArray <NSString *> *)titles;
 
 /**
- *  设置tabItem的选中背景，这个背景可以是一个横条
+ *  设置tabItem的选中背景，这个背景可以是一个横条。
+ *  此方法与setIndicatorWidthFixTextWithTop方法互斥，后调用者生效
  *
  *  @param insets       选中背景的insets
  *  @param animated     点击item进行背景切换的时候，是否支持动画
  */
 - (void)setIndicatorInsets:(UIEdgeInsets)insets tapSwitchAnimated:(BOOL)animated;
+
+
+/**
+ *  设置指示器的宽度根据title宽度来匹配
+ *  此方法与setIndicatorInsets方法互斥，后调用者生效
+
+ *  @param top 指示器与tabItem顶部的距离
+ *  @param bottom 指示器与tabItem底部的距离
+ *  @param additional 指示器与文字宽度匹配后额外增加或减少的长度，0表示相等，正数表示较长，负数表示较短
+ *  @param animated 点击item进行背景切换的时候，是否支持动画
+ */
+- (void)setIndicatorWidthFixTextAndMarginTop:(CGFloat)top
+                                marginBottom:(CGFloat)bottom
+                             widthAdditional:(CGFloat)additional
+                           tapSwitchAnimated:(BOOL)animated;
 
 /**
  *  设置tabBar可以左右滑动

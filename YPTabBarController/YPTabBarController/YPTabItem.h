@@ -38,6 +38,10 @@ typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImage *selectedImage;
 
+@property (nonatomic, assign, readonly) CGFloat titleWidth;
+@property (nonatomic, assign) UIEdgeInsets indicatorInsets;
+@property (nonatomic, assign, readonly) CGRect indicatorFrame;
+
 /**
  *  当badgeStyle == YPTabItemBadgeStyleNumber时，可以设置此属性，显示badge数值
  *  badge > 99，显示99+

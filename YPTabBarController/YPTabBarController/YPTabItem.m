@@ -59,7 +59,8 @@
     
     self.adjustsImageWhenHighlighted = NO;
     _badgeStyle = YPTabItemBadgeStyleNumber;
-    self.badge = 0;
+    _badge = 0;
+    _indicatorInsets = UIEdgeInsetsZero;
 }
 
 /**
@@ -136,6 +137,7 @@
         self.doubleTapView.frame = self.bounds;
     }
     [self updateBadge];
+    [self calculateIndicatorFrame];
 }
 
 - (CGSize)size {
@@ -153,6 +155,7 @@
 - (void)setTitle:(NSString *)title {
     _title = title;
     [self setTitle:title forState:UIControlStateNormal];
+    [self calculateTitleWidth];
 }
 
 - (void)setTitleColor:(UIColor *)titleColor {
@@ -170,6 +173,19 @@
     if ([UIDevice currentDevice].systemVersion.integerValue >= 8) {
         self.titleLabel.font = titleFont;
     }
+    [self calculateTitleWidth];
+}
+
+- (void)calculateTitleWidth {
+    if (self.title.length == 0 || !self.titleFont) {
+        _titleWidth = 0;
+        return;
+    }
+    CGSize size = [self.title boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
+                                           options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                        attributes:@{NSFontAttributeName : self.titleFont}
+                                           context:nil].size;
+    _titleWidth = ceilf(size.width);
 }
 
 - (void)setImage:(UIImage *)image {
@@ -180,6 +196,20 @@
 - (void)setSelectedImage:(UIImage *)selectedImage {
     _selectedImage = selectedImage;
     [self setImage:selectedImage forState:UIControlStateSelected];
+}
+
+- (void)setIndicatorInsets:(UIEdgeInsets)indicatorInsets {
+    _indicatorInsets = indicatorInsets;
+    [self calculateIndicatorFrame];
+}
+
+- (void)calculateIndicatorFrame {
+    CGRect frame = self.frameWithOutTransform;
+    UIEdgeInsets insets = self.indicatorInsets;
+    _indicatorFrame = CGRectMake(frame.origin.x + insets.left,
+                                 insets.top,
+                                 frame.size.width - insets.left - insets.right,
+                                 frame.size.height - insets.top - insets.bottom);
 }
 
 #pragma mark - Badge

@@ -35,11 +35,13 @@
     self.tabBar.itemTitleSelectedColor = [UIColor whiteColor];
     self.tabBar.itemTitleFont = [UIFont systemFontOfSize:18];
     
+    
     self.tabBar.indicatorScrollFollowContent = YES;
-    self.tabBar.itemColorChangeFollowContentScroll = NO;
+    self.tabBar.itemColorChangeFollowContentScroll = YES;
     
     self.tabBar.indicatorColor = [UIColor redColor];
-    [self.tabBar setIndicatorInsets:UIEdgeInsetsZero tapSwitchAnimated:YES];
+    [self.tabBar setIndicatorWidthFixTextAndMarginTop:40 marginBottom:0 widthAdditional:0 tapSwitchAnimated:YES];
+    self.tabBar.indicatorAnimationStyle = YPTabBarIndicatorAnimationStyle1;
     
     [self setContentScrollEnabledAndTapSwitchAnimated:YES];
     
@@ -57,13 +59,13 @@
     controller1.yp_tabItemTitle = @"第一";
     
     ViewController *controller2 = [[ViewController alloc] init];
-    controller2.yp_tabItemTitle = @"第二";
+    controller2.yp_tabItemTitle = @"第二个";
     
     ViewController *controller3 = [[ViewController alloc] init];
     controller3.yp_tabItemTitle = @"第三";
     
     ViewController *controller4 = [[ViewController alloc] init];
-    controller4.yp_tabItemTitle = @"第四";
+    controller4.yp_tabItemTitle = @"第四个个";
     
     self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, nil];
     
