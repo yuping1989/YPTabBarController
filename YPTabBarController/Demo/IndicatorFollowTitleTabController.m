@@ -1,18 +1,19 @@
 //
-//  FixedItemWidthTabController.m
+//  IndicatorFollowTitleTabController.m
 //  YPTabBarController
 //
-//  Created by 喻平 on 16/5/13.
+//  Created by 喻平 on 16/5/25.
 //  Copyright © 2016年 YPTabBarController. All rights reserved.
 //
 
-#import "FixedItemWidthTabController.h"
+#import "IndicatorFollowTitleTabController.h"
 #import "ViewController.h"
-@interface FixedItemWidthTabController ()
+
+@interface IndicatorFollowTitleTabController ()
 
 @end
 
-@implementation FixedItemWidthTabController
+@implementation IndicatorFollowTitleTabController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -28,21 +29,21 @@
         [self setTabBarFrame:CGRectMake(0, 20, screenSize.width, 44)
             contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - bottom )];
     }
-
-    self.tabBar.itemTitleColor = [UIColor lightGrayColor];
-    self.tabBar.itemTitleSelectedColor = [UIColor redColor];
-    self.tabBar.itemTitleFont = [UIFont systemFontOfSize:17];
-    self.tabBar.itemTitleSelectedFont = [UIFont systemFontOfSize:22];
-
-    [self.tabBar setScrollEnabledAndItemWidth:80];
-    self.tabBar.itemFontChangeFollowContentScroll = YES;
+    
+    self.tabBar.backgroundColor = [UIColor grayColor];
+    
+    self.tabBar.itemTitleColor = [UIColor purpleColor];
+    self.tabBar.itemTitleSelectedColor = [UIColor whiteColor];
+    self.tabBar.itemTitleFont = [UIFont systemFontOfSize:18];
     
     self.tabBar.indicatorScrollFollowContent = YES;
+    self.tabBar.itemColorChangeFollowContentScroll = YES;
+    
     self.tabBar.indicatorColor = [UIColor redColor];
-    [self.tabBar setIndicatorInsets:UIEdgeInsetsMake(40, 10, 0, 10) tapSwitchAnimated:NO];
+    [self.tabBar setIndicatorWidthFixTextAndMarginTop:40 marginBottom:0 widthAdditional:0 tapSwitchAnimated:YES];
     self.tabBar.indicatorAnimationStyle = YPTabBarIndicatorAnimationStyle1;
     
-    [self setContentScrollEnabledAndTapSwitchAnimated:NO];
+    [self setContentScrollEnabledAndTapSwitchAnimated:YES];
     
     [self.yp_tabItem setDoubleTapHandler:^{
         NSLog(@"双击效果");
@@ -55,28 +56,18 @@
 
 - (void)initViewControllers {
     ViewController *controller1 = [[ViewController alloc] init];
-    controller1.yp_tabItemTitle = @"第一个";
-    
+    controller1.yp_tabItemTitle = @"第一";
     
     ViewController *controller2 = [[ViewController alloc] init];
-    controller2.yp_tabItemTitle = @"第二";
+    controller2.yp_tabItemTitle = @"第二个";
     
     ViewController *controller3 = [[ViewController alloc] init];
-    controller3.yp_tabItemTitle = @"第三个";
+    controller3.yp_tabItemTitle = @"第三";
     
     ViewController *controller4 = [[ViewController alloc] init];
-    controller4.yp_tabItemTitle = @"第四";
+    controller4.yp_tabItemTitle = @"第四个个";
     
-    ViewController *controller5 = [[ViewController alloc] init];
-    controller5.yp_tabItemTitle = @"第五个";
-    
-    ViewController *controller6 = [[ViewController alloc] init];
-    controller6.yp_tabItemTitle = @"第六";
-    
-    ViewController *controller7 = [[ViewController alloc] init];
-    controller7.yp_tabItemTitle = @"第七";
-    
-    self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, controller5, controller6, controller7, nil];
+    self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, nil];
     
 }
 

@@ -12,13 +12,16 @@
 		7E2107911F78FECC002586C5 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E21078F1F78FECC002586C5 /* TableViewController.m */; };
 		7E2107951F78FF68002586C5 /* HeaderViewTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2107941F78FF68002586C5 /* HeaderViewTabController.m */; };
 		7E2107991F7B40F9002586C5 /* image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7E2107981F7B40F9002586C5 /* image.jpg */; };
+		7E390FF61FB2A5130058362D /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E390FF51FB2A5130058362D /* RootViewController.m */; };
+		7E390FF91FB2B09B0058362D /* CustomIndicatorTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E390FF71FB2B09A0058362D /* CustomIndicatorTabController.m */; };
+		7E390FFC1FB2D0FC0058362D /* VerticalTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E390FFB1FB2D0FC0058362D /* VerticalTabController.m */; };
 		F06335ED1CF59A51009D65D2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335D01CF59A51009D65D2 /* AppDelegate.m */; };
 		F06335EE1CF59A51009D65D2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F06335D11CF59A51009D65D2 /* LaunchScreen.xib */; };
 		F06335EF1CF59A51009D65D2 /* DynamicItemWidthTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335D41CF59A51009D65D2 /* DynamicItemWidthTabController.m */; };
 		F06335F01CF59A51009D65D2 /* FixedItemWidthTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335D61CF59A51009D65D2 /* FixedItemWidthTabController.m */; };
 		F06335F11CF59A51009D65D2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06335D71CF59A51009D65D2 /* Images.xcassets */; };
 		F06335F31CF59A51009D65D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335D91CF59A51009D65D2 /* main.m */; };
-		F06335F41CF59A51009D65D2 /* RootTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335DB1CF59A51009D65D2 /* RootTabController.m */; };
+		F06335F41CF59A51009D65D2 /* MultilTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335DB1CF59A51009D65D2 /* MultilTabController.m */; };
 		F06335F51CF59A51009D65D2 /* SegmentTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335DD1CF59A51009D65D2 /* SegmentTabController.m */; };
 		F06335F61CF59A51009D65D2 /* tab_discover_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F06335DE1CF59A51009D65D2 /* tab_discover_normal@2x.png */; };
 		F06335F71CF59A51009D65D2 /* tab_discover_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F06335DF1CF59A51009D65D2 /* tab_discover_selected@2x.png */; };
@@ -26,7 +29,7 @@
 		F06335F91CF59A51009D65D2 /* tab_me_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F06335E11CF59A51009D65D2 /* tab_me_selected@2x.png */; };
 		F06335FA1CF59A51009D65D2 /* tab_message_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F06335E21CF59A51009D65D2 /* tab_message_normal@2x.png */; };
 		F06335FB1CF59A51009D65D2 /* tab_message_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F06335E31CF59A51009D65D2 /* tab_message_selected@2x.png */; };
-		F06335FC1CF59A51009D65D2 /* UnscrollTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335E51CF59A51009D65D2 /* UnscrollTabController.m */; };
+		F06335FC1CF59A51009D65D2 /* IndicatorFollowTitleTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335E51CF59A51009D65D2 /* IndicatorFollowTitleTabController.m */; };
 		F06335FD1CF59A51009D65D2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335E71CF59A51009D65D2 /* ViewController.m */; };
 		F06335FE1CF59A51009D65D2 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F06335E81CF59A51009D65D2 /* ViewController.xib */; };
 		F06335FF1CF59A51009D65D2 /* UnscrollTab.gif in Resources */ = {isa = PBXBuildFile; fileRef = F06335E91CF59A51009D65D2 /* UnscrollTab.gif */; };
@@ -60,6 +63,12 @@
 		7E2107931F78FF68002586C5 /* HeaderViewTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderViewTabController.h; sourceTree = "<group>"; };
 		7E2107941F78FF68002586C5 /* HeaderViewTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeaderViewTabController.m; sourceTree = "<group>"; };
 		7E2107981F7B40F9002586C5 /* image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.jpg; sourceTree = "<group>"; };
+		7E390FF41FB2A5130058362D /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		7E390FF51FB2A5130058362D /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		7E390FF71FB2B09A0058362D /* CustomIndicatorTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIndicatorTabController.m; sourceTree = "<group>"; };
+		7E390FF81FB2B09B0058362D /* CustomIndicatorTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIndicatorTabController.h; sourceTree = "<group>"; };
+		7E390FFA1FB2D0FC0058362D /* VerticalTabController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VerticalTabController.h; sourceTree = "<group>"; };
+		7E390FFB1FB2D0FC0058362D /* VerticalTabController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VerticalTabController.m; sourceTree = "<group>"; };
 		F06335CF1CF59A51009D65D2 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F06335D01CF59A51009D65D2 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		F06335D21CF59A51009D65D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -70,8 +79,8 @@
 		F06335D71CF59A51009D65D2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F06335D81CF59A51009D65D2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F06335D91CF59A51009D65D2 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		F06335DA1CF59A51009D65D2 /* RootTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootTabController.h; sourceTree = "<group>"; };
-		F06335DB1CF59A51009D65D2 /* RootTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootTabController.m; sourceTree = "<group>"; };
+		F06335DA1CF59A51009D65D2 /* MultilTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultilTabController.h; sourceTree = "<group>"; };
+		F06335DB1CF59A51009D65D2 /* MultilTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultilTabController.m; sourceTree = "<group>"; };
 		F06335DC1CF59A51009D65D2 /* SegmentTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentTabController.h; sourceTree = "<group>"; };
 		F06335DD1CF59A51009D65D2 /* SegmentTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentTabController.m; sourceTree = "<group>"; };
 		F06335DE1CF59A51009D65D2 /* tab_discover_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_discover_normal@2x.png"; sourceTree = "<group>"; };
@@ -80,8 +89,8 @@
 		F06335E11CF59A51009D65D2 /* tab_me_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_me_selected@2x.png"; sourceTree = "<group>"; };
 		F06335E21CF59A51009D65D2 /* tab_message_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_message_normal@2x.png"; sourceTree = "<group>"; };
 		F06335E31CF59A51009D65D2 /* tab_message_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_message_selected@2x.png"; sourceTree = "<group>"; };
-		F06335E41CF59A51009D65D2 /* UnscrollTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnscrollTabController.h; sourceTree = "<group>"; };
-		F06335E51CF59A51009D65D2 /* UnscrollTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnscrollTabController.m; sourceTree = "<group>"; };
+		F06335E41CF59A51009D65D2 /* IndicatorFollowTitleTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndicatorFollowTitleTabController.h; sourceTree = "<group>"; };
+		F06335E51CF59A51009D65D2 /* IndicatorFollowTitleTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndicatorFollowTitleTabController.m; sourceTree = "<group>"; };
 		F06335E61CF59A51009D65D2 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		F06335E71CF59A51009D65D2 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		F06335E81CF59A51009D65D2 /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
@@ -135,18 +144,24 @@
 			children = (
 				F06335CF1CF59A51009D65D2 /* AppDelegate.h */,
 				F06335D01CF59A51009D65D2 /* AppDelegate.m */,
-				F06335DA1CF59A51009D65D2 /* RootTabController.h */,
-				F06335DB1CF59A51009D65D2 /* RootTabController.m */,
+				7E390FF41FB2A5130058362D /* RootViewController.h */,
+				7E390FF51FB2A5130058362D /* RootViewController.m */,
 				F06335D31CF59A51009D65D2 /* DynamicItemWidthTabController.h */,
 				F06335D41CF59A51009D65D2 /* DynamicItemWidthTabController.m */,
 				F06335D51CF59A51009D65D2 /* FixedItemWidthTabController.h */,
 				F06335D61CF59A51009D65D2 /* FixedItemWidthTabController.m */,
-				F06335E41CF59A51009D65D2 /* UnscrollTabController.h */,
-				F06335E51CF59A51009D65D2 /* UnscrollTabController.m */,
+				F06335E41CF59A51009D65D2 /* IndicatorFollowTitleTabController.h */,
+				F06335E51CF59A51009D65D2 /* IndicatorFollowTitleTabController.m */,
+				7E390FF81FB2B09B0058362D /* CustomIndicatorTabController.h */,
+				7E390FF71FB2B09A0058362D /* CustomIndicatorTabController.m */,
 				F06335DC1CF59A51009D65D2 /* SegmentTabController.h */,
 				F06335DD1CF59A51009D65D2 /* SegmentTabController.m */,
 				7E2107931F78FF68002586C5 /* HeaderViewTabController.h */,
 				7E2107941F78FF68002586C5 /* HeaderViewTabController.m */,
+				F06335DA1CF59A51009D65D2 /* MultilTabController.h */,
+				F06335DB1CF59A51009D65D2 /* MultilTabController.m */,
+				7E390FFA1FB2D0FC0058362D /* VerticalTabController.h */,
+				7E390FFB1FB2D0FC0058362D /* VerticalTabController.m */,
 				F06335E61CF59A51009D65D2 /* ViewController.h */,
 				F06335E71CF59A51009D65D2 /* ViewController.m */,
 				F06335E81CF59A51009D65D2 /* ViewController.xib */,
@@ -346,16 +361,19 @@
 			files = (
 				7E07EE481F7F41D200473930 /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
 				F06335F01CF59A51009D65D2 /* FixedItemWidthTabController.m in Sources */,
+				7E390FF91FB2B09B0058362D /* CustomIndicatorTabController.m in Sources */,
+				7E390FF61FB2A5130058362D /* RootViewController.m in Sources */,
 				7E2107951F78FF68002586C5 /* HeaderViewTabController.m in Sources */,
-				F06335FC1CF59A51009D65D2 /* UnscrollTabController.m in Sources */,
+				F06335FC1CF59A51009D65D2 /* IndicatorFollowTitleTabController.m in Sources */,
 				F06335ED1CF59A51009D65D2 /* AppDelegate.m in Sources */,
 				F0ECF2671B79D7BE006DF335 /* YPTabBarController.m in Sources */,
 				F0ECF26D1B79D7DA006DF335 /* YPTabItem.m in Sources */,
+				7E390FFC1FB2D0FC0058362D /* VerticalTabController.m in Sources */,
 				F06335FD1CF59A51009D65D2 /* ViewController.m in Sources */,
 				F06335F51CF59A51009D65D2 /* SegmentTabController.m in Sources */,
 				7E2107911F78FECC002586C5 /* TableViewController.m in Sources */,
 				F06335EF1CF59A51009D65D2 /* DynamicItemWidthTabController.m in Sources */,
-				F06335F41CF59A51009D65D2 /* RootTabController.m in Sources */,
+				F06335F41CF59A51009D65D2 /* MultilTabController.m in Sources */,
 				7E2107351F70BA99002586C5 /* UIViewController+YPTabBarController.m in Sources */,
 				F06335F31CF59A51009D65D2 /* main.m in Sources */,
 				F0ECF26A1B79D7CE006DF335 /* YPTabBar.m in Sources */,

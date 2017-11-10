@@ -59,10 +59,9 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 @property (nonatomic, strong) UIColor *badgeTitleColor;             // Badge标题颜色
 @property (nonatomic, strong) UIFont  *badgeTitleFont;              // Badge标题字体
 
-@property (nonatomic, assign) CGFloat leftAndRightSpacing;          // TabBar边缘与第一个和最后一个item的距离
+@property (nonatomic, assign) CGFloat leadAndTrailSpace;          // TabBar边缘与第一个和最后一个item的距离
 
 @property (nonatomic, assign) NSUInteger selectedItemIndex;          // 选中某一个item
-
 
 /**
  *  拖动内容视图时，item的颜色是否根据拖动位置显示渐变效果，默认为YES
@@ -97,6 +96,20 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 - (void)setTitles:(NSArray <NSString *> *)titles;
 
 /**
+ *  设置tabBar为竖向且支持滚动，tabItem的高度根据tabBar高度和leadAndTrailSpace属性计算
+ *  一旦调用此方法，所有跟横向相关的效果将失效，例如内容视图滚动，指示器切换动画等
+ */
+- (void)setTabItemsVerticalLayout;
+
+/**
+ *  设置tabBar为竖向且支持滚动，一旦调用此方法，所有跟横向相关的效果将失效，例如内容视图滚动，指示器切换动画等
+ *  一旦调用此方法，所有跟横向相关的效果将失效，例如内容视图滚动，指示器切换动画等
+ *
+ *  @param height 单个tabItem的高度
+ */
+- (void)setTabItemsVerticalLayoutWithItemHeight:(CGFloat)height;
+
+/**
  *  设置tabItem的选中背景，这个背景可以是一个横条。
  *  此方法与setIndicatorWidthFixTextWithTop方法互斥，后调用者生效
  *
@@ -104,7 +117,6 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
  *  @param animated     点击item进行背景切换的时候，是否支持动画
  */
 - (void)setIndicatorInsets:(UIEdgeInsets)insets tapSwitchAnimated:(BOOL)animated;
-
 
 /**
  *  设置指示器的宽度根据title宽度来匹配

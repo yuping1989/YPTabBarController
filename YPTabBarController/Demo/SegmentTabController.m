@@ -20,17 +20,17 @@
     [super viewDidLoad];
     [self initViewControllers];
     
-    
+    CGFloat bottom = [self.parentViewController isKindOfClass:[UINavigationController class]] ? 0 : 50;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     [self setTabBarFrame:CGRectMake(30, 27, screenSize.width - 60, 30)
         contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - 50)];
     
     if (screenSize.height == 812) {
         [self setTabBarFrame:CGRectMake(30, 51, screenSize.width - 60, 30)
-            contentViewFrame:CGRectMake(0, 88, screenSize.width, screenSize.height - 88 - 50 - 34)];
+            contentViewFrame:CGRectMake(0, 88, screenSize.width, screenSize.height - 88 - bottom - 34)];
     } else {
         [self setTabBarFrame:CGRectMake(30, 27, screenSize.width - 60, 30)
-            contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - 50)];
+            contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - bottom)];
     }
     
     self.tabBar.itemTitleColor = [UIColor redColor];

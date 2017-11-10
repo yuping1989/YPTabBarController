@@ -1,5 +1,5 @@
 //
-//  RootTabController.h
+//  MultilTabController.h
 //  YPTabBarController
 //
 //  Created by 喻平 on 15/8/11.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "YPTabBarController.h"
-@interface RootTabController : YPTabBarController
+@interface MultilTabController : YPTabBarController
 
 @end

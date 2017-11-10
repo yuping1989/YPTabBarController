@@ -207,7 +207,7 @@
     CGRect frame = self.frameWithOutTransform;
     UIEdgeInsets insets = self.indicatorInsets;
     _indicatorFrame = CGRectMake(frame.origin.x + insets.left,
-                                 insets.top,
+                                 frame.origin.y + insets.top,
                                  frame.size.width - insets.left - insets.right,
                                  frame.size.height - insets.top - insets.bottom);
 }

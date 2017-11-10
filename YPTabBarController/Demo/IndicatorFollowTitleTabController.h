@@ -1,5 +1,5 @@
 //
-//  UnscrollTabController.h
+//  IndicatorFollowTitleTabController.h
 //  YPTabBarController
 //
 //  Created by 喻平 on 16/5/25.
@@ -8,6 +8,6 @@
 
 #import "YPTabBarController.h"
 
-@interface UnscrollTabController : YPTabBarController
+@interface IndicatorFollowTitleTabController : YPTabBarController
 
 @end

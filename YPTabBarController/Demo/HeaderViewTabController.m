@@ -19,8 +19,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.fd_prefersNavigationBarHidden = YES;
-    
     [self initViewControllers];
     
     self.interceptRightSlideGuetureInFirstPage = YES;
@@ -49,18 +47,35 @@
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.clipsToBounds = YES;
     
+    CGFloat bottom = 0;
+    if (screenSize.height == 812) {
+        bottom += 34;
+    }
+    if ([self.parentViewController isKindOfClass:[YPTabBarController class]]) {
+        bottom += 50;
+    }
     
     [self setHeaderView:imageView
             needStretch:YES
            headerHeight:250
            tabBarHeight:44
-      contentViewHeight:screenSize.height - 250 - 44 - 50 - 34
+      contentViewHeight:screenSize.height - 250 - 44 - bottom
   tabBarStopOnTopHeight:20];
     
+    
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame = CGRectMake(10, 20, 50, 40);
+    [backButton setTitle:@"返回" forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:backButton];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)back {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)initViewControllers {

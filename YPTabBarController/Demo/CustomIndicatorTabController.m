@@ -1,32 +1,33 @@
 //
-//  UnscrollTabController.m
+//  CustomIndicatorTabController.m
 //  YPTabBarController
 //
 //  Created by 喻平 on 16/5/25.
 //  Copyright © 2016年 YPTabBarController. All rights reserved.
 //
 
-#import "UnscrollTabController.h"
+#import "CustomIndicatorTabController.h"
 #import "ViewController.h"
 
-@interface UnscrollTabController ()
+@interface CustomIndicatorTabController ()
 
 @end
 
-@implementation UnscrollTabController
+@implementation CustomIndicatorTabController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initViewControllers];
     
+    CGFloat bottom = [self.parentViewController isKindOfClass:[UINavigationController class]] ? 0 : 50;
     
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     if (screenSize.height == 812) {
         [self setTabBarFrame:CGRectMake(0, 44, screenSize.width, 44)
-            contentViewFrame:CGRectMake(0, 88, screenSize.width, screenSize.height - 88 - 50 - 34)];
+            contentViewFrame:CGRectMake(0, 88, screenSize.width, screenSize.height - 88 - bottom - 34)];
     } else {
         [self setTabBarFrame:CGRectMake(0, 20, screenSize.width, 44)
-            contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - 50)];
+            contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - bottom )];
     }
     
     self.tabBar.backgroundColor = [UIColor grayColor];
@@ -35,13 +36,12 @@
     self.tabBar.itemTitleSelectedColor = [UIColor whiteColor];
     self.tabBar.itemTitleFont = [UIFont systemFontOfSize:18];
     
-    
     self.tabBar.indicatorScrollFollowContent = YES;
     self.tabBar.itemColorChangeFollowContentScroll = YES;
     
     self.tabBar.indicatorColor = [UIColor redColor];
-    [self.tabBar setIndicatorWidthFixTextAndMarginTop:40 marginBottom:0 widthAdditional:0 tapSwitchAnimated:YES];
-    self.tabBar.indicatorAnimationStyle = YPTabBarIndicatorAnimationStyle1;
+    [self.tabBar setIndicatorWidthFixTextAndMarginTop:8 marginBottom:8 widthAdditional:20 tapSwitchAnimated:YES];
+    self.tabBar.indicatorCornerRadius = 14;
     
     [self setContentScrollEnabledAndTapSwitchAnimated:YES];
     

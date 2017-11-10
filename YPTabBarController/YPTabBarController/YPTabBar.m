@@ -39,6 +39,7 @@
 
 // item的宽度
 @property (nonatomic, assign) CGFloat itemWidth;
+@property (nonatomic, assign) CGFloat itemHeight;
 
 // item的内容水平居中时，image与顶部的距离
 @property (nonatomic, assign) CGFloat itemContentHorizontalCenterVerticalOffset;
@@ -63,6 +64,8 @@
 @property (nonatomic, assign) CGFloat itemSeparatorWidth;
 @property (nonatomic, assign) CGFloat itemSeparatorMarginTop;
 @property (nonatomic, assign) CGFloat itemSeparatorMarginBottom;
+
+@property (nonatomic, assign) BOOL isVertical;
 
 @end
 
@@ -89,7 +92,7 @@
     _itemTitleColor = [UIColor whiteColor];
     _itemTitleSelectedColor = [UIColor blackColor];
     _itemTitleFont = [UIFont systemFontOfSize:10];
-    _indicatorImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    
     _itemContentHorizontalCenter = YES;
     _itemFontChangeFollowContentScroll = NO;
     _itemColorChangeFollowContentScroll = YES;
@@ -114,6 +117,7 @@
     _scrollView.scrollEnabled = NO;
     [self addSubview:_scrollView];
     
+    _indicatorImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     [_scrollView addSubview:_indicatorImageView];
 }
 
@@ -125,7 +129,7 @@
     [self updateItemsFrame];
     
     // 更新选中背景的frame
-    [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
+    [self updateIndicatorFrameWithIndex:self.selectedItemIndex];
     
     // 更新分割线
     [self updateSeperators];
@@ -178,15 +182,15 @@
     self.items = items;
 }
 
-- (void)setleftAndRightSpacing:(CGFloat)leftAndRightSpacing {
-    _leftAndRightSpacing = leftAndRightSpacing;
-    [self updateItemsFrame];
+- (void)setLeadAndTrailSpace:(CGFloat)leadAndTrailSpace {
+    _leadAndTrailSpace = leadAndTrailSpace;
+    [self updateUI];
 }
 
 - (void)updateUI {
     [self updateItemsFrame];
     [self updateItemIndicatorInsets];
-    [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
+    [self updateIndicatorFrameWithIndex:self.selectedItemIndex];
 }
 
 - (void)updateItemsFrame {
@@ -194,74 +198,84 @@
         return;
     }
     
-    if (self.scrollView.scrollEnabled) {
+    if (self.isVertical) {
         // 支持滚动
-        CGFloat x = self.leftAndRightSpacing;
+        CGFloat y = self.leadAndTrailSpace;
+        
         for (NSUInteger index = 0; index < self.items.count; index++) {
             YPTabItem *item = self.items[index];
-            CGFloat width = 0;
-            // item的宽度为一个固定值
-            if (self.itemWidth > 0) {
-                width = self.itemWidth;
-            }
-            // item的宽度为根据字体大小和spacing进行适配
-            if (self.itemFitTextWidth) {
-                width = item.titleWidth + self.itemFitTextWidthSpacing;
-            }
-            item.frame = CGRectMake(x, 0, width, self.frame.size.height);
+            item.frame = CGRectMake(0, y, self.frame.size.width, self.itemHeight);
             item.index = index;
-            x += width;
+            y += self.itemHeight;
         }
-        self.scrollView.contentSize = CGSizeMake(MAX(x + self.leftAndRightSpacing, self.scrollView.frame.size.width),
-                                                 self.scrollView.frame.size.height);
+        self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, MAX(y + self.leadAndTrailSpace, self.scrollView.frame.size.height));
     } else {
-        // 不支持滚动
-        
-        CGFloat x = self.leftAndRightSpacing;
-        CGFloat allItemsWidth = self.frame.size.width - self.leftAndRightSpacing * 2;
-        if (self.specialItem && self.specialItem.frame.size.width != 0) {
-            self.itemWidth = (allItemsWidth - self.specialItem.frame.size.width) / self.items.count;
-        } else {
-            self.itemWidth = allItemsWidth / self.items.count;
-        }
-        
-        // 四舍五入，取整，防止字体模糊
-        self.itemWidth = floorf(self.itemWidth + 0.5f);
-
-        for (NSUInteger index = 0; index < self.items.count; index++) {
-            YPTabItem *item = self.items[index];
-            if (index == self.items.count - 1) {
-                self.itemWidth = self.frame.size.width - x;
-            }
-            item.frame = CGRectMake(x, 0, self.itemWidth, self.frame.size.height);
-            item.index = index;
-            
-            x += self.itemWidth;
-            
-            // 如果有特殊的单独item，设置其位置
-            if (self.specialItem && self.specialItem.index == index) {
-                CGFloat width = self.specialItem.frame.size.width;
-                // 如果宽度为0，将其宽度设置为itemWidth
-                if (width == 0) {
+        if (self.scrollView.scrollEnabled) {
+            // 支持滚动
+            CGFloat x = self.leadAndTrailSpace;
+            for (NSUInteger index = 0; index < self.items.count; index++) {
+                YPTabItem *item = self.items[index];
+                CGFloat width = 0;
+                // item的宽度为一个固定值
+                if (self.itemWidth > 0) {
                     width = self.itemWidth;
                 }
-                CGFloat height = self.specialItem.frame.size.height;
-                // 如果高度为0，将其宽度设置为tabBar的高度
-                if (height == 0) {
-                    height = self.frame.size.height;
+                // item的宽度为根据字体大小和spacing进行适配
+                if (self.itemFitTextWidth) {
+                    width = item.titleWidth + self.itemFitTextWidthSpacing;
                 }
-                self.specialItem.frame = CGRectMake(x, self.frame.size.height - height, width, height);
+                item.frame = CGRectMake(x, 0, width, self.frame.size.height);
+                item.index = index;
                 x += width;
             }
+            self.scrollView.contentSize = CGSizeMake(MAX(x + self.leadAndTrailSpace, self.scrollView.frame.size.width),
+                                                     self.scrollView.frame.size.height);
+        } else {
+            // 不支持滚动
+            
+            CGFloat x = self.leadAndTrailSpace;
+            CGFloat allItemsWidth = self.frame.size.width - self.leadAndTrailSpace * 2;
+            if (self.specialItem && self.specialItem.frame.size.width != 0) {
+                self.itemWidth = (allItemsWidth - self.specialItem.frame.size.width) / self.items.count;
+            } else {
+                self.itemWidth = allItemsWidth / self.items.count;
+            }
+            
+            // 四舍五入，取整，防止字体模糊
+            self.itemWidth = floorf(self.itemWidth + 0.5f);
+            
+            for (NSUInteger index = 0; index < self.items.count; index++) {
+                YPTabItem *item = self.items[index];
+                item.frame = CGRectMake(x, 0, self.itemWidth, self.frame.size.height);
+                item.index = index;
+                
+                x += self.itemWidth;
+                
+                // 如果有特殊的单独item，设置其位置
+                if (self.specialItem && self.specialItem.index == index) {
+                    CGFloat width = self.specialItem.frame.size.width;
+                    // 如果宽度为0，将其宽度设置为itemWidth
+                    if (width == 0) {
+                        width = self.itemWidth;
+                    }
+                    CGFloat height = self.specialItem.frame.size.height;
+                    // 如果高度为0，将其宽度设置为tabBar的高度
+                    if (height == 0) {
+                        height = self.frame.size.height;
+                    }
+                    self.specialItem.frame = CGRectMake(x, self.frame.size.height - height, width, height);
+                    x += width;
+                }
+            }
+            self.scrollView.contentSize = CGSizeMake(self.bounds.size.width, self.bounds.size.height);
         }
-        self.scrollView.contentSize = CGSizeMake(self.bounds.size.width, self.bounds.size.height);
     }
 }
 
 /**
  *  更新选中背景的frame
  */
-- (void)updateSelectedBgFrameWithIndex:(NSUInteger)index {
+- (void)updateIndicatorFrameWithIndex:(NSUInteger)index {
     if (self.items.count == 0 || index == NSNotFound) {
         self.indicatorImageView.frame = CGRectZero;
         return;
@@ -314,10 +328,10 @@
     
     if (self.indicatorSwitchAnimated && _selectedItemIndex != NSNotFound) {
         [UIView animateWithDuration:0.25f animations:^{
-            [self updateSelectedBgFrameWithIndex:selectedItemIndex];
+            [self updateIndicatorFrameWithIndex:selectedItemIndex];
         }];
     } else {
-        [self updateSelectedBgFrameWithIndex:selectedItemIndex];
+        [self updateIndicatorFrameWithIndex:selectedItemIndex];
     }
 
     _selectedItemIndex = selectedItemIndex;
@@ -346,8 +360,21 @@
     [self updateItemsFrame];
 }
 
+- (void)setTabItemsVerticalLayout {
+    self.isVertical = YES;
+    self.itemHeight = ceilf((self.frame.size.height - self.leadAndTrailSpace * 2) / self.items.count);
+    [self updateUI];
+}
+
+- (void)setTabItemsVerticalLayoutWithItemHeight:(CGFloat)height:(CGFloat)height {
+    self.scrollView.scrollEnabled = YES;
+    self.itemHeight = height;
+    self.isVertical = YES;
+    [self updateUI];
+}
+
 - (void)setSelectedItemCenter {
-    if (!self.scrollView.scrollEnabled) {
+    if (!self.scrollView.scrollEnabled || self.isVertical) {
         return;
     }
     // 修改偏移量
@@ -429,7 +456,7 @@
     self.indicatorInsets = insets;
     
     [self updateItemIndicatorInsets];
-    [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
+    [self updateIndicatorFrameWithIndex:self.selectedItemIndex];
 }
 
 - (void)setIndicatorWidthFixTextAndMarginTop:(CGFloat)top
@@ -442,7 +469,7 @@
     self.indicatorWidthFixTitleAdditional = additional;
     
     [self updateItemIndicatorInsets];
-    [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
+    [self updateIndicatorFrameWithIndex:self.selectedItemIndex];
 }
 
 - (void)updateItemIndicatorInsets {
@@ -497,7 +524,7 @@
         // 如果item的宽度是匹配文字的，更新item的位置
         [self updateItemsFrame];
     }
-    [self updateSelectedBgFrameWithIndex:self.selectedItemIndex];
+    [self updateIndicatorFrameWithIndex:self.selectedItemIndex];
 }
 
 - (void)setItemTitleSelectedFont:(UIFont *)itemTitleSelectedFont {

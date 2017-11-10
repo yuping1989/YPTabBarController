@@ -1,31 +1,29 @@
 //
-//  RootTabController.m
+//  MultilTabController.m
 //  YPTabBarController
 //
 //  Created by 喻平 on 15/8/11.
 //  Copyright (c) 2015年 YPTabBarController. All rights reserved.
 //
 
-#import "RootTabController.h"
+#import "MultilTabController.h"
 #import "ViewController.h"
 #import "FixedItemWidthTabController.h"
 #import "DynamicItemWidthTabController.h"
 #import "SegmentTabController.h"
-#import "UnscrollTabController.h"
+#import "IndicatorFollowTitleTabController.h"
 #import "HeaderViewTabController.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
 
-@interface RootTabController ()
+@interface MultilTabController ()
 
 @end
 
-@implementation RootTabController
+@implementation MultilTabController
 
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    
-    self.fd_prefersNavigationBarHidden = YES;
     
     [self initViewControllers];
     self.tabBar.backgroundColor = [UIColor lightGrayColor];
@@ -39,7 +37,6 @@
     [self.tabBar setDotBadgeMarginTop:5
                     centerMarginRight:15
                            sideLength:10];
-    self.tabBar.leftAndRightSpacing = 50;
     
     UIViewController *controller2 = self.viewControllers[1];
     UIViewController *controller3 = self.viewControllers[2];
@@ -49,7 +46,6 @@
     controller3.yp_tabItem.badge = 88;
     controller4.yp_tabItem.badge = 120;
     controller5.yp_tabItem.badgeStyle = YPTabItemBadgeStyleDot;
-    
     
 //    [self addSpecialItem];
 }
@@ -70,7 +66,7 @@
     controller2.yp_tabItemImage = [UIImage imageNamed:@"tab_discover_normal"];
     controller2.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_discover_selected"];
     
-    UnscrollTabController *controller3 = [[UnscrollTabController alloc] init];
+    IndicatorFollowTitleTabController *controller3 = [[IndicatorFollowTitleTabController alloc] init];
     controller3.yp_tabItemTitle = @"不滚动tab";
     controller3.yp_tabItemImage = [UIImage imageNamed:@"tab_me_normal"];
     controller3.yp_tabItemSelectedImage = [UIImage imageNamed:@"tab_me_selected"];

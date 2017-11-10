@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "RootTabController.h"
+#import "RootViewController.h"
 
 @interface AppDelegate ()
 
@@ -17,9 +17,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    RootTabController *controller = [[RootTabController alloc] init];
+    RootViewController *controller = [[RootViewController alloc] init];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navController.navigationBarHidden = YES;
+    navController.navigationBar.hidden = YES;
     self.window.rootViewController = navController;
     [self.window makeKeyAndVisible];
     return YES;

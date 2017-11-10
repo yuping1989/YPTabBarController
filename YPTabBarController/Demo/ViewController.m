@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "YPTabBarController.h"
-#import "RootTabController.h"
+#import "MultilTabController.h"
 #import "AppDelegate.h"
 #import "HeaderViewTabController.h"
 @interface ViewController ()
@@ -33,7 +33,7 @@
     
     HeaderViewTabController *vc = [[HeaderViewTabController alloc] init];
 //    vc.interceptRightSlideGuetureInFirstPage = YES;
-    [self.navigationController pushViewController:vc animated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
