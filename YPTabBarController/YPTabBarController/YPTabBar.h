@@ -185,19 +185,19 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 /**
  *  设置分割线
  *
- *  @param itemSeparatorColor 分割线颜色
- *  @param width              宽度
- *  @param marginTop          与tabBar顶部距离
- *  @param marginBottom       与tabBar底部距离
+ *  @param itemSeparatorColor   分割线颜色
+ *  @param thickness            分割线的粗细
+ *  @param leading              与tabBar顶部或者左侧的距离
+ *  @param trailing             与tabBar底部或者右侧距离
  */
 - (void)setItemSeparatorColor:(UIColor *)itemSeparatorColor
-                        width:(CGFloat)width
-                    marginTop:(CGFloat)marginTop
-                 marginBottom:(CGFloat)marginBottom;
+                    thickness:(CGFloat)thickness
+                      leading:(CGFloat)leading
+                     trailing:(CGFloat)trailing;
 
 - (void)setItemSeparatorColor:(UIColor *)itemSeparatorColor
-                    marginTop:(CGFloat)marginTop
-                 marginBottom:(CGFloat)marginBottom;
+                      leading:(CGFloat)leading
+                     trailing:(CGFloat)trailing;
 
 /**
  *  添加一个特殊的YPTabItem到tabBar上，此TabItem不包含在tabBar的items数组里

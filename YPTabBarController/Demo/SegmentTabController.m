@@ -40,7 +40,10 @@
     self.tabBar.layer.cornerRadius = 5;
     self.tabBar.layer.borderWidth = 1;
     self.tabBar.layer.borderColor = [UIColor blueColor].CGColor;
-    [self.tabBar setItemSeparatorColor:[UIColor blueColor] width:1 marginTop:0 marginBottom:0];
+    [self.tabBar setItemSeparatorColor:[UIColor blueColor]
+                             thickness:1
+                               leading:0
+                              trailing:0];
     
     UIViewController *controller1 = self.viewControllers[0];
     UIViewController *controller2 = self.viewControllers[1];

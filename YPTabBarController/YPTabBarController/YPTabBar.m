@@ -61,9 +61,9 @@
 // 分割线相关属性
 @property (nonatomic, strong) NSMutableArray *separatorLayers;
 @property (nonatomic, strong) UIColor *itemSeparatorColor;
-@property (nonatomic, assign) CGFloat itemSeparatorWidth;
-@property (nonatomic, assign) CGFloat itemSeparatorMarginTop;
-@property (nonatomic, assign) CGFloat itemSeparatorMarginBottom;
+@property (nonatomic, assign) CGFloat itemSeparatorThickness;
+@property (nonatomic, assign) CGFloat itemSeparatorLeading;
+@property (nonatomic, assign) CGFloat itemSeparatorTrailing;
 
 @property (nonatomic, assign) BOOL isVertical;
 
@@ -124,15 +124,7 @@
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
     self.scrollView.frame = self.bounds;
-    
-    // 更新items的frame
-    [self updateItemsFrame];
-    
-    // 更新选中背景的frame
-    [self updateIndicatorFrameWithIndex:self.selectedItemIndex];
-    
-    // 更新分割线
-    [self updateSeperators];
+    [self updateAllUI];
 }
 
 - (void)setItems:(NSArray *)items {
@@ -149,7 +141,7 @@
         item.titleFont = self.itemTitleFont;
         
         [item setContentHorizontalCenterWithVerticalOffset:5 spacing:5];
-
+        
         item.badgeTitleFont = self.badgeTitleFont;
         item.badgeTitleColor = self.badgeTitleColor;
         item.badgeBackgroundColor = self.badgeBackgroundColor;
@@ -169,7 +161,7 @@
     
     // 更新item的大小缩放
     [self updateItemsScaleIfNeeded];
-    [self updateUI];
+    [self updateAllUI];
 }
 
 - (void)setTitles:(NSArray *)titles {
@@ -184,13 +176,14 @@
 
 - (void)setLeadAndTrailSpace:(CGFloat)leadAndTrailSpace {
     _leadAndTrailSpace = leadAndTrailSpace;
-    [self updateUI];
+    [self updateAllUI];
 }
 
-- (void)updateUI {
+- (void)updateAllUI {
     [self updateItemsFrame];
     [self updateItemIndicatorInsets];
     [self updateIndicatorFrameWithIndex:self.selectedItemIndex];
+    [self updateSeperators];
 }
 
 - (void)updateItemsFrame {
@@ -333,7 +326,7 @@
     } else {
         [self updateIndicatorFrameWithIndex:selectedItemIndex];
     }
-
+    
     _selectedItemIndex = selectedItemIndex;
     
     // 如果tabbar支持滚动，将选中的item放到tabbar的中央
@@ -363,14 +356,14 @@
 - (void)setTabItemsVerticalLayout {
     self.isVertical = YES;
     self.itemHeight = ceilf((self.frame.size.height - self.leadAndTrailSpace * 2) / self.items.count);
-    [self updateUI];
+    [self updateAllUI];
 }
 
-- (void)setTabItemsVerticalLayoutWithItemHeight:(CGFloat)height:(CGFloat)height {
+- (void)setTabItemsVerticalLayoutWithItemHeight:(CGFloat)height {
     self.scrollView.scrollEnabled = YES;
     self.itemHeight = height;
     self.isVertical = YES;
-    [self updateUI];
+    [self updateAllUI];
 }
 
 - (void)setSelectedItemCenter {
@@ -631,19 +624,19 @@
 #pragma mark - Separator
 
 - (void)setItemSeparatorColor:(UIColor *)itemSeparatorColor
-                        width:(CGFloat)width
-                    marginTop:(CGFloat)marginTop
-                 marginBottom:(CGFloat)marginBottom {
+                    thickness:(CGFloat)thickness
+                      leading:(CGFloat)leading
+                     trailing:(CGFloat)trailing {
     self.itemSeparatorColor = itemSeparatorColor;
-    self.itemSeparatorWidth = width;
-    self.itemSeparatorMarginTop = marginTop;
-    self.itemSeparatorMarginBottom = marginBottom;
+    self.itemSeparatorThickness = thickness;
+    self.itemSeparatorLeading = leading;
+    self.itemSeparatorTrailing = trailing;
     [self updateSeperators];
 }
 
 - (void)setItemSeparatorColor:(UIColor *)itemSeparatorColor
-                    marginTop:(CGFloat)marginTop
-                 marginBottom:(CGFloat)marginBottom {
+                      leading:(CGFloat)leading
+                     trailing:(CGFloat)trailing {
     
     UIScreen *mainScreen = [UIScreen mainScreen];
     CGFloat onePixel;
@@ -653,9 +646,9 @@
         onePixel = 1.0f / mainScreen.scale;
     }
     [self setItemSeparatorColor:itemSeparatorColor
-                          width:onePixel
-                      marginTop:marginTop
-                   marginBottom:marginBottom];
+                      thickness:onePixel
+                        leading:leading
+                       trailing:trailing];
 }
 
 - (void)updateSeperators {
@@ -665,14 +658,22 @@
         }
         [self.separatorLayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
         [self.separatorLayers removeAllObjects];
+        
         [self.items enumerateObjectsUsingBlock:^(YPTabItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
             if (idx > 0) {
                 CALayer *layer = [[CALayer alloc] init];
                 layer.backgroundColor = self.itemSeparatorColor.CGColor;
-                layer.frame = CGRectMake(item.frame.origin.x - self.itemSeparatorWidth / 2,
-                                         self.itemSeparatorMarginTop,
-                                         self.itemSeparatorWidth,
-                                         self.bounds.size.height - self.itemSeparatorMarginTop - self.itemSeparatorMarginBottom);
+                if (self.isVertical) {
+                    layer.frame = CGRectMake(self.itemSeparatorLeading,
+                                             item.frame.origin.y - self.itemSeparatorThickness / 2,
+                                             self.bounds.size.width - self.itemSeparatorLeading - self.itemSeparatorTrailing,
+                                             self.itemSeparatorThickness);
+                } else {
+                    layer.frame = CGRectMake(item.frame.origin.x - self.itemSeparatorThickness / 2,
+                                             self.itemSeparatorLeading,
+                                             self.itemSeparatorThickness,
+                                             self.bounds.size.height - self.itemSeparatorLeading - self.itemSeparatorTrailing);
+                }
                 [self.scrollView.layer addSublayer:layer];
                 [self.separatorLayers addObject:layer];
             }
@@ -748,7 +749,7 @@
             
             CGFloat widthDiff = rightItem.indicatorFrame.size.width - leftItem.indicatorFrame.size.width;
             frame.size.width = rightScale * widthDiff + leftItem.indicatorFrame.size.width;
-
+            
             self.indicatorImageView.frame = frame;
         } else if (self.indicatorAnimationStyle == YPTabBarIndicatorAnimationStyle1) {
             NSUInteger page = offsetX / scrollViewWidth;
@@ -818,3 +819,4 @@
 }
 
 @end
+

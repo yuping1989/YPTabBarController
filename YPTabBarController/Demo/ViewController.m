@@ -31,7 +31,7 @@
 //    self.yp_tabBarController.contentViewFrame = CGRectMake(0, 64, 300, 500);
 //    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
-    HeaderViewTabController *vc = [[HeaderViewTabController alloc] init];
+//    HeaderViewTabController *vc = [[HeaderViewTabController alloc] init];
 //    vc.interceptRightSlideGuetureInFirstPage = YES;
     [self.navigationController popViewControllerAnimated:YES];
 }
