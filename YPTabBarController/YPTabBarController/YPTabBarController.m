@@ -432,9 +432,10 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
         UIScrollView *curScrollView = (UIScrollView *)curController.yp_displayView;
         [curScrollView setScrollsToTop:YES];
         if (self.headerView) {
-            UIEdgeInsets inset = UIEdgeInsetsMake(self.headerViewDefaultHeight + self.tabBar.frame.size.height, 0, 0, 0);
-            curScrollView.contentInset = inset;
-            curScrollView.scrollIndicatorInsets = inset;
+            UIEdgeInsets insets = curScrollView.contentInset;
+            insets.top = self.headerViewDefaultHeight + self.tabBar.frame.size.height;
+            curScrollView.contentInset = insets;
+            curScrollView.scrollIndicatorInsets = insets;
             
             if (oldController && oldController.hasAddedContentOffsetObserver) {
                 // 移除oldController的yp_displayView注册的观察者
