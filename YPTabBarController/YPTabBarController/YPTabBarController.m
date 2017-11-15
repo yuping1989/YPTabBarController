@@ -8,6 +8,7 @@
 
 #import "YPTabBarController.h"
 #import "UIViewController+YPTabBarController.h"
+#import "UIScrollView+YPTabBarController.h"
 #import <objc/runtime.h>
 
 #define TAB_BAR_HEIGHT 50
@@ -327,7 +328,6 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if ([kContentOffset isEqualToString:keyPath]) {
-        NSLog(@"value--->%@", change);
         NSValue *value = change[NSKeyValueChangeNewKey];
         CGFloat offsetY = [value CGPointValue].y + self.headerViewDefaultHeight + self.tabBar.frame.size.height;
         CGRect headerFrame;
@@ -350,17 +350,10 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
 
 - (void)updateContentOffsetOfDisplayScrollView:(UIScrollView *)scrollView {
     CGFloat tabBarY = self.tabBar.frame.origin.y;
-    CGFloat offsetY = 0;
-    if (tabBarY >= self.headerViewDefaultHeight) {
-        // tabBar的位置在最下方
-        offsetY = -(self.headerViewDefaultHeight + self.tabBar.frame.size.height);
-        scrollView.contentOffset = CGPointMake(0, offsetY);
-    } else if (tabBarY <= self.tabBarStopOnTopHeight && scrollView.contentOffset.y != 0 && scrollView.contentOffset.y > -CGRectGetMaxY(self.tabBar.frame)) {
-        // tabBar的位置在最上方，且scrollView向上滑动了一部分，这种情况不做处理
-    } else {
-        // 其余情况，需要设置待展示的scrollView的contentOffset
-        offsetY = self.headerViewDefaultHeight - tabBarY - (self.headerViewDefaultHeight + self.tabBar.frame.size.height);
-        scrollView.contentOffset = CGPointMake(0, offsetY);
+    if (tabBarY > self.tabBarStopOnTopHeight ||
+        scrollView.contentOffset.y == 0 ||
+        scrollView.contentOffset.y <= -CGRectGetMaxY(self.tabBar.frame)) {
+        scrollView.contentOffset = CGPointMake(0, -(tabBarY + self.tabBar.frame.size.height));
     }
 }
 
@@ -436,6 +429,7 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
             insets.top = self.headerViewDefaultHeight + self.tabBar.frame.size.height;
             curScrollView.contentInset = insets;
             curScrollView.scrollIndicatorInsets = insets;
+            curScrollView.minContentSizeHeight = self.contentScrollView.frame.size.height - self.tabBar.frame.size.height - self.tabBarStopOnTopHeight;
             
             if (oldController && oldController.hasAddedContentOffsetObserver) {
                 // 移除oldController的yp_displayView注册的观察者
@@ -447,7 +441,6 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
                 [curScrollView addObserver:self forKeyPath:kContentOffset options:NSKeyValueObservingOptionNew context:NULL];
                 curController.hasAddedContentOffsetObserver = YES;
             }
-            
             [self updateContentOffsetOfDisplayScrollView:curScrollView];
         }
     }

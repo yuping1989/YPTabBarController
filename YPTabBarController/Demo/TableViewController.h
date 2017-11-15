@@ -10,4 +10,6 @@
 
 @interface TableViewController : UIViewController
 
+@property (nonatomic, assign) NSInteger numberOfRows;
+
 @end

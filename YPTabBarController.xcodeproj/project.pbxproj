@@ -15,6 +15,7 @@
 		7E390FF61FB2A5130058362D /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E390FF51FB2A5130058362D /* RootViewController.m */; };
 		7E390FF91FB2B09B0058362D /* CustomIndicatorTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E390FF71FB2B09A0058362D /* CustomIndicatorTabController.m */; };
 		7E390FFC1FB2D0FC0058362D /* VerticalTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E390FFB1FB2D0FC0058362D /* VerticalTabController.m */; };
+		7E3DA80D1FBC68D3008A2C4E /* UIScrollView+YPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3DA80C1FBC68D3008A2C4E /* UIScrollView+YPTabBarController.m */; };
 		F06335ED1CF59A51009D65D2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335D01CF59A51009D65D2 /* AppDelegate.m */; };
 		F06335EE1CF59A51009D65D2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F06335D11CF59A51009D65D2 /* LaunchScreen.xib */; };
 		F06335EF1CF59A51009D65D2 /* DynamicItemWidthTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335D41CF59A51009D65D2 /* DynamicItemWidthTabController.m */; };
@@ -69,6 +70,8 @@
 		7E390FF81FB2B09B0058362D /* CustomIndicatorTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIndicatorTabController.h; sourceTree = "<group>"; };
 		7E390FFA1FB2D0FC0058362D /* VerticalTabController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VerticalTabController.h; sourceTree = "<group>"; };
 		7E390FFB1FB2D0FC0058362D /* VerticalTabController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VerticalTabController.m; sourceTree = "<group>"; };
+		7E3DA80B1FBC68D3008A2C4E /* UIScrollView+YPTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+YPTabBarController.h"; sourceTree = "<group>"; };
+		7E3DA80C1FBC68D3008A2C4E /* UIScrollView+YPTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+YPTabBarController.m"; sourceTree = "<group>"; };
 		F06335CF1CF59A51009D65D2 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F06335D01CF59A51009D65D2 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		F06335D21CF59A51009D65D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -243,6 +246,8 @@
 				F0ECF26C1B79D7DA006DF335 /* YPTabItem.m */,
 				7E2107331F70BA99002586C5 /* UIViewController+YPTabBarController.h */,
 				7E2107341F70BA99002586C5 /* UIViewController+YPTabBarController.m */,
+				7E3DA80B1FBC68D3008A2C4E /* UIScrollView+YPTabBarController.h */,
+				7E3DA80C1FBC68D3008A2C4E /* UIScrollView+YPTabBarController.m */,
 			);
 			path = YPTabBarController;
 			sourceTree = "<group>";
@@ -375,6 +380,7 @@
 				F06335EF1CF59A51009D65D2 /* DynamicItemWidthTabController.m in Sources */,
 				F06335F41CF59A51009D65D2 /* MultilTabController.m in Sources */,
 				7E2107351F70BA99002586C5 /* UIViewController+YPTabBarController.m in Sources */,
+				7E3DA80D1FBC68D3008A2C4E /* UIScrollView+YPTabBarController.m in Sources */,
 				F06335F31CF59A51009D65D2 /* main.m in Sources */,
 				F0ECF26A1B79D7CE006DF335 /* YPTabBar.m in Sources */,
 			);

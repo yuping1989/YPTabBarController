@@ -87,6 +87,7 @@
     
     TableViewController *controller3 = [[TableViewController alloc] init];
     controller3.yp_tabItemTitle = @"第三个";
+    controller3.numberOfRows = 5;
     
     TableViewController *controller4 = [[TableViewController alloc] init];
     controller4.yp_tabItemTitle = @"第四";
