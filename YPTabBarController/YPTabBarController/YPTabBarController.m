@@ -524,8 +524,14 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
             [self.contentScrollView addSubview:controller.yp_displayView];
             
             if (self.headerView) {
+                UIScrollView *scrollView = (UIScrollView *)controller.yp_displayView;
                 // 如果有headerView，需要更新contentOffset
-                [self updateContentOffsetOfDisplayScrollView:(UIScrollView *)controller.yp_displayView];
+                UIEdgeInsets insets = scrollView.contentInset;
+                insets.top = self.headerViewDefaultHeight + self.tabBar.frame.size.height;
+                scrollView.contentInset = insets;
+                scrollView.scrollIndicatorInsets = insets;
+                scrollView.minContentSizeHeight = self.contentScrollView.frame.size.height - self.tabBar.frame.size.height - self.tabBarStopOnTopHeight;
+                [self updateContentOffsetOfDisplayScrollView:scrollView];
             }
         }
     }
