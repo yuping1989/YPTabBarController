@@ -121,6 +121,11 @@
     [_scrollView addSubview:_indicatorImageView];
 }
 
+- (void)setClipsToBounds:(BOOL)clipsToBounds {
+    [super setClipsToBounds:clipsToBounds];
+    self.scrollView.clipsToBounds = clipsToBounds;
+}
+
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
     self.scrollView.frame = self.bounds;
@@ -816,6 +821,20 @@
     frame.origin.x = x;
     frame.size.width = width;
     self.indicatorImageView.frame = frame;
+}
+
+#pragma mark - hitTest
+
+// 让specialItem超出父视图的部分能响应事件
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    UIView *view = [super hitTest:point withEvent:event];
+    if (self.specialItem && !view) {
+        CGPoint tp = [self.specialItem convertPoint:point fromView:self];
+        if (CGRectContainsPoint(self.specialItem.bounds, tp)) {
+            view = self.specialItem;
+        }
+    }
+    return view;
 }
 
 @end

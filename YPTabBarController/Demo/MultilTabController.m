@@ -47,7 +47,7 @@
     controller4.yp_tabItem.badge = 120;
     controller5.yp_tabItem.badgeStyle = YPTabItemBadgeStyleDot;
     
-//    [self addSpecialItem];
+    [self addSpecialItem];
 }
 
 - (void)didReceiveMemoryWarning {
