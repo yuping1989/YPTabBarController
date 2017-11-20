@@ -43,7 +43,7 @@
     [self.tabBar setIndicatorWidthFixTextAndMarginTop:40 marginBottom:0 widthAdditional:0 tapSwitchAnimated:YES];
     self.tabBar.indicatorAnimationStyle = YPTabBarIndicatorAnimationStyle1;
     
-    [self setContentScrollEnabledAndTapSwitchAnimated:YES];
+    [self setContentScrollEnabled:YES tapSwitchAnimated:NO];
     
     [self.yp_tabItem setDoubleTapHandler:^{
         NSLog(@"双击效果");

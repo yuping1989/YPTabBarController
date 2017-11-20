@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initViewControllers];
+    
     
     CGFloat bottom = [self.parentViewController isKindOfClass:[UINavigationController class]] ? 0 : 50;
     
@@ -41,6 +41,8 @@
     [self.tabBar setItemSeparatorColor:[UIColor lightGrayColor] leading:0 trailing:0];
     
     self.tabBar.indicatorColor = [UIColor redColor];
+    
+    [self initViewControllers];
 }
 
 - (void)didReceiveMemoryWarning {

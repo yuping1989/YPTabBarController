@@ -42,7 +42,7 @@
     [self.tabBar setScrollEnabledAndItemFitTextWidthWithSpacing:40];
     
     
-    [self setContentScrollEnabledAndTapSwitchAnimated:NO];
+    [self setContentScrollEnabled:YES tapSwitchAnimated:NO];
     self.loadViewOfChildContollerWhileAppear = YES;
     
     [self initViewControllers];
@@ -80,7 +80,5 @@
     
     self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, controller5, controller6, controller7, nil];
 }
-
-
 
 @end

@@ -202,7 +202,6 @@ static NSString * const kContentOffset = @"contentOffset";
     }
     self.tabBar.frame = tabBarFrame;
     self.contentScrollView.frame = contentViewFrame;
-    [self updateContentViewsFrame];
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers {
@@ -237,7 +236,7 @@ static NSString * const kContentOffset = @"contentOffset";
     }
     
     // 更新scrollView的content size
-    if (self.contentScrollView.scrollEnabled) {
+    if (self.contentScrollEnabled) {
         self.contentScrollView.contentSize = CGSizeMake(self.contentScrollView.bounds.size.width * _viewControllers.count,
                                                         self.contentScrollView.bounds.size.height);
     }
@@ -245,12 +244,22 @@ static NSString * const kContentOffset = @"contentOffset";
 
 - (void)setContentScrollEnabledAndTapSwitchAnimated:(BOOL)switchAnimated {
     self.contentScrollView.scrollEnabled = YES;
+    self.contentScrollEnabled = YES;
     [self updateContentViewsFrame];
     self.contentSwitchAnimated = switchAnimated;
 }
 
+- (void)setContentScrollEnabled:(BOOL)enabled tapSwitchAnimated:(BOOL)animated {
+    if (!self.contentScrollEnabled && enabled) {
+        self.contentScrollEnabled = enabled;
+        [self updateContentViewsFrame];
+    }
+    self.contentScrollView.scrollEnabled = enabled;
+    self.contentSwitchAnimated = animated;
+}
+
 - (void)updateContentViewsFrame {
-    if (self.contentScrollView.scrollEnabled) {
+    if (self.contentScrollEnabled) {
         self.contentScrollView.contentSize = CGSizeMake(self.contentScrollView.bounds.size.width * self.viewControllers.count, self.contentScrollView.bounds.size.height);
         [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController * _Nonnull controller,
                                                            NSUInteger idx, BOOL * _Nonnull stop) {
@@ -377,7 +386,7 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
         }];
     }
     UIViewController *curController = self.viewControllers[index];
-    if (self.contentScrollView.scrollEnabled) {
+    if (self.contentScrollEnabled) {
         // contentView支持滚动
         if (!curController.isViewLoaded) {
             CGRect frame = [self frameForControllerAtIndex:index];

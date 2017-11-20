@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self initViewControllers];
+    
     
     self.interceptRightSlideGuetureInFirstPage = YES;
     
@@ -68,6 +68,8 @@
     [backButton setTitle:@"返回" forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
+    
+    [self initViewControllers];
 }
 
 - (void)didReceiveMemoryWarning {

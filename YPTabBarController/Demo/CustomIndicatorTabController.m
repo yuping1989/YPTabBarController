@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initViewControllers];
+    
     
     CGFloat bottom = [self.parentViewController isKindOfClass:[UINavigationController class]] ? 0 : 50;
     
@@ -43,11 +43,13 @@
     [self.tabBar setIndicatorWidthFixTextAndMarginTop:8 marginBottom:8 widthAdditional:20 tapSwitchAnimated:YES];
     self.tabBar.indicatorCornerRadius = 14;
     
-    [self setContentScrollEnabledAndTapSwitchAnimated:YES];
+    [self setContentScrollEnabled:YES tapSwitchAnimated:YES];
     
     [self.yp_tabItem setDoubleTapHandler:^{
         NSLog(@"双击效果");
     }];
+    
+    [self initViewControllers];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -68,6 +70,7 @@
     controller4.yp_tabItemTitle = @"第四个个";
     
     self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, nil];
+    
     
 }
 

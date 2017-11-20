@@ -199,7 +199,9 @@
     if (self.isVertical) {
         // 支持滚动
         CGFloat y = self.leadAndTrailSpace;
-        
+        if (!self.scrollView.scrollEnabled) {
+            self.itemHeight = ceilf((self.frame.size.height - self.leadAndTrailSpace * 2) / self.items.count);
+        }
         for (NSUInteger index = 0; index < self.items.count; index++) {
             YPTabItem *item = self.items[index];
             item.frame = CGRectMake(0, y, self.frame.size.width, self.itemHeight);
@@ -360,14 +362,19 @@
 
 - (void)setTabItemsVerticalLayout {
     self.isVertical = YES;
-    self.itemHeight = ceilf((self.frame.size.height - self.leadAndTrailSpace * 2) / self.items.count);
+    if (self.items.count == 0) {
+        return;
+    }
     [self updateAllUI];
 }
 
 - (void)setTabItemsVerticalLayoutWithItemHeight:(CGFloat)height {
+    self.isVertical = YES;
+    if (self.items.count == 0) {
+        return;
+    }
     self.scrollView.scrollEnabled = YES;
     self.itemHeight = height;
-    self.isVertical = YES;
     [self updateAllUI];
 }
 
