@@ -201,7 +201,7 @@ static NSString * const kContentOffset = @"contentOffset";
         return;
     }
     self.tabBar.frame = tabBarFrame;
-    self.contentScrollView.frame = contentViewFrame;
+    self.contentViewFrame = contentViewFrame;
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers {
