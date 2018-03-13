@@ -44,7 +44,7 @@
  *  在此属性仅在内容视图支持滑动时有效，它控制chile view controller未选中时，是否将其从父view上面移除
  *  默认为YES
  */
-@property(nonatomic, assign) BOOL removeViewOfChildContollerWhileDeselected;
+@property (nonatomic, assign) BOOL removeViewOfChildContollerWhileDeselected;
 
 /**
  *  鉴于有些项目集成了左侧或者右侧侧边栏，当内容视图支持滑动切换时，不能实现在第一页向右滑动和最后一页向左滑动呼出侧边栏的功能，

@@ -33,18 +33,18 @@ static NSString *const kContentOffset = @"contentOffset";
 
 @interface YPTabContentScrollView : UIScrollView
 
-@property(nonatomic, weak) id <YPTabContentScrollViewDelegate> yp_delegate;
+@property (nonatomic, weak) id <YPTabContentScrollViewDelegate> yp_delegate;
 
-@property(nonatomic, assign) BOOL interceptLeftSlideGuetureInLastPage;
-@property(nonatomic, assign) BOOL interceptRightSlideGuetureInFirstPage;
+@property (nonatomic, assign) BOOL interceptLeftSlideGuetureInLastPage;
+@property (nonatomic, assign) BOOL interceptRightSlideGuetureInFirstPage;
 
 @end
 
 @interface UIViewController (Private)
 
-@property(nonatomic, assign) BOOL hasBeenDisplayed;
+@property (nonatomic, assign) BOOL hasBeenDisplayed;
 
-@property(nonatomic, assign) BOOL hasAddedContentOffsetObserver;
+@property (nonatomic, assign) BOOL hasAddedContentOffsetObserver;
 
 @end
 
@@ -77,15 +77,15 @@ static NSString *const kContentOffset = @"contentOffset";
     CGFloat _currentScrollViewOffsetY;
 }
 
-@property(nonatomic, strong) YPTabContentScrollView *contentScrollView;
+@property (nonatomic, strong) YPTabContentScrollView *contentScrollView;
 
-@property(nonatomic, strong) UIView *headerView;
-@property(nonatomic, assign) CGFloat headerViewDefaultHeight;
-@property(nonatomic, assign) CGFloat tabBarStopOnTopHeight;
-@property(nonatomic, assign) BOOL headerViewNeedStretch;
+@property (nonatomic, strong) UIView *headerView;
+@property (nonatomic, assign) CGFloat headerViewDefaultHeight;
+@property (nonatomic, assign) CGFloat tabBarStopOnTopHeight;
+@property (nonatomic, assign) BOOL headerViewNeedStretch;
 
-@property(nonatomic, assign) BOOL contentScrollEnabled;
-@property(nonatomic, assign) BOOL contentSwitchAnimated;
+@property (nonatomic, assign) BOOL contentScrollEnabled;
+@property (nonatomic, assign) BOOL contentSwitchAnimated;
 
 @end
 
