@@ -124,6 +124,7 @@ static NSString *const kContentOffset = @"contentOffset";
     _contentScrollView.interceptLeftSlideGuetureInLastPage = self.interceptLeftSlideGuetureInLastPage;
 
     _loadViewOfChildContollerWhileAppear = NO;
+    _removeViewOfChildContollerWhileDeselected = YES;
     _defaultSelectedControllerIndex = 0;
 }
 
@@ -277,9 +278,9 @@ static NSString *const kContentOffset = @"contentOffset";
 
 - (CGRect)frameForControllerAtIndex:(NSUInteger)index {
     return CGRectMake(index * self.contentScrollView.bounds.size.width,
-            0,
-            self.contentScrollView.bounds.size.width,
-            self.contentScrollView.bounds.size.height);
+                      0,
+                      self.contentScrollView.bounds.size.width,
+                      self.contentScrollView.bounds.size.height);
 }
 
 - (void)setInterceptRightSlideGuetureInFirstPage:(BOOL)interceptRightSlideGuetureInFirstPage {
@@ -325,14 +326,14 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
     self.headerViewDefaultHeight = headerHeight;
 
     self.tabBar.frame = CGRectMake(0,
-            CGRectGetMaxY(self.headerView.frame),
-            self.view.frame.size.width,
-            tabBarHeight);
+                                   CGRectGetMaxY(self.headerView.frame),
+                                   self.view.frame.size.width,
+                                   tabBarHeight);
 
     self.contentScrollView.frame = CGRectMake(0,
-            0,
-            self.view.frame.size.width,
-            headerHeight + tabBarHeight + contentViewHeight);
+                                              0,
+                                              self.view.frame.size.width,
+                                              headerHeight + tabBarHeight + contentViewHeight);
 
     self.tabBarStopOnTopHeight = tabBarStopOnTopHeight;
 
