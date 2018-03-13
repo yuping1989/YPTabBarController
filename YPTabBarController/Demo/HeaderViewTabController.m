@@ -46,6 +46,7 @@
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.clipsToBounds = YES;
+    imageView.userInteractionEnabled = YES;
     
     CGFloat bottom = 0;
     if (screenSize.height == 812) {
@@ -54,6 +55,7 @@
     if ([self.parentViewController isKindOfClass:[YPTabBarController class]]) {
         bottom += 50;
     }
+    
     
     [self setHeaderView:imageView
             needStretch:YES
@@ -75,6 +77,8 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
+
 
 - (void)back {
     [self.navigationController popViewControllerAnimated:YES];
