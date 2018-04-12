@@ -140,13 +140,17 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
  */
 - (void)setScrollEnabledAndItemWidth:(CGFloat)width;
 
+- (void)setScrollEnabledAndItemFitTextWidthWithSpacing:(CGFloat)spacing;
+
 /**
  *  设置tabBar可以左右滑动，并且item的宽度根据标题的宽度来匹配
  *  此方法与setScrollEnabledAndItemWidth这个方法是两种模式，哪个后调用哪个生效
  *
- *  @param spacing  item的宽度 = 文字宽度 + spacing 
+ *  @param spacing item的宽度 = 文字宽度 + spacing
+ *  @param minWidth item的最小宽度
  */
-- (void)setScrollEnabledAndItemFitTextWidthWithSpacing:(CGFloat)spacing;
+- (void)setScrollEnabledAndItemFitTextWidthWithSpacing:(CGFloat)spacing
+                                              minWidth:(CGFloat)minWidth;
 
 /**
  *  将tabItem的image和title设置为居中，并且调整其在竖直方向的位置

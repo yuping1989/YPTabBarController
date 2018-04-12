@@ -40,6 +40,7 @@
 // item的宽度
 @property (nonatomic, assign) CGFloat itemWidth;
 @property (nonatomic, assign) CGFloat itemHeight;
+@property (nonatomic, assign) CGFloat itemMinWidth;
 
 // item的内容水平居中时，image与顶部的距离
 @property (nonatomic, assign) CGFloat itemContentHorizontalCenterVerticalOffset;
@@ -222,7 +223,7 @@
                 }
                 // item的宽度为根据字体大小和spacing进行适配
                 if (self.itemFitTextWidth) {
-                    width = item.titleWidth + self.itemFitTextWidthSpacing;
+                    width = MAX(item.titleWidth + self.itemFitTextWidthSpacing, self.itemMinWidth);
                 }
                 item.frame = CGRectMake(x, 0, width, self.frame.size.height);
                 item.index = index;
@@ -349,14 +350,21 @@
     self.itemWidth = width;
     self.itemFitTextWidth = NO;
     self.itemFitTextWidthSpacing = 0;
+    self.itemMinWidth = 0;
     [self updateItemsFrame];
 }
 
 - (void)setScrollEnabledAndItemFitTextWidthWithSpacing:(CGFloat)spacing {
+    [self setScrollEnabledAndItemFitTextWidthWithSpacing:spacing minWidth:0];
+}
+
+- (void)setScrollEnabledAndItemFitTextWidthWithSpacing:(CGFloat)spacing
+                                              minWidth:(CGFloat)minWidth {
     self.scrollView.scrollEnabled = YES;
     self.itemFitTextWidth = YES;
     self.itemFitTextWidthSpacing = spacing;
     self.itemWidth = 0;
+    self.itemMinWidth = minWidth;
     [self updateItemsFrame];
 }
 
