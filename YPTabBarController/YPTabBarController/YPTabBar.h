@@ -59,7 +59,8 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 @property (nonatomic, strong) UIColor *badgeTitleColor;             // Badge标题颜色
 @property (nonatomic, strong) UIFont  *badgeTitleFont;              // Badge标题字体
 
-@property (nonatomic, assign) CGFloat leadAndTrailSpace;          // TabBar边缘与第一个和最后一个item的距离
+@property (nonatomic, assign) CGFloat leadingSpace;                 // 第一个item与左边或者上边的距离
+@property (nonatomic, assign) CGFloat trailingSpace;                // 最后一个item与右边或者下边的距离
 
 @property (nonatomic, assign) NSUInteger selectedItemIndex;          // 选中某一个item
 
@@ -96,7 +97,7 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 - (void)setTitles:(NSArray <NSString *> *)titles;
 
 /**
- *  设置tabBar为竖向且支持滚动，tabItem的高度根据tabBar高度和leadAndTrailSpace属性计算
+ *  设置tabBar为竖向且支持滚动，tabItem的高度根据tabBar高度和leadingSpace、trailingSpace属性计算
  *  一旦调用此方法，所有跟横向相关的效果将失效，例如内容视图滚动，指示器切换动画等
  */
 - (void)setTabItemsVerticalLayout;
@@ -121,16 +122,29 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 /**
  *  设置指示器的宽度根据title宽度来匹配
  *  此方法与setIndicatorInsets方法互斥，后调用者生效
-
+ 
  *  @param top 指示器与tabItem顶部的距离
  *  @param bottom 指示器与tabItem底部的距离
  *  @param additional 指示器与文字宽度匹配后额外增加或减少的长度，0表示相等，正数表示较长，负数表示较短
  *  @param animated 点击item进行背景切换的时候，是否支持动画
  */
-- (void)setIndicatorWidthFixTextAndMarginTop:(CGFloat)top
+- (void)setIndicatorWidthFitTextAndMarginTop:(CGFloat)top
                                 marginBottom:(CGFloat)bottom
                              widthAdditional:(CGFloat)additional
                            tapSwitchAnimated:(BOOL)animated;
+/**
+ *  设置指示器固定宽度
+ 
+ *  @param width 指示器宽度，如果kua
+ *  @param top 指示器与tabItem顶部的距离
+ *  @param bottom 指示器与tabItem底部的距离
+ *  @param animated 点击item进行背景切换的时候，是否支持动画
+ */
+- (void)setIndicatorWidth:(CGFloat)width
+                marginTop:(CGFloat)top
+             marginBottom:(CGFloat)bottom
+        tapSwitchAnimated:(BOOL)animated;
+
 
 /**
  *  设置tabBar可以左右滑动
@@ -223,3 +237,5 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 - (void)updateSubViewsWhenParentScrollViewScroll:(UIScrollView *)scrollView;
 
 @end
+
+

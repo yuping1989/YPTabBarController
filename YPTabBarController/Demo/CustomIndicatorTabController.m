@@ -40,7 +40,7 @@
     self.tabBar.itemColorChangeFollowContentScroll = YES;
     
     self.tabBar.indicatorColor = [UIColor redColor];
-    [self.tabBar setIndicatorWidthFixTextAndMarginTop:8 marginBottom:8 widthAdditional:20 tapSwitchAnimated:YES];
+    [self.tabBar setIndicatorWidthFitTextAndMarginTop:8 marginBottom:8 widthAdditional:20 tapSwitchAnimated:YES];
     self.tabBar.indicatorCornerRadius = 14;
     
     [self setContentScrollEnabled:YES tapSwitchAnimated:YES];

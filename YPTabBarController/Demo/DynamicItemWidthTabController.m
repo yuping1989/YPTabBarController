@@ -32,13 +32,17 @@
     self.tabBar.itemTitleSelectedColor = [UIColor redColor];
     self.tabBar.itemTitleFont = [UIFont systemFontOfSize:17];
     self.tabBar.itemTitleSelectedFont = [UIFont systemFontOfSize:22];
-    self.tabBar.leadAndTrailSpace = 20;
+    self.tabBar.leadingSpace = 20;
+    self.tabBar.trailingSpace = 20;
     
     self.tabBar.itemFontChangeFollowContentScroll = YES;
     self.tabBar.indicatorScrollFollowContent = YES;
     self.tabBar.indicatorColor = [UIColor redColor];
     
-    [self.tabBar setIndicatorInsets:UIEdgeInsetsMake(40, 15, 0, 15) tapSwitchAnimated:NO];
+//    [self.tabBar setIndicatorInsets:UIEdgeInsetsMake(40, 15, 0, 15) tapSwitchAnimated:NO];
+    [self.tabBar setIndicatorWidth:30 marginTop:40 marginBottom:0 tapSwitchAnimated:NO];
+    
+    
     [self.tabBar setScrollEnabledAndItemFitTextWidthWithSpacing:40];
     
     

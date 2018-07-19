@@ -587,6 +587,16 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
 
 @implementation YPTabContentScrollView
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    UIView *view = [super hitTest:point withEvent:event];
+    if ([view isKindOfClass:[UISlider class]]) {
+        self.scrollEnabled = NO;
+    } else {
+        self.scrollEnabled = YES;
+    }
+    return view;
+}
+
 /**
  *  重写此方法，在需要的时候，拦截UIPanGestureRecognizer
  */

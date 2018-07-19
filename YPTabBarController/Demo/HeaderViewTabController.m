@@ -58,7 +58,7 @@
     
     
     [self setHeaderView:imageView
-            needStretch:YES
+            needStretch:NO
            headerHeight:250
            tabBarHeight:44
       contentViewHeight:screenSize.height - 250 - 44 - bottom

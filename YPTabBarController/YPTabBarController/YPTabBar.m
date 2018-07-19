@@ -8,6 +8,12 @@
 
 #import "YPTabBar.h"
 
+typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
+    YPTabBarIndicatorStyleFitTitle,
+    YPTabBarIndicatorStyleFixedWidth,
+    YPTabBarIndicatorStyleFitItem,
+};
+
 #define BADGE_BG_COLOR_DEFAULT [UIColor colorWithRed:252 / 255.0f green:15 / 255.0f blue:29 / 255.0f alpha:1.0f]
 
 @interface YPTabBar () {
@@ -25,8 +31,9 @@
 
 // 选中背景相对于YPTabItem的insets
 @property (nonatomic, assign) UIEdgeInsets indicatorInsets;
-@property (nonatomic, assign) BOOL indicatorWidthFixTitle;
+@property (nonatomic, assign) YPTabBarIndicatorStyle indicatorStyle;
 @property (nonatomic, assign) CGFloat indicatorWidthFixTitleAdditional;
+@property (nonatomic, assign) CGFloat indicatorWidth;
 
 // TabItem选中切换时，是否显示动画
 @property (nonatomic, assign) BOOL indicatorSwitchAnimated;
@@ -180,8 +187,13 @@
     self.items = items;
 }
 
-- (void)setLeadAndTrailSpace:(CGFloat)leadAndTrailSpace {
-    _leadAndTrailSpace = leadAndTrailSpace;
+- (void)setLeadingSpace:(CGFloat)leadingSpace {
+    _leadingSpace = leadingSpace;
+    [self updateAllUI];
+}
+
+- (void)setTrailingSpace:(CGFloat)trailingSpace {
+    _trailingSpace = trailingSpace;
     [self updateAllUI];
 }
 
@@ -199,9 +211,9 @@
     
     if (self.isVertical) {
         // 支持滚动
-        CGFloat y = self.leadAndTrailSpace;
+        CGFloat y = self.leadingSpace;
         if (!self.scrollView.scrollEnabled) {
-            self.itemHeight = ceilf((self.frame.size.height - self.leadAndTrailSpace * 2) / self.items.count);
+            self.itemHeight = ceilf((self.frame.size.height - self.leadingSpace - self.trailingSpace) / self.items.count);
         }
         for (NSUInteger index = 0; index < self.items.count; index++) {
             YPTabItem *item = self.items[index];
@@ -209,11 +221,11 @@
             item.index = index;
             y += self.itemHeight;
         }
-        self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, MAX(y + self.leadAndTrailSpace, self.scrollView.frame.size.height));
+        self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, MAX(y + self.trailingSpace, self.scrollView.frame.size.height));
     } else {
         if (self.scrollView.scrollEnabled) {
             // 支持滚动
-            CGFloat x = self.leadAndTrailSpace;
+            CGFloat x = self.leadingSpace;
             for (NSUInteger index = 0; index < self.items.count; index++) {
                 YPTabItem *item = self.items[index];
                 CGFloat width = 0;
@@ -229,13 +241,13 @@
                 item.index = index;
                 x += width;
             }
-            self.scrollView.contentSize = CGSizeMake(MAX(x + self.leadAndTrailSpace, self.scrollView.frame.size.width),
+            self.scrollView.contentSize = CGSizeMake(MAX(x + self.trailingSpace, self.scrollView.frame.size.width),
                                                      self.scrollView.frame.size.height);
         } else {
             // 不支持滚动
             
-            CGFloat x = self.leadAndTrailSpace;
-            CGFloat allItemsWidth = self.frame.size.width - self.leadAndTrailSpace * 2;
+            CGFloat x = self.leadingSpace;
+            CGFloat allItemsWidth = self.frame.size.width - self.leadingSpace - self.trailingSpace;
             if (self.specialItem && self.specialItem.frame.size.width != 0) {
                 self.itemWidth = (allItemsWidth - self.specialItem.frame.size.width) / self.items.count;
             } else {
@@ -464,7 +476,7 @@
 
 - (void)setIndicatorInsets:(UIEdgeInsets)insets
          tapSwitchAnimated:(BOOL)animated {
-    self.indicatorWidthFixTitle = NO;
+    self.indicatorStyle = YPTabBarIndicatorStyleFitItem;
     self.indicatorSwitchAnimated = animated;
     self.indicatorInsets = insets;
     
@@ -472,11 +484,11 @@
     [self updateIndicatorFrameWithIndex:self.selectedItemIndex];
 }
 
-- (void)setIndicatorWidthFixTextAndMarginTop:(CGFloat)top
+- (void)setIndicatorWidthFitTextAndMarginTop:(CGFloat)top
                                 marginBottom:(CGFloat)bottom
                              widthAdditional:(CGFloat)additional
                            tapSwitchAnimated:(BOOL)animated {
-    self.indicatorWidthFixTitle = YES;
+    self.indicatorStyle = YPTabBarIndicatorStyleFitTitle;
     self.indicatorSwitchAnimated = animated;
     self.indicatorInsets = UIEdgeInsetsMake(top, 0, bottom, 0);
     self.indicatorWidthFixTitleAdditional = additional;
@@ -485,16 +497,38 @@
     [self updateIndicatorFrameWithIndex:self.selectedItemIndex];
 }
 
+- (void)setIndicatorWidth:(CGFloat)width
+                marginTop:(CGFloat)top
+             marginBottom:(CGFloat)bottom
+        tapSwitchAnimated:(BOOL)animated {
+    self.indicatorStyle = YPTabBarIndicatorStyleFixedWidth;
+    self.indicatorSwitchAnimated = animated;
+    self.indicatorInsets = UIEdgeInsetsMake(top, 0, bottom, 0);
+    self.indicatorWidth = width;
+    
+    [self updateItemIndicatorInsets];
+    [self updateIndicatorFrameWithIndex:self.selectedItemIndex];
+}
+
 - (void)updateItemIndicatorInsets {
     for (YPTabItem *item in self.items) {
-        if (self.indicatorWidthFixTitle) {
+        if (self.indicatorStyle == YPTabBarIndicatorStyleFitTitle) {
             CGRect frame = item.frameWithOutTransform;
             CGFloat space = (frame.size.width - item.titleWidth - self.indicatorWidthFixTitleAdditional) / 2;
             item.indicatorInsets = UIEdgeInsetsMake(self.indicatorInsets.top,
                                                     space,
                                                     self.indicatorInsets.bottom,
                                                     space);
-        } else {
+        } else if (self.indicatorStyle == YPTabBarIndicatorStyleFixedWidth) {
+            for (YPTabItem *item in self.items) {
+                CGRect frame = item.frameWithOutTransform;
+                CGFloat space = (frame.size.width - self.indicatorWidth) / 2;
+                item.indicatorInsets = UIEdgeInsetsMake(self.indicatorInsets.top,
+                                                        space,
+                                                        self.indicatorInsets.bottom,
+                                                        space);
+            }
+        } else if (self.indicatorStyle == YPTabBarIndicatorStyleFitItem) {
             for (YPTabItem *item in self.items) {
                 item.indicatorInsets = self.indicatorInsets;
             }

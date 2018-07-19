@@ -35,7 +35,7 @@
     self.tabBar.itemTitleFont = [UIFont systemFontOfSize:17];
     self.tabBar.itemTitleSelectedFont = [UIFont systemFontOfSize:22];
     
-    self.tabBar.leadAndTrailSpace = 200;
+    self.tabBar.leadingSpace = 200;
     
     [self.tabBar setTabItemsVerticalLayout];
     [self.tabBar setItemSeparatorColor:[UIColor lightGrayColor] leading:0 trailing:0];
