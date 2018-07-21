@@ -467,7 +467,9 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
             insets.top = self.headerViewDefaultHeight + self.tabBar.frame.size.height;
             curScrollView.contentInset = insets;
             curScrollView.scrollIndicatorInsets = insets;
-            curScrollView.minContentSizeHeight = self.contentScrollView.frame.size.height - self.tabBar.frame.size.height - self.tabBarStopOnTopHeight;
+            if (![curController yp_disableMinContentHeight]) {
+                curScrollView.minContentSizeHeight = self.contentScrollView.frame.size.height - self.tabBar.frame.size.height - self.tabBarStopOnTopHeight;
+            }
 
             if (oldController && oldController.hasAddedContentOffsetObserver) {
                 // 移除oldController的yp_displayView注册的观察者
@@ -566,13 +568,15 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
             [self.contentScrollView addSubview:controller.yp_displayView];
 
             if (self.headerView) {
-                UIScrollView *scrollView = (UIScrollView *) controller.yp_displayView;
+                UIScrollView *scrollView = (UIScrollView *)controller.yp_displayView;
                 // 如果有headerView，需要更新contentOffset
                 UIEdgeInsets insets = scrollView.contentInset;
                 insets.top = self.headerViewDefaultHeight + self.tabBar.frame.size.height;
                 scrollView.contentInset = insets;
                 scrollView.scrollIndicatorInsets = insets;
-                scrollView.minContentSizeHeight = self.contentScrollView.frame.size.height - self.tabBar.frame.size.height - self.tabBarStopOnTopHeight;
+                if (![controller yp_disableMinContentHeight]) {
+                    scrollView.minContentSizeHeight = self.contentScrollView.frame.size.height - self.tabBar.frame.size.height - self.tabBarStopOnTopHeight;
+                }
                 [self updateContentOffsetOfDisplayScrollView:scrollView];
             }
         }

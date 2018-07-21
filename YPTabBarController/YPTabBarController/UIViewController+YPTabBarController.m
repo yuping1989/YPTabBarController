@@ -74,4 +74,8 @@
     return self.view;
 }
 
+- (BOOL)yp_disableMinContentHeight {
+    return NO;
+}
+
 @end

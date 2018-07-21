@@ -32,7 +32,16 @@
  */
 - (void)yp_tabItemDidDeselected;
 
+/**
+ *  返回用于显示的View，默认是self.view
+ *  当设置headerView的时候，需要把scrollView或者tableView返回
+ */
 - (UIView *)yp_displayView;
+
+/**
+ *  返回是否开启最小ContentHeight
+ */
+- (BOOL)yp_disableMinContentHeight;
 
 /**
  *  废弃，用yp_tabItemDidSelected:替换
