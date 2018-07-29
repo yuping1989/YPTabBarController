@@ -104,7 +104,6 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
     return objc_getAssociatedObject(self, _cmd);
 }
 
-
 @end
 
 
@@ -319,11 +318,13 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
     
     UIViewController *vc = [self contarinerViewController];
     vc.automaticallyAdjustsScrollViewInsets = NO;
+    __weak UIViewController *weakVC = vc;
     vc.yp_willAppearInjectBlock = ^(UIViewController *viewController, BOOL animated) {
+        __strong UIViewController *strongVC = weakVC;
         self.selectedTabIndex = self.defaultSelectedTabIndex;
         _isDefaultSelectedTabIndexSetuped = YES;
+        strongVC.yp_willAppearInjectBlock = nil;
     };
-    
 }
 
 #pragma mark - HeaderView
