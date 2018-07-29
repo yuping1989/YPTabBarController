@@ -6,14 +6,14 @@
 //  Copyright © 2017年 YPTabBarController. All rights reserved.
 //
 
-#import "UIViewController+YPTabBarController.h"
+#import "UIViewController+YPTab.h"
 #import <objc/runtime.h>
 #import "YPTabItem.h"
 #import "YPTabBarController.h"
 
-#pragma mark - UIViewController (YPTabBarController)
+#pragma mark - UIViewController (YPTab)
 
-@implementation UIViewController (YPTabBarController)
+@implementation UIViewController (YPTab)
 
 - (NSString *)yp_tabItemTitle {
     return objc_getAssociatedObject(self, _cmd);

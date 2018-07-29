@@ -1,5 +1,5 @@
 //
-//  UIScrollView+YPTabBarController.h
+//  UIScrollView+YPTab.h
 //  YPTabBarController
 //
 //  Created by 喻平 on 2017/11/15.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIScrollView (YPTabBarController)
+@interface UIScrollView (YPTab)
 
 @property (nonatomic, assign) CGFloat minContentSizeHeight;
 

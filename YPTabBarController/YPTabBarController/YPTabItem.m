@@ -133,6 +133,9 @@
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
     _frameWithOutTransform = frame;
+    if (CGRectEqualToRect(frame, CGRectZero)) {
+        return;
+    }
     if (self.doubleTapView) {
         self.doubleTapView.frame = self.bounds;
     }

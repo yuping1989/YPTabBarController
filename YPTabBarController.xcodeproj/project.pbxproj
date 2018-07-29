@@ -8,14 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		7E07EE481F7F41D200473930 /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E07EE471F7F41CA00473930 /* UINavigationController+FDFullscreenPopGesture.m */; };
-		7E2107351F70BA99002586C5 /* UIViewController+YPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2107341F70BA99002586C5 /* UIViewController+YPTabBarController.m */; };
+		7E2107351F70BA99002586C5 /* UIViewController+YPTab.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2107341F70BA99002586C5 /* UIViewController+YPTab.m */; };
 		7E2107911F78FECC002586C5 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E21078F1F78FECC002586C5 /* TableViewController.m */; };
 		7E2107951F78FF68002586C5 /* HeaderViewTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2107941F78FF68002586C5 /* HeaderViewTabController.m */; };
 		7E2107991F7B40F9002586C5 /* image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7E2107981F7B40F9002586C5 /* image.jpg */; };
 		7E390FF61FB2A5130058362D /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E390FF51FB2A5130058362D /* RootViewController.m */; };
 		7E390FF91FB2B09B0058362D /* CustomIndicatorTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E390FF71FB2B09A0058362D /* CustomIndicatorTabController.m */; };
 		7E390FFC1FB2D0FC0058362D /* VerticalTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E390FFB1FB2D0FC0058362D /* VerticalTabController.m */; };
-		7E3DA80D1FBC68D3008A2C4E /* UIScrollView+YPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3DA80C1FBC68D3008A2C4E /* UIScrollView+YPTabBarController.m */; };
+		7E3DA80D1FBC68D3008A2C4E /* UIScrollView+YPTab.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3DA80C1FBC68D3008A2C4E /* UIScrollView+YPTab.m */; };
+		7E5A31C1210C3A7300F339D2 /* YPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5A31C0210C3A7300F339D2 /* YPTabBarController.m */; };
 		F06335ED1CF59A51009D65D2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335D01CF59A51009D65D2 /* AppDelegate.m */; };
 		F06335EE1CF59A51009D65D2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F06335D11CF59A51009D65D2 /* LaunchScreen.xib */; };
 		F06335EF1CF59A51009D65D2 /* DynamicItemWidthTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335D41CF59A51009D65D2 /* DynamicItemWidthTabController.m */; };
@@ -38,7 +39,7 @@
 		F0E32FBB1CF5B4A6001A1A34 /* FixedItemWidthTab.gif in Resources */ = {isa = PBXBuildFile; fileRef = F0E32FB91CF5B4A6001A1A34 /* FixedItemWidthTab.gif */; };
 		F0E32FBC1CF5B4A6001A1A34 /* SegmentTab.gif in Resources */ = {isa = PBXBuildFile; fileRef = F0E32FBA1CF5B4A6001A1A34 /* SegmentTab.gif */; };
 		F0ECF25B1B79D5EF006DF335 /* YPTabBarControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF25A1B79D5EF006DF335 /* YPTabBarControllerTests.m */; };
-		F0ECF2671B79D7BE006DF335 /* YPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF2661B79D7BE006DF335 /* YPTabBarController.m */; };
+		F0ECF2671B79D7BE006DF335 /* YPTabContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF2661B79D7BE006DF335 /* YPTabContentView.m */; };
 		F0ECF26A1B79D7CE006DF335 /* YPTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF2691B79D7CE006DF335 /* YPTabBar.m */; };
 		F0ECF26D1B79D7DA006DF335 /* YPTabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ECF26C1B79D7DA006DF335 /* YPTabItem.m */; };
 		F0ECF26F1B79E277006DF335 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0ECF26E1B79E277006DF335 /* UIKit.framework */; };
@@ -57,8 +58,8 @@
 /* Begin PBXFileReference section */
 		7E07EE461F7F41CA00473930 /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
 		7E07EE471F7F41CA00473930 /* UINavigationController+FDFullscreenPopGesture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FDFullscreenPopGesture.m"; sourceTree = "<group>"; };
-		7E2107331F70BA99002586C5 /* UIViewController+YPTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+YPTabBarController.h"; sourceTree = "<group>"; };
-		7E2107341F70BA99002586C5 /* UIViewController+YPTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+YPTabBarController.m"; sourceTree = "<group>"; };
+		7E2107331F70BA99002586C5 /* UIViewController+YPTab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+YPTab.h"; sourceTree = "<group>"; };
+		7E2107341F70BA99002586C5 /* UIViewController+YPTab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+YPTab.m"; sourceTree = "<group>"; };
 		7E21078E1F78FECC002586C5 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
 		7E21078F1F78FECC002586C5 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		7E2107931F78FF68002586C5 /* HeaderViewTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderViewTabController.h; sourceTree = "<group>"; };
@@ -70,8 +71,10 @@
 		7E390FF81FB2B09B0058362D /* CustomIndicatorTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIndicatorTabController.h; sourceTree = "<group>"; };
 		7E390FFA1FB2D0FC0058362D /* VerticalTabController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VerticalTabController.h; sourceTree = "<group>"; };
 		7E390FFB1FB2D0FC0058362D /* VerticalTabController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VerticalTabController.m; sourceTree = "<group>"; };
-		7E3DA80B1FBC68D3008A2C4E /* UIScrollView+YPTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+YPTabBarController.h"; sourceTree = "<group>"; };
-		7E3DA80C1FBC68D3008A2C4E /* UIScrollView+YPTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+YPTabBarController.m"; sourceTree = "<group>"; };
+		7E3DA80B1FBC68D3008A2C4E /* UIScrollView+YPTab.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+YPTab.h"; sourceTree = "<group>"; };
+		7E3DA80C1FBC68D3008A2C4E /* UIScrollView+YPTab.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+YPTab.m"; sourceTree = "<group>"; };
+		7E5A31BF210C3A7300F339D2 /* YPTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YPTabBarController.h; sourceTree = "<group>"; };
+		7E5A31C0210C3A7300F339D2 /* YPTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YPTabBarController.m; sourceTree = "<group>"; };
 		F06335CF1CF59A51009D65D2 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F06335D01CF59A51009D65D2 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		F06335D21CF59A51009D65D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -105,8 +108,8 @@
 		F0ECF2541B79D5EF006DF335 /* YPTabBarControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YPTabBarControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0ECF2591B79D5EF006DF335 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F0ECF25A1B79D5EF006DF335 /* YPTabBarControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YPTabBarControllerTests.m; sourceTree = "<group>"; };
-		F0ECF2651B79D7BE006DF335 /* YPTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPTabBarController.h; sourceTree = "<group>"; };
-		F0ECF2661B79D7BE006DF335 /* YPTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPTabBarController.m; sourceTree = "<group>"; };
+		F0ECF2651B79D7BE006DF335 /* YPTabContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPTabContentView.h; sourceTree = "<group>"; };
+		F0ECF2661B79D7BE006DF335 /* YPTabContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPTabContentView.m; sourceTree = "<group>"; };
 		F0ECF2681B79D7CE006DF335 /* YPTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPTabBar.h; sourceTree = "<group>"; };
 		F0ECF2691B79D7CE006DF335 /* YPTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPTabBar.m; sourceTree = "<group>"; };
 		F0ECF26B1B79D7DA006DF335 /* YPTabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPTabItem.h; sourceTree = "<group>"; };
@@ -238,16 +241,18 @@
 		F0ECF2641B79D782006DF335 /* YPTabBarController */ = {
 			isa = PBXGroup;
 			children = (
-				F0ECF2651B79D7BE006DF335 /* YPTabBarController.h */,
-				F0ECF2661B79D7BE006DF335 /* YPTabBarController.m */,
+				7E5A31BF210C3A7300F339D2 /* YPTabBarController.h */,
+				7E5A31C0210C3A7300F339D2 /* YPTabBarController.m */,
+				F0ECF2651B79D7BE006DF335 /* YPTabContentView.h */,
+				F0ECF2661B79D7BE006DF335 /* YPTabContentView.m */,
 				F0ECF2681B79D7CE006DF335 /* YPTabBar.h */,
 				F0ECF2691B79D7CE006DF335 /* YPTabBar.m */,
 				F0ECF26B1B79D7DA006DF335 /* YPTabItem.h */,
 				F0ECF26C1B79D7DA006DF335 /* YPTabItem.m */,
-				7E2107331F70BA99002586C5 /* UIViewController+YPTabBarController.h */,
-				7E2107341F70BA99002586C5 /* UIViewController+YPTabBarController.m */,
-				7E3DA80B1FBC68D3008A2C4E /* UIScrollView+YPTabBarController.h */,
-				7E3DA80C1FBC68D3008A2C4E /* UIScrollView+YPTabBarController.m */,
+				7E2107331F70BA99002586C5 /* UIViewController+YPTab.h */,
+				7E2107341F70BA99002586C5 /* UIViewController+YPTab.m */,
+				7E3DA80B1FBC68D3008A2C4E /* UIScrollView+YPTab.h */,
+				7E3DA80C1FBC68D3008A2C4E /* UIScrollView+YPTab.m */,
 			);
 			path = YPTabBarController;
 			sourceTree = "<group>";
@@ -371,7 +376,7 @@
 				7E2107951F78FF68002586C5 /* HeaderViewTabController.m in Sources */,
 				F06335FC1CF59A51009D65D2 /* IndicatorFollowTitleTabController.m in Sources */,
 				F06335ED1CF59A51009D65D2 /* AppDelegate.m in Sources */,
-				F0ECF2671B79D7BE006DF335 /* YPTabBarController.m in Sources */,
+				F0ECF2671B79D7BE006DF335 /* YPTabContentView.m in Sources */,
 				F0ECF26D1B79D7DA006DF335 /* YPTabItem.m in Sources */,
 				7E390FFC1FB2D0FC0058362D /* VerticalTabController.m in Sources */,
 				F06335FD1CF59A51009D65D2 /* ViewController.m in Sources */,
@@ -379,8 +384,9 @@
 				7E2107911F78FECC002586C5 /* TableViewController.m in Sources */,
 				F06335EF1CF59A51009D65D2 /* DynamicItemWidthTabController.m in Sources */,
 				F06335F41CF59A51009D65D2 /* MultilTabController.m in Sources */,
-				7E2107351F70BA99002586C5 /* UIViewController+YPTabBarController.m in Sources */,
-				7E3DA80D1FBC68D3008A2C4E /* UIScrollView+YPTabBarController.m in Sources */,
+				7E5A31C1210C3A7300F339D2 /* YPTabBarController.m in Sources */,
+				7E2107351F70BA99002586C5 /* UIViewController+YPTab.m in Sources */,
+				7E3DA80D1FBC68D3008A2C4E /* UIScrollView+YPTab.m in Sources */,
 				F06335F31CF59A51009D65D2 /* main.m in Sources */,
 				F0ECF26A1B79D7CE006DF335 /* YPTabBar.m in Sources */,
 			);

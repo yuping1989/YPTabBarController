@@ -9,9 +9,9 @@
 #import "YPTabBar.h"
 
 typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
+    YPTabBarIndicatorStyleFitItem,
     YPTabBarIndicatorStyleFitTitle,
     YPTabBarIndicatorStyleFixedWidth,
-    YPTabBarIndicatorStyleFitItem,
 };
 
 #define BADGE_BG_COLOR_DEFAULT [UIColor colorWithRed:252 / 255.0f green:15 / 255.0f blue:29 / 255.0f alpha:1.0f]
@@ -135,9 +135,12 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
 }
 
 - (void)setFrame:(CGRect)frame {
+    BOOL resize = !CGSizeEqualToSize(frame.size, self.frame.size);
     [super setFrame:frame];
-    self.scrollView.frame = self.bounds;
-    [self updateAllUI];
+    if (resize) {
+        self.scrollView.frame = self.bounds;
+        [self updateAllUI];
+    }
 }
 
 - (void)setItems:(NSArray *)items {
@@ -380,7 +383,7 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
     [self updateItemsFrame];
 }
 
-- (void)setTabItemsVerticalLayout {
+- (void)layoutTabItemsVertical {
     self.isVertical = YES;
     if (self.items.count == 0) {
         return;
@@ -388,7 +391,7 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
     [self updateAllUI];
 }
 
-- (void)setTabItemsVerticalLayoutWithItemHeight:(CGFloat)height {
+- (void)layoutTabItemsVerticalWithItemHeight:(CGFloat)height {
     self.isVertical = YES;
     if (self.items.count == 0) {
         return;

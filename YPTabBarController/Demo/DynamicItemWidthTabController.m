@@ -15,7 +15,10 @@
 @implementation DynamicItemWidthTabController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
+    
+    
     CGFloat bottom = [self.parentViewController isKindOfClass:[UINavigationController class]] ? 0 : 50;
 
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
@@ -39,15 +42,13 @@
     self.tabBar.indicatorScrollFollowContent = YES;
     self.tabBar.indicatorColor = [UIColor redColor];
     
-//    [self.tabBar setIndicatorInsets:UIEdgeInsetsMake(40, 15, 0, 15) tapSwitchAnimated:NO];
-    [self.tabBar setIndicatorWidth:30 marginTop:40 marginBottom:0 tapSwitchAnimated:NO];
-    
+    [self.tabBar setIndicatorWidth:40 marginTop:40 marginBottom:0 tapSwitchAnimated:NO];
     
     [self.tabBar setScrollEnabledAndItemFitTextWidthWithSpacing:40];
     
     
-    [self setContentScrollEnabled:YES tapSwitchAnimated:NO];
-    self.loadViewOfChildContollerWhileAppear = YES;
+    [self.tabContentView setContentScrollEnabled:YES tapSwitchAnimated:NO];
+    self.tabContentView.loadViewOfChildContollerWhileAppear = YES;
     
     [self initViewControllers];
 }

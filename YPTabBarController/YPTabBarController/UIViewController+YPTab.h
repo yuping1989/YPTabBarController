@@ -1,5 +1,5 @@
 //
-//  UIViewController+YPTabBarController.h
+//  UIViewController+YPTab.h
 //  YPTabBarController
 //
 //  Created by 喻平 on 2017/9/19.
@@ -11,7 +11,7 @@
 @class YPTabItem;
 @class YPTabBarController;
 
-@interface UIViewController (YPTabBarController)
+@interface UIViewController (YPTab)
 
 @property (nonatomic, strong, readonly) YPTabItem *yp_tabItem;
 @property (nonatomic, strong, readonly) YPTabBarController *yp_tabBarController;

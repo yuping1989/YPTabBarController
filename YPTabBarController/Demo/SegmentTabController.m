@@ -22,8 +22,6 @@
     
     CGFloat bottom = [self.parentViewController isKindOfClass:[UINavigationController class]] ? 0 : 50;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    [self setTabBarFrame:CGRectMake(30, 27, screenSize.width - 60, 30)
-        contentViewFrame:CGRectMake(0, 64, screenSize.width, screenSize.height - 64 - 50)];
     
     if (screenSize.height == 812) {
         [self setTabBarFrame:CGRectMake(30, 51, screenSize.width - 60, 30)
@@ -61,6 +59,8 @@
     [self.tabBar setDotBadgeMarginTop:5
                     centerMarginRight:15
                            sideLength:8];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {

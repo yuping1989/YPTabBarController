@@ -100,7 +100,7 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
  *  设置tabBar为竖向且支持滚动，tabItem的高度根据tabBar高度和leadingSpace、trailingSpace属性计算
  *  一旦调用此方法，所有跟横向相关的效果将失效，例如内容视图滚动，指示器切换动画等
  */
-- (void)setTabItemsVerticalLayout;
+- (void)layoutTabItemsVertical;
 
 /**
  *  设置tabBar为竖向且支持滚动，一旦调用此方法，所有跟横向相关的效果将失效，例如内容视图滚动，指示器切换动画等
@@ -108,7 +108,7 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
  *
  *  @param height 单个tabItem的高度
  */
-- (void)setTabItemsVerticalLayoutWithItemHeight:(CGFloat)height;
+- (void)layoutTabItemsVerticalWithItemHeight:(CGFloat)height;
 
 /**
  *  设置tabItem的选中背景，这个背景可以是一个横条。

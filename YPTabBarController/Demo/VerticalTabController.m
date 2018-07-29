@@ -35,9 +35,10 @@
     self.tabBar.itemTitleFont = [UIFont systemFontOfSize:17];
     self.tabBar.itemTitleSelectedFont = [UIFont systemFontOfSize:22];
     
-    self.tabBar.leadingSpace = 200;
+    self.tabBar.leadingSpace = 100;
+    self.tabBar.trailingSpace = 100;
     
-    [self.tabBar setTabItemsVerticalLayout];
+    [self.tabBar layoutTabItemsVertical];
     [self.tabBar setItemSeparatorColor:[UIColor lightGrayColor] leading:0 trailing:0];
     
     self.tabBar.indicatorColor = [UIColor redColor];

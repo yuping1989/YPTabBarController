@@ -15,6 +15,8 @@
 #import "HeaderViewTabController.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
 
+static const CGFloat kTabBarHeight = 50;
+
 @interface MultilTabController ()
 
 @end
@@ -48,11 +50,40 @@
     controller5.yp_tabItem.badgeStyle = YPTabItemBadgeStyleDot;
     
     [self addSpecialItem];
+    [self setupFrameOfTabBarAndContentView];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+- (void)setupFrameOfTabBarAndContentView {
+    // 设置默认的tabBar的frame和contentViewFrame
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    
+    CGFloat contentViewY = 0;
+    CGFloat tabBarY = screenSize.height - kTabBarHeight;
+    if (screenSize.height == 812) {
+        tabBarY -= 34;
+    }
+    CGFloat contentViewHeight = tabBarY;
+    // 如果parentViewController为UINavigationController及其子类
+    if ([self.parentViewController isKindOfClass:[UINavigationController class]] &&
+        !self.navigationController.navigationBarHidden &&
+        !self.navigationController.navigationBar.hidden) {
+        
+        CGFloat navMaxY = CGRectGetMaxY(self.navigationController.navigationBar.frame);
+        if (!self.navigationController.navigationBar.translucent ||
+            self.edgesForExtendedLayout == UIRectEdgeNone ||
+            self.edgesForExtendedLayout == UIRectEdgeTop) {
+            tabBarY = screenSize.height - kTabBarHeight - navMaxY;
+            contentViewHeight = tabBarY;
+        } else {
+            contentViewY = navMaxY;
+            contentViewHeight = screenSize.height - kTabBarHeight - contentViewY;
+        }
+    }
+    
+    [self setTabBarFrame:CGRectMake(0, tabBarY, screenSize.width, kTabBarHeight)
+        contentViewFrame:CGRectMake(0, contentViewY, screenSize.width, contentViewHeight)];
 }
+
 
 - (void)initViewControllers {
     

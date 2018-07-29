@@ -6,10 +6,10 @@
 //  Copyright © 2017年 YPTabBarController. All rights reserved.
 //
 
-#import "UIScrollView+YPTabBarController.h"
+#import "UIScrollView+YPTab.h"
 #import <objc/runtime.h>
 
-@implementation UIScrollView (YPTabBarController)
+@implementation UIScrollView (YPTab)
 
 + (void)load {
     static dispatch_once_t onceToken;

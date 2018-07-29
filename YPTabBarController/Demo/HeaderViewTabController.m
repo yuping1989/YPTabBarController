@@ -18,10 +18,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
-    
-    self.interceptRightSlideGuetureInFirstPage = YES;
+
+    self.tabContentView.interceptRightSlideGuetureInFirstPage = YES;
     
     self.tabBar.itemTitleColor = [UIColor lightGrayColor];
     self.tabBar.itemTitleSelectedColor = [UIColor redColor];
@@ -36,9 +34,9 @@
     
     self.yp_tabItem.badgeStyle = YPTabItemBadgeStyleDot;
     
-    self.loadViewOfChildContollerWhileAppear = YES;
+    self.tabContentView.loadViewOfChildContollerWhileAppear = YES;
     
-    [self setContentScrollEnabledAndTapSwitchAnimated:NO];
+    [self.tabContentView setContentScrollEnabledAndTapSwitchAnimated:NO];
     
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"image" ofType:@"jpg"];
@@ -56,14 +54,12 @@
         bottom += 50;
     }
     
-    
-    [self setHeaderView:imageView
-            needStretch:NO
-           headerHeight:250
-           tabBarHeight:44
-      contentViewHeight:screenSize.height - 250 - 44 - bottom
-  tabBarStopOnTopHeight:20];
-    
+    [self.tabContentView setHeaderView:imageView
+                           needStretch:YES
+                          headerHeight:250
+                          tabBarHeight:44
+                     contentViewHeight:screenSize.height - 250 - 44 - bottom
+                 tabBarStopOnTopHeight:20];
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame = CGRectMake(10, 20, 50, 40);
@@ -100,6 +96,10 @@
     
     self.viewControllers = [NSMutableArray arrayWithObjects:controller1, controller2, controller3, controller4, nil];
     
+}
+
+- (void)tabContentView:(YPTabContentView *)tabConentView didChangedContentOffsetY:(CGFloat)offsetY {
+    NSLog(@"offsetY-->%f", offsetY);
 }
 
 @end

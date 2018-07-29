@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initViewControllers];
+    
     
     CGFloat bottom = [self.parentViewController isKindOfClass:[UINavigationController class]] ? 0 : 50;
     
@@ -39,14 +39,20 @@
     
     self.tabBar.indicatorScrollFollowContent = YES;
     self.tabBar.indicatorColor = [UIColor redColor];
-    [self.tabBar setIndicatorInsets:UIEdgeInsetsMake(40, 10, 0, 10) tapSwitchAnimated:NO];
+    
+    [self.tabBar setIndicatorWidthFitTextAndMarginTop:40 marginBottom:0 widthAdditional:5 tapSwitchAnimated:YES];
+    
+    self.tabContentView.defaultSelectedTabIndex = 1;
+    
     self.tabBar.indicatorAnimationStyle = YPTabBarIndicatorAnimationStyle1;
     
-    [self setContentScrollEnabled:YES tapSwitchAnimated:NO];
+    [self.tabContentView setContentScrollEnabled:YES tapSwitchAnimated:NO];
     
     [self.yp_tabItem setDoubleTapHandler:^{
         NSLog(@"双击效果");
     }];
+    
+    [self initViewControllers];
 }
 
 - (void)didReceiveMemoryWarning {
