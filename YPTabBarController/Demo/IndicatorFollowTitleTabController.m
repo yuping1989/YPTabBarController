@@ -35,6 +35,7 @@
     self.tabBar.itemTitleColor = [UIColor purpleColor];
     self.tabBar.itemTitleSelectedColor = [UIColor whiteColor];
     self.tabBar.itemTitleFont = [UIFont systemFontOfSize:18];
+    self.tabBar.itemTitleSelectedFont = [UIFont boldSystemFontOfSize:18];
     
     self.tabBar.indicatorScrollFollowContent = YES;
     self.tabBar.itemColorChangeFollowContentScroll = YES;

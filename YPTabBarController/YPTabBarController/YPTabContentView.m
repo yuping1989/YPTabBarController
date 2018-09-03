@@ -209,7 +209,7 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
 
     _viewControllers = [viewControllers copy];
     
-    UIViewController *containerVC = [self contarinerViewController];
+    UIViewController *containerVC = [self containerViewController];
 
     NSMutableArray *items = [NSMutableArray array];
     for (UIViewController *vc in _viewControllers) {
@@ -297,7 +297,7 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
     return nil;
 }
 
-- (UIViewController *)contarinerViewController {
+- (UIViewController *)containerViewController {
     for (UIView *view = self; view; view = view.superview) {
         UIResponder *nextResponder = [view nextResponder];
         if ([nextResponder isKindOfClass:[UIViewController class]]) {
@@ -316,7 +316,7 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
         return;
     }
     
-    UIViewController *vc = [self contarinerViewController];
+    UIViewController *vc = [self containerViewController];
     vc.automaticallyAdjustsScrollViewInsets = NO;
     __weak UIViewController *weakVC = vc;
     vc.yp_willAppearInjectBlock = ^(UIViewController *viewController, BOOL animated) {

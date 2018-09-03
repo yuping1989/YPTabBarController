@@ -320,26 +320,27 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
     if (_selectedItemIndex != NSNotFound) {
         YPTabItem *oldSelectedItem = self.items[_selectedItemIndex];
         oldSelectedItem.selected = NO;
-        if (self.itemFontChangeFollowContentScroll) {
-            // 如果支持字体平滑渐变切换，则设置item的scale
-            oldSelectedItem.transform = CGAffineTransformMakeScale(self.itemTitleUnselectedFontScale,
-                                                                   self.itemTitleUnselectedFontScale);
-        } else {
-            // 如果支持字体平滑渐变切换，则直接设置字体
-            oldSelectedItem.titleFont = self.itemTitleFont;
+        if (self.itemTitleSelectedFont) {
+            if (self.itemFontChangeFollowContentScroll) {
+                // 如果支持字体平滑渐变切换，则设置item的scale
+                oldSelectedItem.transform = CGAffineTransformMakeScale(self.itemTitleUnselectedFontScale,
+                                                                       self.itemTitleUnselectedFontScale);
+                oldSelectedItem.titleFont = [self.itemTitleFont fontWithSize:self.itemTitleSelectedFont.pointSize];
+            } else {
+                oldSelectedItem.titleFont = self.itemTitleFont;
+            }
         }
     }
     
     YPTabItem *newSelectedItem = self.items[selectedItemIndex];
     newSelectedItem.selected = YES;
-    if (self.itemFontChangeFollowContentScroll) {
-        // 如果支持字体平滑渐变切换，则设置item的scale
-        newSelectedItem.transform = CGAffineTransformMakeScale(1, 1);
-    } else {
-        // 如果支持字体平滑渐变切换，则直接设置字体
-        if (self.itemTitleSelectedFont) {
-            newSelectedItem.titleFont = self.itemTitleSelectedFont;
+    
+    if (self.itemTitleSelectedFont) {
+        if (self.itemFontChangeFollowContentScroll) {
+            // 如果支持字体平滑渐变切换，则设置item的scale
+            newSelectedItem.transform = CGAffineTransformMakeScale(1, 1);
         }
+        newSelectedItem.titleFont = self.itemTitleSelectedFont;
     }
     
     if (self.indicatorSwitchAnimated && _selectedItemIndex != NSNotFound) {
@@ -592,9 +593,13 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
     if (self.itemTitleSelectedFont &&
         self.itemFontChangeFollowContentScroll &&
         self.itemTitleSelectedFont.pointSize != self.itemTitleFont.pointSize) {
-        [self.items makeObjectsPerformSelector:@selector(setTitleFont:) withObject:self.itemTitleSelectedFont];
+        UIFont *normalFont = [self.itemTitleFont fontWithSize:self.itemTitleSelectedFont.pointSize];
+        
         for (YPTabItem *item in self.items) {
-            if (!item.selected) {
+            if (item.selected) {
+                item.titleFont = self.itemTitleSelectedFont;
+            } else {
+                item.titleFont = normalFont;
                 item.transform = CGAffineTransformMakeScale(self.itemTitleUnselectedFontScale,
                                                             self.itemTitleUnselectedFontScale);
             }

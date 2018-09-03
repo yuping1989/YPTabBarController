@@ -34,7 +34,7 @@
     self.tabBar.itemTitleColor = [UIColor lightGrayColor];
     self.tabBar.itemTitleSelectedColor = [UIColor redColor];
     self.tabBar.itemTitleFont = [UIFont systemFontOfSize:17];
-    self.tabBar.itemTitleSelectedFont = [UIFont systemFontOfSize:22];
+    self.tabBar.itemTitleSelectedFont = [UIFont boldSystemFontOfSize:22];
     self.tabBar.leadingSpace = 20;
     self.tabBar.trailingSpace = 20;
     
