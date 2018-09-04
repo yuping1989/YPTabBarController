@@ -9,6 +9,9 @@
 #import "YPTabBarController.h"
 
 @interface YPTabBarController ()
+
+@property (nonatomic, strong) YPTabContentView *tabContentView;
+
 @end
 
 @implementation YPTabBarController

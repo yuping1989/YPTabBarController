@@ -9,14 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "YPTabBar.h"
 #import "YPTabContentView.h"
+#import "YPTabBarControllerProtocol.h"
 
-@interface YPTabBarController : UIViewController <YPTabContentViewDelegate>
-
-@property (nonatomic, strong, readonly) YPTabBar *tabBar;
-
-@property (nonatomic, strong, readonly) YPTabContentView *tabContentView;
-
-@property (nonatomic, copy) NSArray <UIViewController *> *viewControllers;
+@interface YPTabBarController : UIViewController <YPTabBarControllerProtocol, YPTabContentViewDelegate>
 
 /**
  *  设置tabBar和contentView的frame，

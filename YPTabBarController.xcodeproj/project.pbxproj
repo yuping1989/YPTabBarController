@@ -75,6 +75,7 @@
 		7E3DA80C1FBC68D3008A2C4E /* UIScrollView+YPTab.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+YPTab.m"; sourceTree = "<group>"; };
 		7E5A31BF210C3A7300F339D2 /* YPTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YPTabBarController.h; sourceTree = "<group>"; };
 		7E5A31C0210C3A7300F339D2 /* YPTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YPTabBarController.m; sourceTree = "<group>"; };
+		7E7E1162213E5DF800B58074 /* YPTabBarControllerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YPTabBarControllerProtocol.h; sourceTree = "<group>"; };
 		F06335CF1CF59A51009D65D2 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F06335D01CF59A51009D65D2 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		F06335D21CF59A51009D65D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -253,6 +254,7 @@
 				7E2107341F70BA99002586C5 /* UIViewController+YPTab.m */,
 				7E3DA80B1FBC68D3008A2C4E /* UIScrollView+YPTab.h */,
 				7E3DA80C1FBC68D3008A2C4E /* UIScrollView+YPTab.m */,
+				7E7E1162213E5DF800B58074 /* YPTabBarControllerProtocol.h */,
 			);
 			path = YPTabBarController;
 			sourceTree = "<group>";

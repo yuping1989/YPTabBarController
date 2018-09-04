@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YPTabBarControllerProtocol.h"
 
 @class YPTabItem;
-@class YPTabBarController;
 
 @interface UIViewController (YPTab)
 
 @property (nonatomic, strong, readonly) YPTabItem *yp_tabItem;
-@property (nonatomic, strong, readonly) YPTabBarController *yp_tabBarController;
+@property (nonatomic, strong, readonly) id<YPTabBarControllerProtocol> yp_tabBarController;
 
 @property (nonatomic, copy) NSString *yp_tabItemTitle; // tabItem的标题
 @property (nonatomic, strong) UIImage *yp_tabItemImage; // tabItem的图像
