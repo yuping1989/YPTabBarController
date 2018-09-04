@@ -6,6 +6,9 @@
 //  Copyright © 2018年 YPTabBarController. All rights reserved.
 //
 
+@class YPTabBar;
+@class YPTabContentView;
+
 @protocol YPTabBarControllerProtocol <NSObject>
 
 @property (nonatomic, strong, readonly) YPTabBar *tabBar;
