@@ -55,9 +55,9 @@
     return tabBar.items[index];
 }
 
-- (YPTabBarController *)yp_tabBarController {
-    if ([self.parentViewController isKindOfClass:[YPTabBarController class]]) {
-        return (YPTabBarController *)self.parentViewController;
+- (id<YPTabBarControllerProtocol>)yp_tabBarController {
+    if ([self.parentViewController conformsToProtocol:@protocol(YPTabBarControllerProtocol)]) {
+        return (id<YPTabBarControllerProtocol>)self.parentViewController;
     }
     return nil;
 }
