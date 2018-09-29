@@ -301,19 +301,23 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
 }
 
 - (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex {
+    [self setSelectedItemIndex:selectedItemIndex callDelegate:YES];
+}
+
+- (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex callDelegate:(BOOL)callDelegate {
     if (selectedItemIndex == _selectedItemIndex ||
         selectedItemIndex >= self.items.count ||
         self.items.count == 0) {
         return;
     }
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:shouldSelectItemAtIndex:)]) {
+    if (callDelegate && self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:shouldSelectItemAtIndex:)]) {
         BOOL should = [self.delegate yp_tabBar:self shouldSelectItemAtIndex:selectedItemIndex];
         if (!should) {
             return;
         }
     }
-    if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:willSelectItemAtIndex:)]) {
+    if (callDelegate && self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:willSelectItemAtIndex:)]) {
         [self.delegate yp_tabBar:self willSelectItemAtIndex:selectedItemIndex];
     }
     
@@ -356,7 +360,7 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
     // 如果tabbar支持滚动，将选中的item放到tabbar的中央
     [self setSelectedItemCenter];
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:didSelectedItemAtIndex:)]) {
+    if (callDelegate && self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:didSelectedItemAtIndex:)]) {
         [self.delegate yp_tabBar:self didSelectedItemAtIndex:selectedItemIndex];
     }
 }

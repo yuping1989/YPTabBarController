@@ -96,6 +96,8 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
  */
 - (void)setTitles:(NSArray <NSString *> *)titles;
 
+- (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex callDelegate:(BOOL)callDelegate;
+
 /**
  *  设置tabBar为竖向且支持滚动，tabItem的高度根据tabBar高度和leadingSpace、trailingSpace属性计算
  *  一旦调用此方法，所有跟横向相关的效果将失效，例如内容视图滚动，指示器切换动画等
