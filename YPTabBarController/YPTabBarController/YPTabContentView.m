@@ -454,13 +454,11 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
     UIViewController *curController = self.viewControllers[index];
     if (self.contentScrollEnabled) {
         // contentView支持滚动
-        if (!curController.isViewLoaded) {
-            CGRect frame = [self frameForControllerAtIndex:index];
-            if (![curController.view isEqual:curController.yp_displayView]) {
-                curController.view.frame = frame;
-            }
-            curController.yp_displayView.frame = frame;
+        CGRect frame = [self frameForControllerAtIndex:index];
+        if (![curController.view isEqual:curController.yp_displayView]) {
+            curController.view.frame = frame;
         }
+        curController.yp_displayView.frame = frame;
 
         [self.contentScrollView addSubview:curController.yp_displayView];
         // 切换到curController
@@ -468,8 +466,6 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
 
     } else {
         // contentView不支持滚动
-
-        [self.contentScrollView addSubview:curController.yp_displayView];
         // 设置curController.view的frame
         if (!CGRectEqualToRect(curController.yp_displayView.frame, self.contentScrollView.bounds)) {
             if (![curController.view isEqual:curController.yp_displayView]) {
@@ -477,6 +473,7 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
             }
             curController.yp_displayView.frame = self.contentScrollView.bounds;
         }
+        [self.contentScrollView addSubview:curController.yp_displayView];
     }
 
     // 获取是否是第一次被选中的标识
