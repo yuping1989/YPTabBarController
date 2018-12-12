@@ -70,8 +70,8 @@
 
 - (void)tabItemDidDeselected {}
 
-- (UIView *)yp_displayView {
-    return self.view;
+- (UIScrollView *)yp_scrollView {
+    return nil;
 }
 
 - (BOOL)yp_disableMinContentHeight {

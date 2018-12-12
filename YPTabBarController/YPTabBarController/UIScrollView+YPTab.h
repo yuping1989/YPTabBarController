@@ -12,4 +12,6 @@
 
 @property (nonatomic, assign) CGFloat minContentSizeHeight;
 
+@property (nonatomic, copy) void(^yp_didScrollHandler)(UIScrollView *scrollView);
+
 @end

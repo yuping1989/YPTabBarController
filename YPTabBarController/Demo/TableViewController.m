@@ -8,6 +8,7 @@
 
 #import "TableViewController.h"
 #import "YPTabBarController.h"
+#import "UIViewController+YPTab.h"
 
 @interface TableViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -25,6 +26,7 @@
     }
     
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     // Do any additional setup after loading the view from its nib.
@@ -54,8 +56,12 @@
     return cell;
 }
 
-- (UIView *)yp_displayView {
+- (UIScrollView *)yp_scrollView {
     return self.tableView;
 }
+
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//
+//}
 
 @end
