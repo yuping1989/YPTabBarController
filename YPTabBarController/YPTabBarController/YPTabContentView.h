@@ -94,8 +94,8 @@ typedef NS_ENUM(NSInteger, YPTabHeaderStyle) {
  *  @param needStretch 内容视图向下滚动时，headerView是否拉伸
  *  @param headerHeight headerView的默认高度
  *  @param tabBarHeight tabBar的高度
- *  @param contentViewHeight 内容视图的高度
  *  @param tabBarStopOnTopHeight 当内容视图向上滚动时，TabBar停止移动的位置
+ *  @param frame 整个界面的frame，一般来说是[UIScreen mainScreen].bounds
  */
 - (void)setHeaderView:(UIView *)headerView
                 style:(YPTabHeaderStyle)style
