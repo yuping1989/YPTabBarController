@@ -384,6 +384,9 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
                                                    self.headerViewDefaultHeight - offsetY);
             }
         }
+        if (self.delegate && [self.delegate respondsToSelector:@selector(tabContentView:didChangedContentOffsetY:)]) {
+            [self.delegate tabContentView:self didChangedContentOffsetY:scrollView.contentOffset.y];
+        }
     }
 }
 
