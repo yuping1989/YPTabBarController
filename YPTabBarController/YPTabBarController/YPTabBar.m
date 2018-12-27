@@ -197,11 +197,6 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
     [self updateAllUI];
 }
 
-- (void)setItemSpace:(CGFloat)itemSpace {
-    _itemSpace = itemSpace;
-    [self updateAllUI];
-}
-
 - (void)updateAllUI {
     [self updateItemsFrame];
     [self updateItemIndicatorInsets];

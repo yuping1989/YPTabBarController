@@ -61,7 +61,6 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 
 @property (nonatomic, assign) CGFloat leadingSpace;                 // 第一个item与左边或者上边的距离
 @property (nonatomic, assign) CGFloat trailingSpace;                // 最后一个item与右边或者下边的距离
-@property (nonatomic, assign) CGFloat itemSpace;                    // item之间的间距
 
 @property (nonatomic, assign) NSUInteger selectedItemIndex;          // 选中某一个item
 
