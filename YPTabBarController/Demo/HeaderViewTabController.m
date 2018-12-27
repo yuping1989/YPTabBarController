@@ -55,11 +55,11 @@
     }
     
     [self.tabContentView setHeaderView:imageView
-                           needStretch:NO
+                                 style:YPTabHeaderStyleStretch
                           headerHeight:250
                           tabBarHeight:44
-                     contentViewHeight:screenSize.height - 250 - 44 - bottom
-                 tabBarStopOnTopHeight:20];
+                 tabBarStopOnTopHeight:20
+                                 frame:[UIScreen mainScreen].bounds];
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame = CGRectMake(10, 20, 50, 40);

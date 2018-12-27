@@ -46,18 +46,6 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
 
 @end
 
-@interface _YPContentTableView : UITableView
-
-@end
-
-@implementation _YPContentTableView
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    return YES;
-}
-
-@end
-
 @implementation UIViewController (Private)
 
 + (void)load {
@@ -119,16 +107,15 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
 
 @property (nonatomic, assign) CGFloat headerViewDefaultHeight;
 @property (nonatomic, assign) CGFloat tabBarStopOnTopHeight;
-@property (nonatomic, assign) BOOL headerViewNeedStretch;
 
 @property (nonatomic, assign) BOOL contentScrollEnabled;
 @property (nonatomic, assign) BOOL contentSwitchAnimated;
 
 @property (nonatomic, strong, readwrite) UIView *headerView;
-@property (nonatomic, strong) _YPContentTableView *contentTableView;
-@property (nonatomic, strong) UITableViewCell *contentTableViewCell;
+@property (nonatomic, strong) UITableViewCell *containerTableViewCell;
 @property (nonatomic, assign) BOOL canChildScroll;
 @property (nonatomic, assign) BOOL canContentScroll;
+@property (nonatomic, assign) YPTabHeaderStyle headerStyle;
 
 @end
 
@@ -324,78 +311,78 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
 #pragma mark - HeaderView
 
 - (void)setHeaderView:(UIView *)headerView
-          needStretch:(BOOL)needStretch
+                style:(YPTabHeaderStyle)style
          headerHeight:(CGFloat)headerHeight
          tabBarHeight:(CGFloat)tabBarHeight
-    contentViewHeight:(CGFloat)contentViewHeight
-tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
+tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
+                frame:(CGRect)frame {
     if (!headerView) {
         return;
     }
+    self.frame = frame;
     self.headerView = headerView;
     
-    CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    self.frame = CGRectMake(0, 0, screenSize.width, screenSize.height);
-    self.headerView.frame = CGRectMake(0, 0, screenSize.width, headerHeight);
+    self.headerView.frame = CGRectMake(0, 0, self.bounds.size.width, headerHeight);
 
-    self.headerViewNeedStretch = needStretch;
+    self.headerStyle = style;
     self.headerViewDefaultHeight = headerHeight;
     self.tabBarStopOnTopHeight = tabBarStopOnTopHeight;
     
     [self.contentScrollView removeFromSuperview];
     
-    self.contentTableView = [[_YPContentTableView alloc] initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStylePlain];
-    self.contentTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.contentTableView.delegate = self;
-    self.contentTableView.dataSource = self;
+    self.containerTableView = [[YPContainerTableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
+    self.containerTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.containerTableView.delegate = self;
+    self.containerTableView.dataSource = self;
+//    self.containerTableView.bounces = self.headerViewNeedStretch;
     
-    
-    UIView *view = [[UIView alloc] initWithFrame:self.headerView.bounds];
-    self.contentTableView.tableHeaderView = view;
-    [self.contentTableView addSubview:self.headerView];
-    
-    if (@available(iOS 11.0, *)) {
-        self.contentTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    if (style == YPTabHeaderStyleStretch) {
+        UIView *view = [[UIView alloc] initWithFrame:self.headerView.bounds];
+        self.containerTableView.tableHeaderView = view;
+        [self.containerTableView addSubview:self.headerView];
+    } else if (style == YPTabHeaderStyleFollow) {
+        self.containerTableView.tableHeaderView = self.headerView;
     }
     
-    [self addSubview:self.contentTableView];
+    if (@available(iOS 11.0, *)) {
+        self.containerTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
     
-    self.contentScrollView.frame = CGRectMake(0, 0, screenSize.width, screenSize.height - tabBarHeight - self.tabBarStopOnTopHeight);
-    self.contentTableViewCell = [[UITableViewCell alloc] init];
-    [self.contentTableViewCell.contentView addSubview:self.contentScrollView];
+    [self addSubview:self.containerTableView];
+    
+    self.contentScrollView.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height - tabBarHeight - self.tabBarStopOnTopHeight);
+    self.containerTableViewCell = [[UITableViewCell alloc] init];
+    [self.containerTableViewCell.contentView addSubview:self.contentScrollView];
     
     self.tabBar.frame = CGRectMake(0,
                                    0,
-                                   screenSize.width,
+                                   self.bounds.size.width,
                                    tabBarHeight);
     
     self.canContentScroll = YES;
     self.canChildScroll = NO;
 }
 
-- (void)contentTableViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView == self.contentTableView) {
+- (void)containerTableViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView == self.containerTableView) {
         CGFloat offsetY = scrollView.contentOffset.y;
-//        if (!self.headerViewNeedStretch && offsetY > 0) {
-//            self.contentTableView.contentOffset = CGPointZero;
-//            self.canContentScroll = NO;
-//            self.canChildScroll = YES;
-//        } else
         if (!self.canContentScroll) {
             // 这里通过固定contentOffset的值，来实现不滚动
-            self.contentTableView.contentOffset = CGPointMake(0, self.headerViewDefaultHeight - self.tabBarStopOnTopHeight);
-        } else if (self.contentTableView.contentOffset.y >= self.headerViewDefaultHeight - self.tabBarStopOnTopHeight) {
-            self.contentTableView.contentOffset = CGPointMake(0, self.headerViewDefaultHeight - self.tabBarStopOnTopHeight);
+            self.containerTableView.contentOffset = CGPointMake(0, self.headerViewDefaultHeight - self.tabBarStopOnTopHeight);
+        } else if (self.containerTableView.contentOffset.y >= self.headerViewDefaultHeight - self.tabBarStopOnTopHeight) {
+            self.containerTableView.contentOffset = CGPointMake(0, self.headerViewDefaultHeight - self.tabBarStopOnTopHeight);
             self.canContentScroll = NO;
             self.canChildScroll = YES;
         }
         scrollView.showsVerticalScrollIndicator = !_canChildScroll;
         
-        if (offsetY <= 0) {
-            self.headerView.frame = CGRectMake(0,
-                                               offsetY,
-                                               self.headerView.frame.size.width,
-                                               self.headerViewDefaultHeight - offsetY);
+        if (self.headerStyle == YPTabHeaderStyleStretch) {
+            if (offsetY <= 0) {
+                self.headerView.frame = CGRectMake(0,
+                                                   offsetY,
+                                                   self.headerView.frame.size.width,
+                                                   self.headerViewDefaultHeight - offsetY);
+            }
         }
     }
 }
@@ -421,7 +408,7 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return self.contentTableViewCell;
+    return self.containerTableViewCell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -544,8 +531,8 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight {
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView == self.contentTableView) {
-        [self contentTableViewDidScroll:scrollView];
+    if (scrollView == self.containerTableView) {
+        [self containerTableViewDidScroll:scrollView];
         return;
     }
     // 如果不是手势拖动导致的此方法被调用，不处理

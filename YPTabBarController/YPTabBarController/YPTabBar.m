@@ -35,9 +35,6 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
 @property (nonatomic, assign) CGFloat indicatorWidthFixTitleAdditional;
 @property (nonatomic, assign) CGFloat indicatorWidth;
 
-// TabItem选中切换时，是否显示动画
-@property (nonatomic, assign) BOOL indicatorSwitchAnimated;
-
 // Item是否匹配title的文字宽度
 @property (nonatomic, assign) BOOL itemFitTextWidth;
 
@@ -197,6 +194,11 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
 
 - (void)setTrailingSpace:(CGFloat)trailingSpace {
     _trailingSpace = trailingSpace;
+    [self updateAllUI];
+}
+
+- (void)setItemSpace:(CGFloat)itemSpace {
+    _itemSpace = itemSpace;
     [self updateAllUI];
 }
 

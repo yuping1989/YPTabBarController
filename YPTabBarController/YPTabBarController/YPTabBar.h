@@ -61,6 +61,7 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 
 @property (nonatomic, assign) CGFloat leadingSpace;                 // 第一个item与左边或者上边的距离
 @property (nonatomic, assign) CGFloat trailingSpace;                // 最后一个item与右边或者下边的距离
+@property (nonatomic, assign) CGFloat itemSpace;                    // item之间的间距
 
 @property (nonatomic, assign) NSUInteger selectedItemIndex;          // 选中某一个item
 
@@ -83,6 +84,11 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
  *  将Image和Title设置为水平居中，默认为YES
  */
 @property (nonatomic, assign, getter = isItemContentHorizontalCenter) BOOL itemContentHorizontalCenter;
+
+/**
+ *  TabItem选中切换时，是否显示动画
+ */
+@property (nonatomic, assign) BOOL indicatorSwitchAnimated;
 
 @property (nonatomic, weak) id<YPTabBarDelegate> delegate;
 

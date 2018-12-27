@@ -10,6 +10,12 @@
 #import "YPTabBar.h"
 #import "YPTabItem.h"
 #import "UIViewController+YPTab.h"
+#import "YPContainerTableView.h"
+
+typedef NS_ENUM(NSInteger, YPTabHeaderStyle) {
+    YPTabHeaderStyleStretch,
+    YPTabHeaderStyleFollow
+};
 
 @class YPTabContentView;
 
@@ -80,6 +86,8 @@
 @property (nonatomic, assign) BOOL interceptRightSlideGuetureInFirstPage;
 @property (nonatomic, assign) BOOL interceptLeftSlideGuetureInLastPage;
 
+@property (nonatomic, strong) YPContainerTableView *containerTableView;
+
 /**
  *  设置HeaderView
  *  @param headerView UIView
@@ -90,11 +98,11 @@
  *  @param tabBarStopOnTopHeight 当内容视图向上滚动时，TabBar停止移动的位置
  */
 - (void)setHeaderView:(UIView *)headerView
-          needStretch:(BOOL)needStretch
+                style:(YPTabHeaderStyle)style
          headerHeight:(CGFloat)headerHeight
          tabBarHeight:(CGFloat)tabBarHeight
-    contentViewHeight:(CGFloat)contentViewHeight
-tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight;
+tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
+                frame:(CGRect)frame;
 
 /**
  *  设置内容视图支持滑动切换，以及点击item切换时是否有动画
