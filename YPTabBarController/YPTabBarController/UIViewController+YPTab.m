@@ -74,8 +74,4 @@
     return nil;
 }
 
-- (BOOL)yp_disableMinContentHeight {
-    return NO;
-}
-
 @end

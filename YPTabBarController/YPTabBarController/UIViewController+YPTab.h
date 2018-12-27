@@ -39,11 +39,6 @@
 - (UIScrollView *)yp_scrollView;
 
 /**
- *  返回是否开启最小ContentHeight
- */
-- (BOOL)yp_disableMinContentHeight;
-
-/**
  *  废弃，用yp_tabItemDidSelected:替换
  */
 - (void)tabItemDidSelected __deprecated_msg("废弃，用yp_tabItemDidSelected:替换");

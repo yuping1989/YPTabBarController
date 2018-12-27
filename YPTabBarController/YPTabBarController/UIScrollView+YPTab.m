@@ -66,9 +66,6 @@ static void YPHookMethod(Class originalClass, SEL originalSel, Class replacedCla
 }
 
 - (void)yp_scrollViewDidScroll:(UIScrollView *)scrollView {
-    if ([scrollView isMemberOfClass:[UITableView class]]) {
-        
-    }
     if (scrollView.yp_didScrollHandler) {
         scrollView.yp_didScrollHandler(scrollView);
     }
@@ -87,22 +84,6 @@ static void YPHookMethod(Class originalClass, SEL originalSel, Class replacedCla
 
 - (void (^)(UIScrollView *))yp_didScrollHandler {
     return objc_getAssociatedObject(self, _cmd);
-}
-
-
-- (void)yp_setContentSize:(CGSize)contentSize {
-    if (contentSize.height < self.minContentSizeHeight) {
-        contentSize = CGSizeMake(contentSize.width, self.minContentSizeHeight);
-    }
-    [self yp_setContentSize:contentSize];
-}
-
-- (CGFloat)minContentSizeHeight {
-    return [objc_getAssociatedObject(self, _cmd) floatValue];
-}
-
-- (void)setMinContentSizeHeight:(CGFloat)minContentSizeHeight {
-    objc_setAssociatedObject(self, @selector(minContentSizeHeight), @(minContentSizeHeight), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end
