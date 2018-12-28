@@ -101,9 +101,19 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
  */
 - (void)setTitles:(NSArray <NSString *> *)titles;
 
+- (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex
+                    animated:(BOOL)animated;
 
-- (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex animated:(BOOL)animated;
-- (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex animated:(BOOL)animated callDelegate:(BOOL)callDelegate;
+/**
+ *  设置选中的index
+ *
+ *  @param selectedItemIndex 选中的index
+ *  @param animated          指示器是否有动画
+ *  @param callDelegate      是否调用代理方法
+ */
+- (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex
+                    animated:(BOOL)animated
+                callDelegate:(BOOL)callDelegate;
 
 /**
  *  设置tabBar为竖向且支持滚动，tabItem的高度根据tabBar高度和leadingSpace、trailingSpace属性计算
