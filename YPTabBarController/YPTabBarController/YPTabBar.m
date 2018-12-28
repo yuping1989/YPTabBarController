@@ -298,10 +298,14 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
 }
 
 - (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex {
-    [self setSelectedItemIndex:selectedItemIndex callDelegate:YES];
+    [self setSelectedItemIndex:selectedItemIndex animated:self.indicatorSwitchAnimated callDelegate:YES];
 }
 
-- (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex callDelegate:(BOOL)callDelegate {
+- (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex animated:(BOOL)animated {
+    [self setSelectedItemIndex:selectedItemIndex animated:animated callDelegate:YES];
+}
+
+- (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex animated:(BOOL)animated callDelegate:(BOOL)callDelegate {
     if (selectedItemIndex == _selectedItemIndex ||
         selectedItemIndex >= self.items.count ||
         self.items.count == 0) {
@@ -344,7 +348,7 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
         newSelectedItem.titleFont = self.itemTitleSelectedFont;
     }
     
-    if (self.indicatorSwitchAnimated && _selectedItemIndex != NSNotFound) {
+    if (animated && _selectedItemIndex != NSNotFound) {
         [UIView animateWithDuration:0.25f animations:^{
             [self updateIndicatorFrameWithIndex:selectedItemIndex];
         }];

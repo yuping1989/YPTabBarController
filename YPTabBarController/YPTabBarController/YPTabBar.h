@@ -85,7 +85,7 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 @property (nonatomic, assign, getter = isItemContentHorizontalCenter) BOOL itemContentHorizontalCenter;
 
 /**
- *  TabItem选中切换时，是否显示动画
+ *  TabItem选中切换时，指示器是否有动画
  */
 @property (nonatomic, assign) BOOL indicatorSwitchAnimated;
 
@@ -101,7 +101,9 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
  */
 - (void)setTitles:(NSArray <NSString *> *)titles;
 
-- (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex callDelegate:(BOOL)callDelegate;
+
+- (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex animated:(BOOL)animated;
+- (void)setSelectedItemIndex:(NSUInteger)selectedItemIndex animated:(BOOL)animated callDelegate:(BOOL)callDelegate;
 
 /**
  *  设置tabBar为竖向且支持滚动，tabItem的高度根据tabBar高度和leadingSpace、trailingSpace属性计算

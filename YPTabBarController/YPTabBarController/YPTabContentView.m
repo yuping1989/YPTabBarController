@@ -334,13 +334,12 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
     self.containerTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.containerTableView.delegate = self;
     self.containerTableView.dataSource = self;
-//    self.containerTableView.bounces = self.headerViewNeedStretch;
     
     if (style == YPTabHeaderStyleStretch) {
         UIView *view = [[UIView alloc] initWithFrame:self.headerView.bounds];
         self.containerTableView.tableHeaderView = view;
         [self.containerTableView addSubview:self.headerView];
-    } else if (style == YPTabHeaderStyleFollow) {
+    } else {
         self.containerTableView.tableHeaderView = self.headerView;
     }
     
@@ -364,29 +363,32 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
 }
 
 - (void)containerTableViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView == self.containerTableView) {
-        CGFloat offsetY = scrollView.contentOffset.y;
-        if (!self.canContentScroll) {
-            // 这里通过固定contentOffset的值，来实现不滚动
-            self.containerTableView.contentOffset = CGPointMake(0, self.headerViewDefaultHeight - self.tabBarStopOnTopHeight);
-        } else if (self.containerTableView.contentOffset.y >= self.headerViewDefaultHeight - self.tabBarStopOnTopHeight) {
-            self.containerTableView.contentOffset = CGPointMake(0, self.headerViewDefaultHeight - self.tabBarStopOnTopHeight);
-            self.canContentScroll = NO;
-            self.canChildScroll = YES;
+    if (scrollView != self.containerTableView) {
+        return;
+    }
+    CGFloat offsetY = scrollView.contentOffset.y;
+    CGFloat stopY = self.headerViewDefaultHeight - self.tabBarStopOnTopHeight;
+    if (!self.canContentScroll) {
+        // 这里通过固定contentOffset的值，来实现不滚动
+        self.containerTableView.contentOffset = CGPointMake(0, stopY);
+    } else if (self.containerTableView.contentOffset.y >= stopY) {
+        self.containerTableView.contentOffset = CGPointMake(0, stopY);
+        self.canContentScroll = NO;
+        self.canChildScroll = YES;
+    }
+    
+    scrollView.showsVerticalScrollIndicator = !_canChildScroll;
+    
+    if (self.headerStyle == YPTabHeaderStyleStretch) {
+        if (offsetY <= 0) {
+            self.headerView.frame = CGRectMake(0,
+                                               offsetY,
+                                               self.headerView.frame.size.width,
+                                               self.headerViewDefaultHeight - offsetY);
         }
-        scrollView.showsVerticalScrollIndicator = !_canChildScroll;
-        
-        if (self.headerStyle == YPTabHeaderStyleStretch) {
-            if (offsetY <= 0) {
-                self.headerView.frame = CGRectMake(0,
-                                                   offsetY,
-                                                   self.headerView.frame.size.width,
-                                                   self.headerViewDefaultHeight - offsetY);
-            }
-        }
-        if (self.delegate && [self.delegate respondsToSelector:@selector(tabContentView:didChangedContentOffsetY:)]) {
-            [self.delegate tabContentView:self didChangedContentOffsetY:scrollView.contentOffset.y];
-        }
+    }
+    if (self.delegate && [self.delegate respondsToSelector:@selector(tabContentView:didChangedContentOffsetY:)]) {
+        [self.delegate tabContentView:self didChangedContentOffsetY:scrollView.contentOffset.y];
     }
 }
 
