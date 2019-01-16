@@ -90,13 +90,16 @@
         self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         
         CGRect rect = [self.titleLabel.text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
-                                         options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                      attributes:nil context:nil];
+                                                         options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                      attributes:@{NSFontAttributeName : self.titleLabel.font}
+                                                         context:nil];
         CGSize titleSize = CGSizeMake(ceilf(rect.size.width), ceilf(rect.size.height));
         CGSize imageSize = self.imageView.frame.size;
         
-        self.imageEdgeInsets = UIEdgeInsetsMake(self.marginTop, (self.bounds.size.width - imageSize.width) / 2, 0, 0);
-        self.titleEdgeInsets = UIEdgeInsetsMake(self.marginTop + imageSize.width + self.spacing, -((titleSize.width - imageSize.width) / 2), 0, -imageSize.width);
+        self.imageEdgeInsets = UIEdgeInsetsMake(self.marginTop, (self.frame.size.width - imageSize.width) / 2, 0, 0);
+        
+        CGFloat left = (self.frame.size.width - titleSize.width) / 2 - imageSize.width;
+        self.titleEdgeInsets = UIEdgeInsetsMake(self.marginTop + imageSize.width + self.spacing, left, 0, 0);
     } else {
         self.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
