@@ -319,9 +319,11 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
     UIViewController *vc = [self containerViewController];
     vc.automaticallyAdjustsScrollViewInsets = NO;
     __weak UIViewController *weakVC = vc;
+    __weak YPTabContentView *weakSelf = self;
     vc.yp_willAppearInjectBlock = ^(UIViewController *viewController, BOOL animated) {
         __strong UIViewController *strongVC = weakVC;
-        self.selectedTabIndex = self.defaultSelectedTabIndex;
+        __strong YPTabContentView *strongSelf = weakSelf;
+        strongSelf.selectedTabIndex = self.defaultSelectedTabIndex;
         _isDefaultSelectedTabIndexSetuped = YES;
         strongVC.yp_willAppearInjectBlock = nil;
     };
