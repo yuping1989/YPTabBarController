@@ -9,6 +9,7 @@
 #import "HeaderViewTabController.h"
 #import "TableViewController.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
+#import "WebViewController.h"
 
 @interface HeaderViewTabController ()
 
@@ -86,7 +87,7 @@
     TableViewController *controller1 = [[TableViewController alloc] init];
     controller1.yp_tabItemTitle = @"第一个";
     
-    TableViewController *controller2 = [[TableViewController alloc] init];
+    WebViewController *controller2 = [[WebViewController alloc] init];
     controller2.yp_tabItemTitle = @"第二";
     
     TableViewController *controller3 = [[TableViewController alloc] init];

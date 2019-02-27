@@ -16,6 +16,7 @@
 		7E390FF91FB2B09B0058362D /* CustomIndicatorTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E390FF71FB2B09A0058362D /* CustomIndicatorTabController.m */; };
 		7E390FFC1FB2D0FC0058362D /* VerticalTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E390FFB1FB2D0FC0058362D /* VerticalTabController.m */; };
 		7E3DA80D1FBC68D3008A2C4E /* UIScrollView+YPTab.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3DA80C1FBC68D3008A2C4E /* UIScrollView+YPTab.m */; };
+		7E54872C22267ECE002BB9F3 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E54872A22267ECE002BB9F3 /* WebViewController.m */; };
 		7E5A31C1210C3A7300F339D2 /* YPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5A31C0210C3A7300F339D2 /* YPTabBarController.m */; };
 		7E9F4D4E21C10D46001B9A83 /* YPContainerTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E9F4D4D21C10D46001B9A83 /* YPContainerTableView.m */; };
 		F06335ED1CF59A51009D65D2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F06335D01CF59A51009D65D2 /* AppDelegate.m */; };
@@ -74,6 +75,8 @@
 		7E390FFB1FB2D0FC0058362D /* VerticalTabController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VerticalTabController.m; sourceTree = "<group>"; };
 		7E3DA80B1FBC68D3008A2C4E /* UIScrollView+YPTab.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+YPTab.h"; sourceTree = "<group>"; };
 		7E3DA80C1FBC68D3008A2C4E /* UIScrollView+YPTab.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+YPTab.m"; sourceTree = "<group>"; };
+		7E54872922267ECE002BB9F3 /* WebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		7E54872A22267ECE002BB9F3 /* WebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		7E5A31BF210C3A7300F339D2 /* YPTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YPTabBarController.h; sourceTree = "<group>"; };
 		7E5A31C0210C3A7300F339D2 /* YPTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YPTabBarController.m; sourceTree = "<group>"; };
 		7E7E1162213E5DF800B58074 /* YPTabBarControllerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YPTabBarControllerProtocol.h; sourceTree = "<group>"; };
@@ -177,6 +180,8 @@
 				F06335E81CF59A51009D65D2 /* ViewController.xib */,
 				7E21078E1F78FECC002586C5 /* TableViewController.h */,
 				7E21078F1F78FECC002586C5 /* TableViewController.m */,
+				7E54872922267ECE002BB9F3 /* WebViewController.h */,
+				7E54872A22267ECE002BB9F3 /* WebViewController.m */,
 				7E07EE451F7F41CA00473930 /* FDFullscreenPopGesture */,
 				F06335EA1CF59A51009D65D2 /* DynamicItemWidthTab.gif */,
 				F0E32FB91CF5B4A6001A1A34 /* FixedItemWidthTab.gif */,
@@ -389,6 +394,7 @@
 				F06335FD1CF59A51009D65D2 /* ViewController.m in Sources */,
 				F06335F51CF59A51009D65D2 /* SegmentTabController.m in Sources */,
 				7E2107911F78FECC002586C5 /* TableViewController.m in Sources */,
+				7E54872C22267ECE002BB9F3 /* WebViewController.m in Sources */,
 				F06335EF1CF59A51009D65D2 /* DynamicItemWidthTabController.m in Sources */,
 				F06335F41CF59A51009D65D2 /* MultilTabController.m in Sources */,
 				7E9F4D4E21C10D46001B9A83 /* YPContainerTableView.m in Sources */,
@@ -518,7 +524,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 7X2852KFDE;
 				INFOPLIST_FILE = YPTabBarController/Demo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -533,7 +539,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 7X2852KFDE;
 				INFOPLIST_FILE = YPTabBarController/Demo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
