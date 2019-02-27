@@ -98,12 +98,13 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
 #pragma mark - YPTabBarController
 
 @interface YPTabContentView () <UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, _YPTabContentScrollViewDelegate> {
-    BOOL _isDefaultSelectedTabIndexSetuped;
+    
     CGFloat _lastContentScrollViewOffsetX;
     CGFloat _currentScrollViewOffsetY;
 }
 
 @property (nonatomic, strong) _YPTabContentScrollView *contentScrollView;
+@property (nonatomic, assign) BOOL isDefaultSelectedTabIndexSetuped;
 
 @property (nonatomic, assign) CGFloat headerViewDefaultHeight;
 @property (nonatomic, assign) CGFloat tabBarStopOnTopHeight;
@@ -212,7 +213,7 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
                 self.contentScrollView.bounds.size.height);
     }
     
-    if (_isDefaultSelectedTabIndexSetuped) {
+    if (self.isDefaultSelectedTabIndexSetuped) {
         _selectedTabIndex = NSNotFound;
         self.tabBar.selectedItemIndex = 0;
     }
@@ -293,7 +294,7 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
 - (void)didMoveToSuperview {
     [super didMoveToSuperview];
     
-    if (_isDefaultSelectedTabIndexSetuped) {
+    if (self.isDefaultSelectedTabIndexSetuped) {
         return;
     }
     
@@ -305,7 +306,7 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
         __strong UIViewController *strongVC = weakVC;
         __strong YPTabContentView *strongSelf = weakSelf;
         strongSelf.selectedTabIndex = self.defaultSelectedTabIndex;
-        _isDefaultSelectedTabIndexSetuped = YES;
+        strongSelf.isDefaultSelectedTabIndexSetuped = YES;
         strongVC.yp_willAppearInjectBlock = nil;
     };
 }

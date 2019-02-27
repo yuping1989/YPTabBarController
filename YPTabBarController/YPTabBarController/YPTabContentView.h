@@ -91,7 +91,7 @@ typedef NS_ENUM(NSInteger, YPTabHeaderStyle) {
 /**
  *  设置HeaderView
  *  @param headerView UIView
- *  @param needStretch 内容视图向下滚动时，headerView是否拉伸
+ *  @param style 头部拉伸样式
  *  @param headerHeight headerView的默认高度
  *  @param tabBarHeight tabBar的高度
  *  @param tabBarStopOnTopHeight 当内容视图向上滚动时，TabBar停止移动的位置
