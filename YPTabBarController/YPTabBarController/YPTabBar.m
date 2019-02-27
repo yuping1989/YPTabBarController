@@ -46,12 +46,6 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
 @property (nonatomic, assign) CGFloat itemHeight;
 @property (nonatomic, assign) CGFloat itemMinWidth;
 
-// item的内容水平居中时，image与顶部的距离
-@property (nonatomic, assign) CGFloat itemContentHorizontalCenterVerticalOffset;
-
-// item的内容水平居中时，title与image的距离
-@property (nonatomic, assign) CGFloat itemContentHorizontalCenterSpacing;
-
 // 数字样式的badge相关属性
 @property (nonatomic, assign) CGFloat numberBadgeMarginTop;
 @property (nonatomic, assign) CGFloat numberBadgeCenterMarginRight;
@@ -153,7 +147,9 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
         item.titleSelectedColor = self.itemTitleSelectedColor;
         item.titleFont = self.itemTitleFont;
         
-        [item setContentHorizontalCenterWithVerticalOffset:5 spacing:5];
+        if ([item imageForState:UIControlStateNormal]) {
+            [item setContentHorizontalCenterAndMarginTop:5 spacing:5];
+        }
         
         item.badgeTitleFont = self.badgeTitleFont;
         item.badgeTitleColor = self.badgeTitleColor;
@@ -617,21 +613,17 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
 - (void)setItemContentHorizontalCenter:(BOOL)itemContentHorizontalCenter {
     _itemContentHorizontalCenter = itemContentHorizontalCenter;
     if (itemContentHorizontalCenter) {
-        [self setItemContentHorizontalCenterWithVerticalOffset:5 spacing:5];
+        [self setItemContentHorizontalCenterAndMarginTop:5 spacing:5];
     } else {
-        self.itemContentHorizontalCenterVerticalOffset = 0;
-        self.itemContentHorizontalCenterSpacing = 0;
         [self.items makeObjectsPerformSelector:@selector(setContentHorizontalCenter:) withObject:@(NO)];
     }
 }
 
-- (void)setItemContentHorizontalCenterWithVerticalOffset:(CGFloat)verticalOffset
-                                                 spacing:(CGFloat)spacing {
+- (void)setItemContentHorizontalCenterAndMarginTop:(CGFloat)marginTop
+                                           spacing:(CGFloat)spacing {
     _itemContentHorizontalCenter = YES;
-    self.itemContentHorizontalCenterVerticalOffset = verticalOffset;
-    self.itemContentHorizontalCenterSpacing = spacing;
     for (YPTabItem *item in self.items) {
-        [item setContentHorizontalCenterWithVerticalOffset:verticalOffset spacing:spacing];
+        [item setContentHorizontalCenterAndMarginTop:marginTop spacing:spacing];
     }
 }
 

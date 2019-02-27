@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong) UIButton *badgeButton;
 @property (nonatomic, strong) UIView *doubleTapView;
-@property (nonatomic, assign) CGFloat verticalOffset;
+@property (nonatomic, assign) CGFloat marginTop;
 @property (nonatomic, assign) CGFloat spacing;
 @property (nonatomic, strong) CALayer *separatorLayer;
 
@@ -74,32 +74,35 @@
 
 - (void)setContentHorizontalCenter:(BOOL)contentHorizontalCenter {
     _contentHorizontalCenter = contentHorizontalCenter;
-    if (!_contentHorizontalCenter) {
-        self.verticalOffset = 0;
-        self.spacing = 0;
-    }
-    if (self.superview) {
-        [self layoutSubviews];
-    }
+    [self updateFrameOfSubviews];
 }
 
-- (void)setContentHorizontalCenterWithVerticalOffset:(CGFloat)verticalOffset
-                                             spacing:(CGFloat)spacing {
-    self.verticalOffset = verticalOffset;
+- (void)setContentHorizontalCenterAndMarginTop:(CGFloat)marginTop
+                                       spacing:(CGFloat)spacing {
+    self.marginTop = marginTop;
     self.spacing = spacing;
     self.contentHorizontalCenter = YES;
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
+- (void)updateFrameOfSubviews {
     if ([self imageForState:UIControlStateNormal] && self.contentHorizontalCenter) {
-        CGSize titleSize = self.titleLabel.frame.size;
+        self.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+        self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        
+        CGRect rect = [self.titleLabel.text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
+                                                         options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                      attributes:@{NSFontAttributeName : self.titleLabel.font}
+                                                         context:nil];
+        CGSize titleSize = CGSizeMake(ceilf(rect.size.width), ceilf(rect.size.height));
         CGSize imageSize = self.imageView.frame.size;
-        titleSize = CGSizeMake(ceilf(titleSize.width), ceilf(titleSize.height));
-        CGFloat totalHeight = (imageSize.height + titleSize.height + self.spacing);
-        self.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height - self.verticalOffset), 0, 0, - titleSize.width);
-        self.titleEdgeInsets = UIEdgeInsetsMake(self.verticalOffset, - imageSize.width, - (totalHeight - titleSize.height), 0);
+        
+        self.imageEdgeInsets = UIEdgeInsetsMake(self.marginTop, (self.frame.size.width - imageSize.width) / 2, 0, 0);
+        
+        CGFloat left = (self.frame.size.width - titleSize.width) / 2 - imageSize.width;
+        self.titleEdgeInsets = UIEdgeInsetsMake(self.marginTop + imageSize.width + self.spacing, left, 0, 0);
     } else {
+        self.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         self.imageEdgeInsets = UIEdgeInsetsZero;
         self.titleEdgeInsets = UIEdgeInsetsZero;
     }
@@ -133,14 +136,12 @@
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
     _frameWithOutTransform = frame;
-    if (CGRectEqualToRect(frame, CGRectZero)) {
-        return;
-    }
     if (self.doubleTapView) {
         self.doubleTapView.frame = self.bounds;
     }
     [self updateBadge];
     [self calculateIndicatorFrame];
+    [self updateFrameOfSubviews];
 }
 
 - (CGSize)size {

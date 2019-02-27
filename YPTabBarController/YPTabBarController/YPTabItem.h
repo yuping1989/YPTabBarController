@@ -83,11 +83,11 @@ typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
 /**
  *  设置Image和Title水平居中
  *
- *  @param verticalOffset   竖直方向的偏移量
- *  @param spacing          Image与Title的间距
+ *  @param marginTop   与顶部的距离
+ *  @param spacing     Image与Title的间距
  */
-- (void)setContentHorizontalCenterWithVerticalOffset:(CGFloat)verticalOffset
-                                             spacing:(CGFloat)spacing;
+- (void)setContentHorizontalCenterAndMarginTop:(CGFloat)marginTop
+                                       spacing:(CGFloat)spacing;
 /**
  *  添加双击事件回调
  */

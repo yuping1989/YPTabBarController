@@ -188,11 +188,11 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 /**
  *  将tabItem的image和title设置为居中，并且调整其在竖直方向的位置
  *
- *  @param verticalOffset  竖直方向的偏移量
- *  @param spacing         image和title的距离
+ *  @param marginTop  与顶部的距离
+ *  @param spacing    image和title的距离
  */
-- (void)setItemContentHorizontalCenterWithVerticalOffset:(CGFloat)verticalOffset
-                                                 spacing:(CGFloat)spacing;
+- (void)setItemContentHorizontalCenterAndMarginTop:(CGFloat)marginTop
+                                           spacing:(CGFloat)spacing;
 
 /**
  *  设置数字Badge的位置与大小。
