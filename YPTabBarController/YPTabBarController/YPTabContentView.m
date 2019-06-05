@@ -95,7 +95,7 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
 @end
 
 
-#pragma mark - YPTabBarController
+#pragma mark - YPTabContentView
 
 @interface YPTabContentView () <UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, _YPTabContentScrollViewDelegate> {
     
@@ -117,6 +117,7 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
 @property (nonatomic, assign) BOOL canChildScroll;
 @property (nonatomic, assign) BOOL canContentScroll;
 @property (nonatomic, assign) YPTabHeaderStyle headerStyle;
+@property (nonatomic, strong) UIView *tabBarContainerView;
 
 @end
 
@@ -356,10 +357,10 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
     self.containerTableViewCell = [[UITableViewCell alloc] init];
     [self.containerTableViewCell.contentView addSubview:self.contentScrollView];
     
-    self.tabBar.frame = CGRectMake(0,
-                                   0,
-                                   self.bounds.size.width,
-                                   tabBarHeight);
+    self.tabBarContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, tabBarHeight)];
+    self.tabBar.frame = self.tabBarContainerView.bounds;
+    [self.tabBar removeFromSuperview];
+    [self.tabBarContainerView addSubview:self.tabBar];
     
     self.canContentScroll = YES;
     self.canChildScroll = NO;
@@ -424,11 +425,11 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return self.tabBar.frame.size.height;
+    return self.tabBarContainerView.frame.size.height;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return self.tabBar;
+    return self.tabBarContainerView;
 }
 
 #pragma mark - YPTabBarDelegate

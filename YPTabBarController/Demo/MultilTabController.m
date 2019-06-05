@@ -51,6 +51,7 @@ static const CGFloat kTabBarHeight = 50;
     
     [self addSpecialItem];
     [self setupFrameOfTabBarAndContentView];
+//    [self.tabBar setItemContentHorizontalCenterAndMarginTop:10 spacing:-10];
 }
 
 - (void)setupFrameOfTabBarAndContentView {
