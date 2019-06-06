@@ -124,6 +124,11 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
  */
 - (UIViewController *)selectedController;
 
+/**
+ *  管理内容视图的ScrollView
+ */
+- (UIScrollView *)containerScrollView;
+
 @end
 
 

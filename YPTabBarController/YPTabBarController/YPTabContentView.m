@@ -280,6 +280,10 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
     return nil;
 }
 
+- (UIScrollView *)containerScrollView {
+    return self.contentScrollView;
+}
+
 - (UIViewController *)containerViewController {
     for (UIView *view = self; view; view = view.superview) {
         UIResponder *nextResponder = [view nextResponder];
