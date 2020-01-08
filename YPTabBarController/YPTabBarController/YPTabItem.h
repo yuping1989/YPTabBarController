@@ -37,6 +37,8 @@ typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImage *selectedImage;
+@property (nonatomic, strong) UIColor *imageColor;
+@property (nonatomic, strong) UIColor *imageSelectedColor;
 
 @property (nonatomic, assign, readonly) CGFloat titleWidth;
 @property (nonatomic, assign) UIEdgeInsets indicatorInsets;

@@ -147,6 +147,13 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
         item.titleSelectedColor = self.itemTitleSelectedColor;
         item.titleFont = self.itemTitleFont;
         
+        if (self.itemImageColor) {
+            item.imageColor = self.itemImageColor;
+        }
+        if (self.itemImageSelectedColor) {
+            item.imageSelectedColor = self.itemImageSelectedColor;
+        }
+        
         if ([item imageForState:UIControlStateNormal]) {
             [item setContentHorizontalCenterAndMarginTop:5 spacing:5];
         }
@@ -583,6 +590,16 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
     _itemTitleSelectedFont = itemTitleSelectedFont;
     self.selectedItem.titleFont = itemTitleSelectedFont;
     [self updateItemsScaleIfNeeded];
+}
+
+- (void)setItemImageColor:(UIColor *)itemImageColor {
+    _itemImageColor = itemImageColor;
+    [self.items makeObjectsPerformSelector:@selector(setImageColor:) withObject:itemImageColor];
+}
+
+- (void)setItemImageSelectedColor:(UIColor *)itemImageSelectedColor {
+    _itemImageSelectedColor = itemImageSelectedColor;
+    [self.items makeObjectsPerformSelector:@selector(setImageSelectedColor:) withObject:itemImageSelectedColor];
 }
 
 - (void)setItemFontChangeFollowContentScroll:(BOOL)itemFontChangeFollowContentScroll {

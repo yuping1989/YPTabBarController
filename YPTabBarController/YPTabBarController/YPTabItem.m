@@ -113,6 +113,15 @@
     if (self.doubleTapView) {
         self.doubleTapView.hidden = !selected;
     }
+    if (self.selected) {
+        if (self.imageSelectedColor) {
+            self.imageView.tintColor = self.imageSelectedColor;
+        }
+    } else {
+        if (self.imageColor) {
+            self.imageView.tintColor = self.imageColor;
+        }
+    }
 }
 
 - (void)setDoubleTapHandler:(void (^)(void))handler {
@@ -178,6 +187,20 @@
         self.titleLabel.font = titleFont;
     }
     [self calculateTitleWidth];
+}
+
+- (void)setImageColor:(UIColor *)imageColor {
+    _imageColor = imageColor;
+    if (!self.selected) {
+        self.imageView.tintColor = imageColor;
+    }
+}
+
+- (void)setImageSelectedColor:(UIColor *)imageSelectedColor {
+    _imageSelectedColor = imageSelectedColor;
+    if (self.selected) {
+        self.imageView.tintColor = imageSelectedColor;
+    }
 }
 
 - (void)calculateTitleWidth {

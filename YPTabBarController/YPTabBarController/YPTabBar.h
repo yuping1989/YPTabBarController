@@ -54,6 +54,9 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 @property (nonatomic, strong) UIFont  *itemTitleFont;               // 标题字体
 @property (nonatomic, strong) UIFont  *itemTitleSelectedFont;       // 选中时标题的字体
 
+@property (nonatomic, strong) UIColor *itemImageColor;
+@property (nonatomic, strong) UIColor *itemImageSelectedColor;
+
 @property (nonatomic, strong) UIColor *badgeBackgroundColor;        // Badge背景颜色
 @property (nonatomic, strong) UIImage *badgeBackgroundImage;        // Badge背景图像
 @property (nonatomic, strong) UIColor *badgeTitleColor;             // Badge标题颜色
