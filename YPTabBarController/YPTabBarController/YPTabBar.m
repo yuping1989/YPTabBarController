@@ -95,6 +95,7 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
     _itemContentHorizontalCenter = YES;
     _itemFontChangeFollowContentScroll = NO;
     _itemColorChangeFollowContentScroll = YES;
+    _autoScrollSelectedItemToCenter = YES;
     _indicatorScrollFollowContent = NO;
     
     _badgeTitleColor = [UIColor whiteColor];
@@ -362,11 +363,41 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
     _selectedItemIndex = selectedItemIndex;
     
     // 如果tabbar支持滚动，将选中的item放到tabbar的中央
-    [self setSelectedItemCenter];
+    if (self.autoScrollSelectedItemToCenter) {
+        [self scrollItemToCenterWithIndex:selectedItemIndex animated:YES];
+    }
     
     if (callDelegate && self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:didSelectedItemAtIndex:)]) {
         [self.delegate yp_tabBar:self didSelectedItemAtIndex:selectedItemIndex];
     }
+}
+
+- (void)scrollItemToCenterWithIndex:(NSUInteger)index animated:(BOOL)animated {
+    if (index < 0) {
+        return;
+    }
+    if (!self.scrollView.scrollEnabled || self.isVertical) {
+        return;
+    }
+    YPTabItem *item = self.items[index];
+    // 修改偏移量
+    CGFloat offsetX = item.center.x - self.scrollView.frame.size.width * 0.5f;
+    
+    // 处理最小滚动偏移量
+    if (offsetX < 0) {
+        offsetX = 0;
+    }
+    
+    // 处理最大滚动偏移量
+    CGFloat maxOffsetX = self.scrollView.contentSize.width - self.scrollView.frame.size.width;
+    if (offsetX > maxOffsetX) {
+        offsetX = maxOffsetX;
+    }
+    [self.scrollView setContentOffset:CGPointMake(offsetX, 0) animated:animated];
+}
+
+- (BOOL)scrollEnabled {
+    return self.scrollView.scrollEnabled;
 }
 
 - (void)setScrollEnabledAndItemWidth:(CGFloat)width {
@@ -409,27 +440,6 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
     self.itemHeight = height;
     [self updateAllUI];
 }
-
-- (void)setSelectedItemCenter {
-    if (!self.scrollView.scrollEnabled || self.isVertical) {
-        return;
-    }
-    // 修改偏移量
-    CGFloat offsetX = self.selectedItem.center.x - self.scrollView.frame.size.width * 0.5f;
-    
-    // 处理最小滚动偏移量
-    if (offsetX < 0) {
-        offsetX = 0;
-    }
-    
-    // 处理最大滚动偏移量
-    CGFloat maxOffsetX = self.scrollView.contentSize.width - self.scrollView.frame.size.width;
-    if (offsetX > maxOffsetX) {
-        offsetX = maxOffsetX;
-    }
-    [self.scrollView setContentOffset:CGPointMake(offsetX, 0) animated:YES];
-}
-
 
 /**
  *  获取未选中字体与选中字体大小的比例

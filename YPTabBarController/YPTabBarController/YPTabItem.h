@@ -80,7 +80,7 @@ typedef NS_ENUM(NSInteger, YPTabItemBadgeStyle) {
 /**
  *  设置Image和Title水平居中
  */
-@property (nonatomic, assign, getter = isContentHorizontalCenter) BOOL contentHorizontalCenter;
+@property (nonatomic, assign) BOOL contentHorizontalCenter;
 
 /**
  *  设置Image和Title水平居中

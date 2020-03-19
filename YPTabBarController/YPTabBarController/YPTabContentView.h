@@ -86,6 +86,12 @@ typedef NS_ENUM(NSInteger, YPTabHeaderStyle) {
 @property (nonatomic, assign) BOOL interceptRightSlideGuetureInFirstPage;
 @property (nonatomic, assign) BOOL interceptLeftSlideGuetureInLastPage;
 
+/**
+ *  设置拦截页面左侧滑动手势的距离，用于滑动返回、呼出侧边栏等功能
+ *  默认为0
+*/
+@property (nonatomic, assign) CGFloat interceptRightSlideGuetureMaxAllowedDistance;
+
 @property (nonatomic, strong) YPContainerTableView *containerTableView;
 
 /**
