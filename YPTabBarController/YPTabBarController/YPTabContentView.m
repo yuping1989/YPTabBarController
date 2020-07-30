@@ -370,6 +370,7 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
     
     self.contentScrollView.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height - tabBarHeight - self.tabBarStopOnTopHeight);
     self.containerTableViewCell = [[UITableViewCell alloc] init];
+    self.containerTableViewCell.backgroundColor = [UIColor clearColor];
     [self.containerTableViewCell.contentView addSubview:self.contentScrollView];
     
     self.tabBarContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, tabBarHeight)];
