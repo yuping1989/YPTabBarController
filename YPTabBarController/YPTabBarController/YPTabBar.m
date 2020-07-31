@@ -26,9 +26,6 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
 @property (nonatomic, strong) YPTabItem *specialItem;
 @property (nonatomic, copy) void (^specialItemHandler)(YPTabItem *item);
 
-// 选中背景
-@property (nonatomic, strong) UIImageView *indicatorImageView;
-
 // 选中背景相对于YPTabItem的insets
 @property (nonatomic, assign) UIEdgeInsets indicatorInsets;
 @property (nonatomic, assign) YPTabBarIndicatorStyle indicatorStyle;
