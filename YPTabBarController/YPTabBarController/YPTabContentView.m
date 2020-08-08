@@ -552,6 +552,9 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
     if (scrollView == self.contentScrollView) {
         NSUInteger page = scrollView.contentOffset.x / scrollView.frame.size.width;
         self.tabBar.selectedItemIndex = page;
+        if (self.delegate && [self.delegate respondsToSelector:@selector(contentViewDidEndDecelerating:)]) {
+            [self.delegate contentViewDidEndDecelerating:scrollView];
+        }
     }
 }
 
@@ -559,6 +562,10 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
     if (scrollView == self.containerTableView) {
         [self containerTableViewDidScroll:scrollView];
         return;
+    }
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(contentViewDidScroll:)]) {
+        [self.delegate contentViewDidScroll:scrollView];
     }
     
     if (self.tabBar.scrollEnabled) {

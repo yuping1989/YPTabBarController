@@ -86,4 +86,12 @@
     
 }
 
+- (void)contentViewDidScroll:(UIScrollView *)scrollView {
+    NSLog(@"contentViewDidScroll-->%f", scrollView.contentOffset.x);
+}
+
+- (void)contentViewDidEndDecelerating:(UIScrollView *)scrollView {
+    NSLog(@"contentViewDidEndDecelerating-->%f", scrollView.contentOffset.x);
+}
+
 @end

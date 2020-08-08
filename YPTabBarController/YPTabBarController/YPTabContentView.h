@@ -43,6 +43,12 @@ typedef NS_ENUM(NSInteger, YPTabHeaderStyle) {
  */
 - (void)tabContentView:(YPTabContentView *)tabConentView didChangedContentOffsetY:(CGFloat)offsetY;
 
+/**
+*  contentView横向滚动时的代理
+*/
+- (void)contentViewDidScroll:(UIScrollView *)scrollView;
+- (void)contentViewDidEndDecelerating:(UIScrollView *)scrollView;
+
 @end
 
 @interface YPTabContentView : UIView <YPTabBarDelegate>
