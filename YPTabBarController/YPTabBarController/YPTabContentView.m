@@ -550,6 +550,7 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == self.contentScrollView) {
+        self.containerTableView.scrollEnabled = YES;
         NSUInteger page = scrollView.contentOffset.x / scrollView.frame.size.width;
         self.tabBar.selectedItemIndex = page;
         if (self.delegate && [self.delegate respondsToSelector:@selector(contentViewDidEndDecelerating:)]) {
@@ -563,7 +564,7 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
         [self containerTableViewDidScroll:scrollView];
         return;
     }
-    
+    self.containerTableView.scrollEnabled = NO;
     if (self.delegate && [self.delegate respondsToSelector:@selector(contentViewDidScroll:)]) {
         [self.delegate contentViewDidScroll:scrollView];
     }
@@ -657,6 +658,7 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
  *  重写此方法，在需要的时候，拦截UIPanGestureRecognizer
  */
 - (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer {
+    NSLog(@"view-->%@", gestureRecognizer.view.description);
     if (![gestureRecognizer respondsToSelector:@selector(translationInView:)]) {
         return YES;
     }
