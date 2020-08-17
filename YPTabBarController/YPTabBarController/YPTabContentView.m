@@ -564,7 +564,6 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
         [self containerTableViewDidScroll:scrollView];
         return;
     }
-    self.containerTableView.scrollEnabled = NO;
     if (self.delegate && [self.delegate respondsToSelector:@selector(contentViewDidScroll:)]) {
         [self.delegate contentViewDidScroll:scrollView];
     }
@@ -584,9 +583,10 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
             // 解决有时候滑动冲突后scrollView跳动导致的item颜色显示错乱的问题
             [self.tabBar updateSubViewsWhenParentScrollViewScroll:self.contentScrollView];
         }
+        
         return;
     }
-
+    self.containerTableView.scrollEnabled = NO;
     // 滑动越界不处理
     CGFloat offsetX = scrollView.contentOffset.x;
     CGFloat scrollViewWidth = scrollView.frame.size.width;
