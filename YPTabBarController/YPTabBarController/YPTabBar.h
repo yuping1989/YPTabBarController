@@ -31,6 +31,11 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 - (void)yp_tabBar:(YPTabBar *)tabBar willSelectItemAtIndex:(NSUInteger)index;
 
 /**
+ *  点击了指定index
+ */
+- (void)yp_tabBar:(YPTabBar *)tabBar didClickedItemAtIndex:(NSUInteger)index;
+
+/**
  *  已经切换到指定index
  */
 - (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSUInteger)index;

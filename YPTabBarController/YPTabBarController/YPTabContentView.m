@@ -460,6 +460,12 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
     }
 }
 
+- (void)yp_tabBar:(YPTabBar *)tabBar didClickedItemAtIndex:(NSUInteger)index {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(tabContentView:didClickedTabAtIndex:)]) {
+        [self.delegate tabContentView:self didClickedTabAtIndex:index];
+    }
+}
+
 - (void)yp_tabBar:(YPTabBar *)tabBar didSelectedItemAtIndex:(NSUInteger)index {
     if (index == self.selectedTabIndex) {
         return;

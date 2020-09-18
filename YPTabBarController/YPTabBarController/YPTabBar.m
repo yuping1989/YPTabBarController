@@ -449,10 +449,16 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
 }
 
 - (void)tabItemClicked:(YPTabItem *)item {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:didClickedItemAtIndex:)]) {
+        [self.delegate yp_tabBar:self didClickedItemAtIndex:item.index];
+    }
     self.selectedItemIndex = item.index;
 }
 
 - (void)specialItemClicked:(YPTabItem *)item {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:didClickedItemAtIndex:)]) {
+        [self.delegate yp_tabBar:self didClickedItemAtIndex:item.index];
+    }
     if (self.specialItemHandler) {
         self.specialItemHandler(item);
     }

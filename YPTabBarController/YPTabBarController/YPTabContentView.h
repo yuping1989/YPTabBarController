@@ -34,6 +34,11 @@ typedef NS_ENUM(NSInteger, YPTabHeaderStyle) {
 - (void)tabContentView:(YPTabContentView *)tabConentView willSelectTabAtIndex:(NSUInteger)index;
 
 /**
+ *  点击了index
+ */
+- (void)tabContentView:(YPTabContentView *)tabConentView didClickedTabAtIndex:(NSUInteger)index;
+
+/**
  *  已经切换到指定index
  */
 - (void)tabContentView:(YPTabContentView *)tabConentView didSelectedTabAtIndex:(NSUInteger)index;
