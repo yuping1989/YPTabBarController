@@ -370,7 +370,7 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
 }
 
 - (void)scrollItemToCenterWithIndex:(NSUInteger)index animated:(BOOL)animated {
-    if (index < 0) {
+    if (index < 0 || index >= self.items.count) {
         return;
     }
     if (!self.scrollView.scrollEnabled || self.isVertical) {
