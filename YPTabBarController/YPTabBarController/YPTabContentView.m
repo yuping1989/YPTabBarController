@@ -176,7 +176,14 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
     if (CGRectEqualToRect(frame, CGRectZero)) {
         return;
     }
-    if (!self.headerView) {
+    if (self.headerView) {
+        self.headerView.frame = CGRectMake(0, 0, self.bounds.size.width, self.headerViewDefaultHeight);
+        
+        self.tabBarContainerView.frame = CGRectMake(0, 0, self.bounds.size.width, self.tabBarContainerView.frame.size.height);
+        self.tabBar.frame = self.tabBarContainerView.bounds;
+        self.contentScrollView.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height - self.tabBarContainerView.frame.size.height - self.tabBarStopOnTopHeight);
+        [self.containerTableView reloadData];
+    } else {
         self.contentScrollView.frame = self.bounds;
     }
     [self updateContentViewsFrame];
@@ -338,17 +345,15 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
     if (!headerView) {
         return;
     }
-    self.frame = frame;
-    self.headerView = headerView;
-    
-    self.headerView.frame = CGRectMake(0, 0, self.bounds.size.width, headerHeight);
-
     self.headerStyle = style;
     self.headerViewDefaultHeight = headerHeight;
     self.tabBarStopOnTopHeight = tabBarStopOnTopHeight;
     
-    [self.contentScrollView removeFromSuperview];
+    self.frame = frame;
+    self.headerView = headerView;
+    self.headerView.frame = CGRectMake(0, 0, self.bounds.size.width, self.headerViewDefaultHeight);
     
+    [self.contentScrollView removeFromSuperview];
     self.containerTableView = [[YPContainerTableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
     self.containerTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.containerTableView.delegate = self;

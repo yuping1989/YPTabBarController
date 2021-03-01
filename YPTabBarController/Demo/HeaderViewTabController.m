@@ -19,6 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChange) name:UIDeviceOrientationDidChangeNotification object:nil];
 
     self.tabContentView.interceptRightSlideGuetureInFirstPage = YES;
     
@@ -103,6 +104,11 @@
 
 - (void)tabContentView:(YPTabContentView *)tabConentView didChangedContentOffsetY:(CGFloat)offsetY {
     NSLog(@"offsetY-->%f", offsetY);
+}
+
+- (void)deviceOrientationChange {
+    NSLog(@"or-->%d", [UIDevice currentDevice].orientation);
+    self.tabContentView.frame = [UIScreen mainScreen].bounds;
 }
 
 @end
