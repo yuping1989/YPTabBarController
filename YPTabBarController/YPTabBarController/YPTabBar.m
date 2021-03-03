@@ -93,6 +93,7 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
     _itemFontChangeFollowContentScroll = NO;
     _itemColorChangeFollowContentScroll = YES;
     _autoScrollSelectedItemToCenter = YES;
+    _scrollSelectedItemToCenterAnimated = YES;
     _indicatorScrollFollowContent = NO;
     
     _badgeTitleColor = [UIColor whiteColor];
@@ -361,7 +362,8 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorStyle) {
     
     // 如果tabbar支持滚动，将选中的item放到tabbar的中央
     if (self.autoScrollSelectedItemToCenter) {
-        [self scrollItemToCenterWithIndex:selectedItemIndex animated:YES];
+        [self scrollItemToCenterWithIndex:selectedItemIndex
+                                 animated:self.scrollSelectedItemToCenterAnimated];
     }
     
     if (callDelegate && self.delegate && [self.delegate respondsToSelector:@selector(yp_tabBar:didSelectedItemAtIndex:)]) {

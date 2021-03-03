@@ -105,7 +105,7 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
 }
 
 @property (nonatomic, strong) _YPTabContentScrollView *contentScrollView;
-@property (nonatomic, assign) BOOL isDefaultSelectedTabIndexSetuped;
+@property (nonatomic, assign) BOOL isMoveToSuperviewFirstTime;
 
 @property (nonatomic, assign) CGFloat headerViewDefaultHeight;
 @property (nonatomic, assign) CGFloat tabBarStopOnTopHeight;
@@ -163,7 +163,7 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
     _removeViewOfChildContollerWhileDeselected = YES;
     _selectedTabIndex = NSNotFound;
     _defaultSelectedTabIndex = 0;
-    _isDefaultSelectedTabIndexSetuped = NO;
+    _isMoveToSuperviewFirstTime = YES;
 }
 
 - (void)setTabBar:(YPTabBar *)tabBar {
@@ -222,10 +222,8 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
                 self.contentScrollView.bounds.size.height);
     }
     
-    if (self.isDefaultSelectedTabIndexSetuped) {
-        _selectedTabIndex = NSNotFound;
-        self.tabBar.selectedItemIndex = 0;
-    }
+    _selectedTabIndex = NSNotFound;
+    self.tabBar.selectedItemIndex = self.defaultSelectedTabIndex;
 }
 
 - (void)setContentScrollEnabledAndTapSwitchAnimated:(BOOL)switchAnimated {
@@ -242,11 +240,6 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
     }
     self.contentScrollView.scrollEnabled = enabled;
     self.contentSwitchAnimated = animated;
-}
-
-- (void)setContentScrollEnabled:(BOOL)enabled {
-    _contentScrollEnabled = enabled;
-    self.tabBar.autoScrollSelectedItemToCenter = !enabled;
 }
 
 - (void)updateContentViewsFrame {
@@ -317,7 +310,7 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
 - (void)didMoveToSuperview {
     [super didMoveToSuperview];
     
-    if (self.isDefaultSelectedTabIndexSetuped) {
+    if (!self.isMoveToSuperviewFirstTime) {
         return;
     }
     
@@ -329,7 +322,7 @@ typedef void (^_YPViewControllerWillAppearInjectBlock)(UIViewController *viewCon
         __strong UIViewController *strongVC = weakVC;
         __strong YPTabContentView *strongSelf = weakSelf;
         strongSelf.selectedTabIndex = self.defaultSelectedTabIndex;
-        strongSelf.isDefaultSelectedTabIndexSetuped = YES;
+        strongSelf.isMoveToSuperviewFirstTime = NO;
         strongVC.yp_willAppearInjectBlock = nil;
     };
 }
@@ -579,11 +572,13 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
         [self.delegate contentViewDidScroll:scrollView];
     }
     
-    if (self.tabBar.scrollEnabled) {
+    if (self.tabBar.scrollEnabled &&
+        self.tabBar.autoScrollSelectedItemToCenter &&
+        self.tabBar.scrollSelectedItemToCenterAnimated) {
         CGRect visibleBounds = self.contentScrollView.bounds;
         NSInteger index = (NSInteger)(floorf(CGRectGetMidX(visibleBounds) / CGRectGetWidth(visibleBounds)));
         if (index >= 0 && _lastCenterIndex != index) {
-            [self.tabBar scrollItemToCenterWithIndex:index animated:YES];
+            [self.tabBar scrollItemToCenterWithIndex:index animated:self.tabBar.scrollSelectedItemToCenterAnimated];
             _lastCenterIndex = index;
         }
     }

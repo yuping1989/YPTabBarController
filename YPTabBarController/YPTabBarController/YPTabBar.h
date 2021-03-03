@@ -84,14 +84,20 @@ typedef NS_ENUM(NSInteger, YPTabBarIndicatorAnimationStyle) {
 @property (nonatomic, assign) BOOL itemFontChangeFollowContentScroll;
 
 /**
- *  TabItem的选中背景是否随contentView滑动而移动
+ *  TabItem的选中背景是否随contentView滑动而移动，默认为NO
  */
 @property (nonatomic, assign) BOOL indicatorScrollFollowContent;
 
 /**
- *  选中tab后，选中tab是否自动居中
+ *  选中tab后，选中tab是否自动居中，默认为YES
  */
 @property (nonatomic, assign) BOOL autoScrollSelectedItemToCenter;
+
+/**
+ *  选中tab后，如果支持选中tab自动居中，TabBar平移是否展示动画，默认为YES
+ *  此属性仅在autoScrollSelectedItemToCenter = YES时生效
+ */
+@property (nonatomic, assign) BOOL scrollSelectedItemToCenterAnimated;
 
 @property (nonatomic, assign, readonly) BOOL scrollEnabled;
 
