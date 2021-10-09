@@ -363,6 +363,9 @@ tabBarStopOnTopHeight:(CGFloat)tabBarStopOnTopHeight
     if (@available(iOS 11.0, *)) {
         self.containerTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }
+    if (@available(iOS 15.0, *)) {
+        self.containerTableView.sectionHeaderTopPadding = 0;
+    }
     
     [self addSubview:self.containerTableView];
     
